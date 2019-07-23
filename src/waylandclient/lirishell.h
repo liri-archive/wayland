@@ -62,6 +62,7 @@ public:
     void init(struct ::wl_registry *registry, int id, int version);
 
     Q_INVOKABLE void registerGrabSurface(QWindow *window);
+    Q_INVOKABLE void sendReady();
 
     static const struct ::wl_interface *interface();
 

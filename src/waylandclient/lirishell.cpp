@@ -106,6 +106,12 @@ void LiriShell::registerGrabSurface(QWindow *window)
         d->sendGrabSurfaceRegistration(window);
 }
 
+void LiriShell::sendReady()
+{
+    Q_D(LiriShell);
+    d->ready();
+}
+
 const wl_interface *LiriShell::interface()
 {
     return QtWayland::liri_shell::interface();

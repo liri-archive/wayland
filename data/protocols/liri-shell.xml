@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <protocol name="liri_shell">
   <copyright><![CDATA[
-    Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+    Copyright (C) 2018-2019 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation files
@@ -64,5 +64,13 @@
       </description>
       <arg name="cursor" type="uint"/>
     </event>
+
+    <request name="ready">
+      <description summary="shell is ready">
+        Tell the compositor that the shell has created all
+        the layer surfaces and it can hide the splash screen
+        revealing the desktop.
+      </description>
+    </request>
   </interface>
 </protocol>

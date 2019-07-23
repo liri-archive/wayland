@@ -95,6 +95,14 @@ void WaylandLiriShellPrivate::liri_shell_set_grab_surface(Resource *resource, st
     }
 }
 
+void WaylandLiriShellPrivate::liri_shell_ready(QtWaylandServer::liri_shell::Resource *resource)
+{
+    Q_UNUSED(resource)
+
+    Q_Q(WaylandLiriShell);
+    emit q->ready();
+}
+
 /*
  * WaylandLiriShell
  */

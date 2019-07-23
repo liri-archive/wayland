@@ -66,6 +66,7 @@ public:
 
 Q_SIGNALS:
     void grabSurfaceAdded(QWaylandSurface *surface);
+    void ready();
 
 private:
     WaylandLiriShellPrivate *const d_ptr;

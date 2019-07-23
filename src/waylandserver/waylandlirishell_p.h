@@ -45,6 +45,7 @@ protected:
 private:
     void liri_shell_bind_resource(Resource *r) override;
     void liri_shell_set_grab_surface(Resource *resource, struct ::wl_resource *wlSurface) override;
+    void liri_shell_ready(Resource *resource) override;
 };
 
 #endif // LIRI_WAYLANDLIRISHELL_P_H
