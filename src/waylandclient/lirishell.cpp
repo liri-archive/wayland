@@ -42,36 +42,54 @@ LiriShellPrivate::LiriShellPrivate(LiriShell *qq)
 {
 }
 
-void LiriShellPrivate::sendGrabSurfaceRegistration(QWindow *window)
+void LiriShellPrivate::setCursorShape(QWindow *window, LiriShell::GrabCursor cursor)
 {
-    Q_Q(LiriShell);
+    QCursor newCursor;
 
-    if (window->handle())
-        setGrabSurface(window);
-    else
-        window->installEventFilter(q);
+    switch (cursor) {
+    case LiriShell::ArrowGrabCursor:
+        newCursor.setShape(Qt::ArrowCursor);
+        break;
+    case LiriShell::ResizeTopGrabCursor:
+    case LiriShell::ResizeBottomGrabCursor:
+        newCursor.setShape(Qt::SizeVerCursor);
+        break;
+    case LiriShell::ResizeLeftGrabCursor:
+    case LiriShell::ResizeRightGrabCursor:
+        newCursor.setShape(Qt::SizeHorCursor);
+        break;
+    case LiriShell::ResizeTopLeftGrabCursor:
+    case LiriShell::ResizeBottomRightGrabCursor:
+        newCursor.setShape(Qt::SizeFDiagCursor);
+        break;
+    case LiriShell::ResizeTopRightGrabCursor:
+    case LiriShell::ResizeBottomLeftGrabCursor:
+        newCursor.setShape(Qt::SizeBDiagCursor);
+        break;
+    case LiriShell::MoveGrabCursor:
+        newCursor.setShape(Qt::DragMoveCursor);
+        break;
+    case LiriShell::BusyGrabCursor:
+        newCursor.setShape(Qt::BusyCursor);
+        break;
+    default:
+        newCursor.setShape(Qt::BlankCursor);
+        break;
+    }
 
-    activated = true;
-}
-
-void LiriShellPrivate::setGrabSurface(QWindow *window)
-{
-    set_grab_surface(getWlSurface(window));
-    window->setCursor(QCursor(Qt::ArrowCursor));
-}
-
-void LiriShellPrivate::handleActivation()
-{
-    Q_Q(LiriShell);
-
-    if (q->isActive() && !activated && grabWindow)
-        sendGrabSurfaceRegistration(grabWindow);
+    window->setCursor(newCursor);
 }
 
 void LiriShellPrivate::liri_shell_grab_cursor(uint32_t cursor)
 {
     Q_Q(LiriShell);
-    Q_EMIT q->cursorChangeRequested(static_cast<LiriShell::GrabCursor>(cursor));
+
+    auto grabCursor = static_cast<LiriShell::GrabCursor>(cursor);
+
+    Q_EMIT q->cursorChangeRequested(grabCursor);
+
+    if (grabWindow)
+        setCursorShape(grabWindow, grabCursor);
 }
 
 // LiriShell
@@ -80,10 +98,6 @@ LiriShell::LiriShell()
     : QWaylandClientExtensionTemplate(1)
     , d_ptr(new LiriShellPrivate(this))
 {
-    connect(this, &LiriShell::activeChanged, this, [this] {
-        Q_D(LiriShell);
-        d->handleActivation();
-    });
 }
 
 LiriShell::~LiriShell()
@@ -102,8 +116,12 @@ void LiriShell::registerGrabSurface(QWindow *window)
     Q_D(LiriShell);
 
     d->grabWindow = window;
+    d->grabWindow->setFlags(Qt::BypassWindowManagerHint);
+    d->grabWindow->create();
+    d->grabWindow->setCursor(QCursor(Qt::ArrowCursor));
+
     if (isActive())
-        d->sendGrabSurfaceRegistration(window);
+        d->set_grab_surface(getWlSurface(d->grabWindow));
 }
 
 void LiriShell::sendReady()
@@ -116,20 +134,3 @@ const wl_interface *LiriShell::interface()
 {
     return QtWayland::liri_shell::interface();
 }
-
-bool LiriShell::eventFilter(QObject *watched, QEvent *event)
-{
-    Q_D(LiriShell);
-
-    if (event->type() == QEvent::PlatformSurface
-            && static_cast<QPlatformSurfaceEvent *>(event)->surfaceEventType() == QPlatformSurfaceEvent::SurfaceCreated) {
-        QWindow *window = qobject_cast<QWindow*>(watched);
-        Q_ASSERT(window);
-        window->removeEventFilter(this);
-        d->setGrabSurface(window);
-    }
-
-    return false;
-}
-
-#include "moc_lirishell.cpp"

@@ -44,12 +44,8 @@ class LiriShellPrivate : public QtWayland::liri_shell
 public:
     LiriShellPrivate(LiriShell *qq);
 
-    void sendGrabSurfaceRegistration(QWindow *window);
-    void setGrabSurface(QWindow *window);
+    void setCursorShape(QWindow *window, LiriShell::GrabCursor cursor);
 
-    void handleActivation();
-
-    bool activated = false;
     QWindow *grabWindow = nullptr;
 
 protected:

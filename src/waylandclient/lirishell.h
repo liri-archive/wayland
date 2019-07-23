@@ -69,13 +69,8 @@ public:
 Q_SIGNALS:
     void cursorChangeRequested(LiriShell::GrabCursor cursor);
 
-protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
-
 private:
     LiriShellPrivate *const d_ptr;
-
-    Q_PRIVATE_SLOT(d_func(), void handleActivation())
 };
 
 #endif // LIRI_LIRISHELL_CLIENT_H
