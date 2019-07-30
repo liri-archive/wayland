@@ -1,0 +1,44 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    # DEPLOY_USER
+    - secure: "TowmBwr4zXUmyV6dtkzJfEbuyY19cZvkZDi/q4pswEZSIjxzZDlgLgnwwbmLGAHoGz26balR5GOpPWZGT/pJz/AZa9AcuTeVz6iQW/eetPyVLvQPLdbVD4fpPf/06RC05AT2zO5smDYFBQG+UE1Ay3m69zQrde4a1AK9HK9xgTJ1UqZWAKeC1hK/L5b1Fa1jZGtge4SlBb4SSL/J71k0UUKaMtyE0ocoKzmnQ6zdK+t+Jedlb0kbbrPaGLBqgjU48Yq9IozxyU1nH+uPa/u9oLmbDYMK4GyaMLSaQYqoIbKA/NPvfv5m1v22kWlMzzc9hnzE4JYoKi6csD9TKIT9/GjXnwnfPcwMx5ao19/o5zsJk9qHdQ6RezytZ4qQ4irw5eJ70VBrgsPhybmG+W+zB4cQal/ADSp4vlVjgKGnqGl7525E9qWphEGvXgtNT9kUgBmXFBg517IVlzbLJW7X8PFMrysEN+DF3U9+HlPO7XPsOxNZ5Od1HZGr8uJQWwk4MCeu/ojB4iznEC75wN8ST0zGZZVbqI7J4pt6MVXl/z8mUXPMcCS59BiYMBvrh0gwzCBPbja/k94WF4dZlMglM/erzHbhYr/6uI46JqT+UO1kLVbxxbQK9bQ/cr81urRh4PPrwplYJQpCwzxQD/Ef/JzNfDAXRDK5biQk9hJfj5A="
+
+    # DEPLOY_HOST
+    - secure: "Lf+eOHIggfJ3aZxZib2/Pp9vMlUij2zLMAx01wJq4RUEkQ3oOIF1kw7OPYwNytm60GjZJNB3HAkq5/+pReJkhEe0icfiyt7vvnf3ghXoY+pUaTcFXLvqPRJmBmHydTC0VtIzD/dUE3sp4E8Nhw3etEN6FV0WPBsTa3c0h56bXU/Ay433B1JdMsGDL+5VmgHaWj4GCdRRrGGAvSzknLnLdxBldA0WSIiDPzew8bmu1s4310dtXT20alaCZdwywGyCVssw4dqh4+AIFIWry26Ksz56fusOb/c+Q0IbztMJvP9OQ6r409EM3gEtXwxnsjbmibaKlP44MoO6YfcHCzLNQ3D6E6Kc8CxPJxm0IAdPdij8JJwkN2wBmcIAQbiGdQ4X5CnDSRDce02wiaohV+5ONVDogpBkiEAsO8kZ0VxH98R2bZkkQGUAC5J7Su2qi3WM1FGgjZpAd2F33luDjd5R3t3OOlw11yNGnI6mOD/NMY59S2u3Rb7BTEKXMjR3wRCh+7RU2c1gmX3hGD+J7XQHKKx3WBAZsZbQfM2A+ZpknSmjqkInIzkFIKdg6Tgp0IXjdw8QoZ9xuvCi5yYFmL43ACCTCtBnNb3DDddpdytVtdGevf9DuL+6XkelmuNtPa/Khl9h8bbjIYGCQHHt22aDqhEAXPKn4pqiIVZwGxD2UFI="
+
+branches:
+  except:
+    - /^(?i:continuous)$/
+
+script:
+  - wget -c https://raw.githubusercontent.com/lirios/infra-travis/master/run
+  - bash run ./.travis/build.sh
+
+deploy:
+  - provider: script
+    script: .travis/deploy.sh build/artifacts/wayland-artifacts.tar.gz
+    skip_cleanup: true
+    on:
+      branch: master
+      condition: "$CC = gcc) && ($TRAVIS_PULL_REQUEST = false"
+  - provider: script
+    script: .travis/deploy.sh build/artifacts/wayland-artifacts.tar.gz
+    skip_cleanup: true
+    on:
+      branch: develop
+      condition: "$CC = gcc) && ($TRAVIS_PULL_REQUEST = false"
+
+notifications:
+  email: false
+  slack: lirios:fdUqVmPzqPskEL1UBhqapZ0w
