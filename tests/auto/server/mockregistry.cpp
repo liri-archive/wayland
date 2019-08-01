@@ -36,7 +36,7 @@ void MockRegistry::registry_global(uint32_t name, const QString &interface, uint
         auto *output = new QtWayland::wl_output(object(), name, qMin<uint32_t>(version, 2));
         outputs.insert(name, output);
     } else if (interface == QLatin1String("zwlr_output_manager_v1")) {
-        wlrOutputManager = new QtWayland::zwlr_output_manager_v1(object(), name, qMin<uint32_t>(version, 1));
+        wlrOutputManager = new MockWlrOutputManagerV1(object(), name, qMin<uint32_t>(version, 1));
     }
 }
 

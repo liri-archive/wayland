@@ -23,6 +23,8 @@
 
 #include <QtQml>
 
+#include <LiriWaylandClient/WlrOutputManagementV1>
+
 class WaylandClientPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
@@ -36,6 +38,15 @@ public:
         const int versionMajor = 1;
         const int versionMinor = 0;
 
+        qmlRegisterType<WlrOutputManagerV1>(uri, versionMajor, versionMinor, "WlrOutputManagerV1");
+        qmlRegisterUncreatableType<WlrOutputHeadV1>(uri, versionMajor, versionMinor, "WlrOutputHeadV1",
+                                                    QStringLiteral("Cannot create a WlrOutputHeadV1 instance"));
+        qmlRegisterUncreatableType<WlrOutputModeV1>(uri, versionMajor, versionMinor, "WlrOutputModeV1",
+                                                    QStringLiteral("Cannot create a WlrOutputModeV1 instance"));
+        qmlRegisterUncreatableType<WlrOutputConfigurationV1>(uri, versionMajor, versionMinor, "WlrOutputConfigurationV1",
+                                                             QStringLiteral("Cannot create a WlrOutputConfigurationV1 instance"));
+        qmlRegisterUncreatableType<WlrOutputConfigurationHeadV1>(uri, versionMajor, versionMinor, "WlrOutputConfigurationHeadV1",
+                                                                 QStringLiteral("Cannot create a WlrOutputConfigurationHeadV1 instance"));
     }
 };
 

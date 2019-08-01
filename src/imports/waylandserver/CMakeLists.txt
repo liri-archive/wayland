@@ -17,6 +17,6 @@ liri_add_qml_plugin(waylandserver
         Qt5::Qml
         Qt5::Quick
         Liri::WaylandServer
+    LIBRARIES
         Liri::WaylandServerPrivate
-    STATIC
 )

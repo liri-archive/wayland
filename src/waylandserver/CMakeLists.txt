@@ -11,6 +11,9 @@ ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/server-decoration.xml"
     BASENAME "server-decoration")
 ecm_add_qtwayland_server_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/wlr-output-management-unstable-v1.xml"
+    BASENAME "wlr-output-management-unstable-v1")
+ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/shell-helper.xml"
     BASENAME "shell-helper")
 
@@ -36,6 +39,9 @@ liri_add_module(WaylandServer
         shellhelper.cpp
         shellhelper.h
         shellhelper_p.h
+        waylandwlroutputmanagerv1.cpp
+        waylandwlroutputmanagerv1.h
+        waylandwlroutputmanagerv1_p.h
         logging.cpp
         logging_p.h
         ${SOURCES}
@@ -44,6 +50,7 @@ liri_add_module(WaylandServer
         KdeServerDecoration
         LiriDecoration
         ShellHelper
+        WaylandWlrOutputManagerV1
     PRIVATE_HEADERS
         gtkshell_p.h
         shellhelper_p.h
@@ -55,6 +62,8 @@ liri_add_module(WaylandServer
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-decoration-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-shell-helper.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-shell-helper-server-protocol.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-output-management-unstable-v1.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-server-protocol.h"
     DEFINES
         QT_NO_CAST_FROM_ASCII
         QT_NO_FOREACH
