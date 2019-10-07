@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 #include <QtCore/QFile>
-#include <QtCore/QProcess>
 
 #include <QtWaylandCompositor/qwaylandcompositor.h>
 #include <QtWaylandCompositor/QWaylandPointer>
@@ -37,105 +36,14 @@
 #  define WL_DISPLAY_ERROR_IMPLEMENTATION WL_DISPLAY_ERROR_INVALID_METHOD
 #endif
 
-class ProcessRunner : public QObject
-{
-    Q_OBJECT
-public:
-    ProcessRunner(QObject *parent = nullptr)
-        : QObject(parent)
-        , process(new QProcess(this))
-    {
-        process->setProcessChannelMode(QProcess::ForwardedChannels);
-
-        QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-        //env.insert(QLatin1String("WAYLAND_DEBUG"), "1");
-        env.insert(QStringLiteral("XDG_SESSION_TYPE"), QStringLiteral("wayland"));
-        process->setProcessEnvironment(env);
-
-        connect(process, &QProcess::readyReadStandardOutput,
-                this, &ProcessRunner::handleReadOutput);
-        connect(process, &QProcess::readyReadStandardError,
-                this, &ProcessRunner::handleReadError);
-        connect(process, &QProcess::started,
-                this, &ProcessRunner::processStarted);
-        connect(process, &QProcess::errorOccurred,
-                this, &ProcessRunner::handleErrorOccurred);
-    }
-
-    ~ProcessRunner()
-    {
-        qCDebug(lcWaylandServer) << "Stopping shell helper...";
-        process->terminate();
-        if (!process->waitForFinished())
-            process->kill();
-    }
-
-    bool startProcess()
-    {
-        return runProgram(QString::asprintf("%s/liri-shell-helper", INSTALL_LIBEXECDIR));
-    }
-
-    int retries = 5;
-    QProcess *process = nullptr;
-
-Q_SIGNALS:
-    void processStarted();
-
-private Q_SLOTS:
-    void handleReadOutput()
-    {
-        qCInfo(lcWaylandServer) << process->readAllStandardOutput();
-    }
-
-    void handleReadError()
-    {
-        qCCritical(lcWaylandServer) << process->readAllStandardError();
-    }
-
-    void handleErrorOccurred(QProcess::ProcessError error)
-    {
-        if (error != QProcess::FailedToStart || error != QProcess::Crashed)
-            return;
-
-        if (retries-- > 0) {
-            qCWarning(lcWaylandServer, "Failed to start shell helper, %d attempt(s) left",
-                      retries);
-            startProcess();
-            return;
-        }
-
-        if (retries == 0)
-            qCWarning(lcWaylandServer, "Failed to start shell helper, giving up");
-    }
-
-private:
-    bool runProgram(const QString &path)
-    {
-        if (!QFile::exists(path))
-            return false;
-
-        process->start(path);
-
-        return true;
-    }
-};
-
 /*
  * ShellHelperPrivate
  */
 
 ShellHelperPrivate::ShellHelperPrivate(ShellHelper *qq)
     : QtWaylandServer::liri_shell()
-    , processRunner(new ProcessRunner)
     , q_ptr(qq)
 {
-    qq->connect(processRunner, &ProcessRunner::processStarted,
-                qq, &ShellHelper::processStarted);
-}
-
-ShellHelperPrivate::~ShellHelperPrivate()
-{
-    processRunner->deleteLater();
 }
 
 ShellHelperPrivate *ShellHelperPrivate::get(ShellHelper *shell)
@@ -222,13 +130,6 @@ void ShellHelper::initialize()
     d->init(compositor->display(), 1);
 }
 
-void ShellHelper::start()
-{
-    Q_D(ShellHelper);
-
-    d->processRunner->startProcess();
-}
-
 void ShellHelper::grabCursor(GrabCursor cursor)
 {
     Q_D(ShellHelper);
@@ -255,5 +156,3 @@ QByteArray ShellHelper::interfaceName()
 {
     return ShellHelperPrivate::interfaceName();
 }
-
-#include "shellhelper.moc"

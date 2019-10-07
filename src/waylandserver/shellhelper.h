@@ -21,8 +21,8 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef SHELLPHELPER_H
-#define SHELLPHELPER_H
+#ifndef LIRI_SHELLPHELPER_H
+#define LIRI_SHELLPHELPER_H
 
 #include <QtWaylandCompositor/QWaylandCompositorExtension>
 
@@ -59,19 +59,16 @@ public:
 
     void initialize() override;
 
-    Q_INVOKABLE void start();
-
     Q_INVOKABLE void grabCursor(ShellHelper::GrabCursor cursor);
 
     static const struct wl_interface *interface();
     static QByteArray interfaceName();
 
 Q_SIGNALS:
-    void processStarted();
     void grabSurfaceAdded(QWaylandSurface *surface);
 
 private:
     ShellHelperPrivate *const d_ptr;
 };
 
-#endif //SHELLPHELPER_H
+#endif // LIRI_SHELLPHELPER_H

@@ -37,7 +37,6 @@ class LIRIWAYLANDSERVER_EXPORT ShellHelperPrivate : public QtWaylandServer::liri
     Q_DECLARE_PUBLIC(ShellHelper)
 public:
     explicit ShellHelperPrivate(ShellHelper *qq);
-    ~ShellHelperPrivate();
 
     static ShellHelperPrivate *get(ShellHelper *shell);
 
