@@ -28,6 +28,11 @@ MockRegistry::MockRegistry(struct ::wl_registry *object)
 {
 }
 
+QtWayland::wl_surface *MockRegistry::createSurface()
+{
+    return new QtWayland::wl_surface(compositor->create_surface());
+}
+
 void MockRegistry::registry_global(uint32_t name, const QString &interface, uint32_t version)
 {
     if (interface == QLatin1String("wl_compositor")) {
@@ -35,6 +40,8 @@ void MockRegistry::registry_global(uint32_t name, const QString &interface, uint
     } else if (interface == QLatin1String("wl_output")) {
         auto *output = new QtWayland::wl_output(object(), name, qMin<uint32_t>(version, 2));
         outputs.insert(name, output);
+    } else if (interface == QLatin1String("zwlr_layer_shell_v1")) {
+        wlrLayerShell = new MockWlrLayerShellV1(object(), name, qMin<uint32_t>(version, 1));
     } else if (interface == QLatin1String("zwlr_output_manager_v1")) {
         wlrOutputManager = new MockWlrOutputManagerV1(object(), name, qMin<uint32_t>(version, 1));
     }

@@ -21,31 +21,14 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef MOCKREGISTRY_H
-#define MOCKREGISTRY_H
+#include "wlrlayersurfacev1qml.h"
 
-#include <QMap>
-
-#include "qwayland-wayland.h"
-
-#include "mockwlrlayershellv1.h"
-#include "mockwlroutputmanagementv1.h"
-
-class MockRegistry : public QtWayland::wl_registry
+WlrLayerSurfaceV1Qml::WlrLayerSurfaceV1Qml(QObject *parent)
+    : WlrLayerSurfaceV1(parent)
 {
-public:
-    MockRegistry(struct ::wl_registry *object);
+}
 
-    QtWayland::wl_surface *createSurface();
-
-    QtWayland::wl_compositor *compositor = nullptr;
-    QMap<uint32_t, QtWayland::wl_output *> outputs;
-    MockWlrLayerShellV1 *wlrLayerShell = nullptr;
-    MockWlrOutputManagerV1 *wlrOutputManager = nullptr;
-
-protected:
-    void registry_global(uint32_t name, const QString &interface, uint32_t version) override;
-    void registry_global_remove(uint32_t name) override;
-};
-
-#endif // MOCKREGISTRY_H
+void WlrLayerSurfaceV1Qml::componentComplete()
+{
+    QMetaObject::invokeMethod(this, "initialize", Qt::QueuedConnection);
+}

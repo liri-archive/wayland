@@ -23,7 +23,10 @@
 
 #include <QtQml>
 
+#include <LiriWaylandClient/WlrLayerShellV1>
 #include <LiriWaylandClient/WlrOutputManagementV1>
+
+#include "wlrlayersurfacev1qml.h"
 
 class WaylandClientPlugin : public QQmlExtensionPlugin
 {
@@ -37,6 +40,9 @@ public:
 
         const int versionMajor = 1;
         const int versionMinor = 0;
+
+        qmlRegisterType<WlrLayerShellV1>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
+        qmlRegisterType<WlrLayerSurfaceV1Qml>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1");
 
         qmlRegisterType<WlrOutputManagerV1>(uri, versionMajor, versionMinor, "WlrOutputManagerV1");
         qmlRegisterUncreatableType<WlrOutputHeadV1>(uri, versionMajor, versionMinor, "WlrOutputHeadV1",

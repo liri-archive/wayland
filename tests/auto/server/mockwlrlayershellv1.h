@@ -21,31 +21,40 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef MOCKREGISTRY_H
-#define MOCKREGISTRY_H
+#ifndef MOCKWLRLAYERSHELLV1_H
+#define MOCKWLRLAYERSHELLV1_H
 
-#include <QMap>
+#include <QRect>
+#include <QSize>
+#include <QWindow>
 
-#include "qwayland-wayland.h"
+#include "qwayland-wlr-layer-shell-unstable-v1.h"
 
-#include "mockwlrlayershellv1.h"
-#include "mockwlroutputmanagementv1.h"
+class MockWlrLayerSurfaceV1;
 
-class MockRegistry : public QtWayland::wl_registry
+class MockWlrLayerShellV1 : public QtWayland::zwlr_layer_shell_v1
 {
 public:
-    MockRegistry(struct ::wl_registry *object);
+    MockWlrLayerShellV1(struct ::wl_registry *registry, uint32_t name, uint32_t version);
 
-    QtWayland::wl_surface *createSurface();
-
-    QtWayland::wl_compositor *compositor = nullptr;
-    QMap<uint32_t, QtWayland::wl_output *> outputs;
-    MockWlrLayerShellV1 *wlrLayerShell = nullptr;
-    MockWlrOutputManagerV1 *wlrOutputManager = nullptr;
-
-protected:
-    void registry_global(uint32_t name, const QString &interface, uint32_t version) override;
-    void registry_global_remove(uint32_t name) override;
+    MockWlrLayerSurfaceV1 *createSurface(struct ::wl_surface *surface, struct ::wl_output *output,
+                                         quint32 layer, const QString &namespace_);
 };
 
-#endif // MOCKREGISTRY_H
+class MockWlrLayerSurfaceV1 : public QtWayland::zwlr_layer_surface_v1
+{
+public:
+    MockWlrLayerSurfaceV1(struct ::zwlr_layer_surface_v1 *object);
+    ~MockWlrLayerSurfaceV1();
+
+    QSize size() const;
+
+protected:
+    void zwlr_layer_surface_v1_configure(uint32_t serial, uint32_t width, uint32_t height) override;
+    void zwlr_layer_surface_v1_closed() override;
+
+private:
+    QSize m_size;
+};
+
+#endif // MOCKWLRLAYERSHELLV1_H

@@ -21,31 +21,23 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef MOCKREGISTRY_H
-#define MOCKREGISTRY_H
+#ifndef LIRI_WLRLAYERSURFACEV1QML_H
+#define LIRI_WLRLAYERSURFACEV1QML_H
 
-#include <QMap>
+#include <QQmlParserStatus>
 
-#include "qwayland-wayland.h"
+#include <LiriWaylandClient/WlrLayerShellV1>
 
-#include "mockwlrlayershellv1.h"
-#include "mockwlroutputmanagementv1.h"
-
-class MockRegistry : public QtWayland::wl_registry
+class WlrLayerSurfaceV1Qml : public WlrLayerSurfaceV1, public QQmlParserStatus
 {
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
 public:
-    MockRegistry(struct ::wl_registry *object);
-
-    QtWayland::wl_surface *createSurface();
-
-    QtWayland::wl_compositor *compositor = nullptr;
-    QMap<uint32_t, QtWayland::wl_output *> outputs;
-    MockWlrLayerShellV1 *wlrLayerShell = nullptr;
-    MockWlrOutputManagerV1 *wlrOutputManager = nullptr;
+    explicit WlrLayerSurfaceV1Qml(QObject *parent = nullptr);
 
 protected:
-    void registry_global(uint32_t name, const QString &interface, uint32_t version) override;
-    void registry_global_remove(uint32_t name) override;
+    void classBegin() override {}
+    void componentComplete() override;
 };
 
-#endif // MOCKREGISTRY_H
+#endif // LIRI_WLRLAYERSURFACEV1QML_H
