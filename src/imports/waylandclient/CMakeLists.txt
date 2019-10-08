@@ -7,6 +7,8 @@ liri_add_qml_plugin(waylandclient
         "1.0"
     SOURCES
         plugin.cpp
+        wlrlayersurfacev1qml.cpp
+        wlrlayersurfacev1qml.h
     QML_FILES
         qmldir
     DEFINES

@@ -21,6 +21,9 @@ set(QT_MIN_VERSION "5.12.0")
 ## Liri specific setup common for all modules:
 include(LiriSetup)
 
+## Find wayland-protocols:
+find_package(WaylandProtocols 1.15 REQUIRED)
+
 ## Find Qt 5:
 find_package(Qt5 "${QT_MIN_VERSION}"
     CONFIG REQUIRED

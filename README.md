@@ -20,6 +20,7 @@ The following modules and their dependencies are required:
 
  * [cmake](https://gitlab.kitware.com/cmake/cmake) >= 3.10.0
  * [cmake-shared](https://github.com/lirios/cmake-shared.git) >= 1.0.0
+ * [wayland-protocols](https://gitlab.freedesktop.org/wayland/wayland-protocols) >= 1.15
 
 ## Installation
 

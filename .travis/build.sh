@@ -8,7 +8,8 @@ source /usr/local/share/liri-travis/functions
 travis_start "install_packages"
 msg "Install packages..."
 dnf install -y \
-     wayland-devel
+    wayland-devel \
+    wayland-protocols-devel
 travis_end "install_packages"
 
 # Install artifacts

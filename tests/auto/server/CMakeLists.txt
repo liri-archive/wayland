@@ -5,6 +5,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wayland.xml"
     BASENAME "wayland")
 ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wlr-layer-shell-unstable-v1.xml"
+    BASENAME "wlr-layer-shell-unstable-v1")
+ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wlr-output-management-unstable-v1.xml"
     BASENAME "wlr-output-management-unstable-v1")
 
@@ -15,6 +18,8 @@ liri_add_test(tst_waylandserver
         mockclient.h
         mockregistry.cpp
         mockregistry.h
+        mockwlrlayershellv1.cpp
+        mockwlrlayershellv1.h
         mockwlroutputmanagementv1.cpp
         mockwlroutputmanagementv1.h
         testcompositor.cpp
