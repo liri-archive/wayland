@@ -32,6 +32,8 @@
 #include <QScreen>
 #include <QSize>
 
+#include <LiriWaylandClient/liriwaylandclientglobal.h>
+
 #include <wayland-client.h>
 
 Q_DECLARE_LOGGING_CATEGORY(lcLayerShell)
@@ -40,7 +42,7 @@ class WlrLayerShellV1Private;
 class WlrLayerSurfaceV1;
 class WlrLayerSurfaceV1Private;
 
-class WlrLayerShellV1 : public QWaylandClientExtensionTemplate<WlrLayerShellV1>
+class LIRIWAYLANDCLIENT_EXPORT WlrLayerShellV1 : public QWaylandClientExtensionTemplate<WlrLayerShellV1>
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(WlrLayerShellV1)
@@ -64,7 +66,7 @@ private:
     WlrLayerShellV1Private *const d_ptr;
 };
 
-class WlrLayerSurfaceV1 : public QObject
+class LIRIWAYLANDCLIENT_EXPORT WlrLayerSurfaceV1 : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(WlrLayerSurfaceV1)
