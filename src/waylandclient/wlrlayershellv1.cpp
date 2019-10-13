@@ -25,8 +25,7 @@
 #include <qpa/qplatformnativeinterface.h>
 
 #include "wlrlayershellv1_p.h"
-
-Q_LOGGING_CATEGORY(lcLayerShell, "liri.layershell", QtInfoMsg)
+#include "logging_p.h"
 
 static inline struct ::wl_surface *getWlSurface(QWindow *window)
 {
@@ -48,7 +47,7 @@ struct ::zwlr_layer_surface_v1 *WlrLayerShellV1Private::createLayerSurface(QWind
 {
     auto surface = getWlSurface(window);
     if (!surface) {
-        qCWarning(lcLayerShell, "Unable to create layer surface: window doesn't have a Wayland surface yet");
+        qCWarning(lcWaylandClient, "Unable to create layer surface: window doesn't have a Wayland surface yet");
         return nullptr;
     }
 
@@ -126,7 +125,7 @@ void WlrLayerSurfaceV1::setShell(WlrLayerShellV1 *shell)
         return;
 
     if (d->initialized) {
-        qCWarning(lcLayerShell, "Unable to change WlrLayerSurfaceV1::shell after initialization");
+        qCWarning(lcWaylandClient, "Unable to change WlrLayerSurfaceV1::shell after initialization");
         return;
     }
 
@@ -148,7 +147,7 @@ void WlrLayerSurfaceV1::setLayer(WlrLayerShellV1::Layer layer)
         return;
 
     if (d->initialized) {
-        qCWarning(lcLayerShell, "Unable to change WlrLayerSurfaceV1::layer after initialization");
+        qCWarning(lcWaylandClient, "Unable to change WlrLayerSurfaceV1::layer after initialization");
         return;
     }
 
@@ -170,7 +169,7 @@ void WlrLayerSurfaceV1::setNameSpace(const QString &nameSpace)
         return;
 
     if (d->initialized) {
-        qCWarning(lcLayerShell, "Unable to change WlrLayerSurfaceV1::nameSpace after initialization");
+        qCWarning(lcWaylandClient, "Unable to change WlrLayerSurfaceV1::nameSpace after initialization");
         return;
     }
 
@@ -192,7 +191,7 @@ void WlrLayerSurfaceV1::setWindow(QWindow *window)
         return;
 
     if (d->initialized) {
-        qCWarning(lcLayerShell, "Unable to change WlrLayerSurfaceV1::window after initialization");
+        qCWarning(lcWaylandClient, "Unable to change WlrLayerSurfaceV1::window after initialization");
         return;
     }
 
@@ -382,12 +381,12 @@ void WlrLayerSurfaceV1::initialize()
         return;
 
     if (!d->shell) {
-        qCWarning(lcLayerShell, "Shell not assigned to WlrLayerSurfaceV1, failed to inizialize");
+        qCWarning(lcWaylandClient, "Shell not assigned to WlrLayerSurfaceV1, failed to inizialize");
         return;
     }
 
     if (!d->window) {
-        qCWarning(lcLayerShell, "Window not assigned to WlrLayerSurfaceV1, failed to initialize");
+        qCWarning(lcWaylandClient, "Window not assigned to WlrLayerSurfaceV1, failed to initialize");
         return;
     }
 

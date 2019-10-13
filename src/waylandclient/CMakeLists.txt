@@ -28,6 +28,8 @@ liri_add_module(WaylandClient
         lirishell.cpp
         lirishell.h
         lirishell_p.h
+        logging.cpp
+        logging_p.h
         wlrlayershellv1.cpp
         wlrlayershellv1.h
         wlrlayershellv1_p.h

@@ -26,7 +26,6 @@
 
 #include <QMargins>
 #include <QQmlEngine>
-#include <QLoggingCategory>
 #include <QWaylandClientExtension>
 #include <QWindow>
 #include <QScreen>
@@ -35,8 +34,6 @@
 #include <LiriWaylandClient/liriwaylandclientglobal.h>
 
 #include <wayland-client.h>
-
-Q_DECLARE_LOGGING_CATEGORY(lcLayerShell)
 
 class WlrLayerShellV1Private;
 class WlrLayerSurfaceV1;
