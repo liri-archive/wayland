@@ -1,4 +1,6 @@
-find_package(Wayland REQUIRED)
+find_package(Wayland 1.15 COMPONENTS Client)
+set_package_properties(Wayland PROPERTIES TYPE REQUIRED)
+
 find_package(QtWaylandScanner REQUIRED)
 
 ecm_add_qtwayland_client_protocol(SOURCES
