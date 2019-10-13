@@ -21,12 +21,12 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include <QtCore/QFile>
+#include <QFile>
 
-#include <QtWaylandCompositor/qwaylandcompositor.h>
-#include <QtWaylandCompositor/QWaylandPointer>
-#include <QtWaylandCompositor/QWaylandSeat>
-#include <QtWaylandCompositor/QWaylandSurface>
+#include <QWaylandCompositor>
+#include <QWaylandPointer>
+#include <QWaylandSeat>
+#include <QWaylandSurface>
 
 #include "waylandlirishell_p.h"
 #include "logging_p.h"

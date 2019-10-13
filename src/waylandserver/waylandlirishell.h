@@ -28,7 +28,7 @@
 
 #include <LiriWaylandServer/liriwaylandserverglobal.h>
 
-class QWaylandSurface;
+QT_FORWARD_DECLARE_CLASS(QWaylandSurface)
 
 class WaylandLiriShellPrivate;
 

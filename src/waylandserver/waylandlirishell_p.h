@@ -27,9 +27,6 @@
 #include <LiriWaylandServer/WaylandLiriShell>
 #include <LiriWaylandServer/private/qwayland-server-liri-shell.h>
 
-QT_FORWARD_DECLARE_CLASS(QWaylandSurface)
-
-class ProcessRunner;
 class WaylandLiriShell;
 
 class LIRIWAYLANDSERVER_EXPORT WaylandLiriShellPrivate : public QtWaylandServer::liri_shell
@@ -40,7 +37,6 @@ public:
 
     static WaylandLiriShellPrivate *get(WaylandLiriShell *shell);
 
-    ProcessRunner *processRunner = nullptr;
     QWaylandSurface *grabSurface = nullptr;
 
 protected:
