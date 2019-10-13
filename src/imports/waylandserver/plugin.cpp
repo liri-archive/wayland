@@ -27,14 +27,14 @@
 #include <LiriWaylandServer/GtkShell>
 #include <LiriWaylandServer/KdeServerDecoration>
 #include <LiriWaylandServer/LiriDecoration>
-#include <LiriWaylandServer/ShellHelper>
+#include <LiriWaylandServer/WaylandLiriShell>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrOutputManagerV1>
 
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(GtkShell)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(KdeServerDecorationManager)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(LiriDecorationManager)
-Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(ShellHelper)
+Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriShell)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrLayerShellV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrOutputManagerV1)
 
@@ -62,7 +62,7 @@ public:
         qmlRegisterUncreatableType<LiriDecoration>(uri, versionMajor, versionMinor, "LiriDecoration",
                                                    QStringLiteral("Cannot create instance of LiriDecoration"));
 
-        qmlRegisterType<ShellHelperQuickExtension>(uri, versionMajor, versionMinor, "ShellHelper");
+        qmlRegisterType<WaylandLiriShellQuickExtension>(uri, versionMajor, versionMinor, "LiriShell");
 
         qmlRegisterType<WaylandWlrLayerShellV1QuickExtension>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
         qmlRegisterUncreatableType<WaylandWlrLayerSurfaceV1>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1",

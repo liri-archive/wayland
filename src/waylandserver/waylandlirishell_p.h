@@ -21,34 +21,34 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef LIRI_LIRISHELL_P_H
-#define LIRI_LIRISHELL_P_H
+#ifndef LIRI_WAYLANDLIRISHELL_P_H
+#define LIRI_WAYLANDLIRISHELL_P_H
 
-#include <LiriWaylandServer/ShellHelper>
-#include <LiriWaylandServer/private/qwayland-server-shell-helper.h>
+#include <LiriWaylandServer/WaylandLiriShell>
+#include <LiriWaylandServer/private/qwayland-server-liri-shell.h>
 
 QT_FORWARD_DECLARE_CLASS(QWaylandSurface)
 
 class ProcessRunner;
-class ShellHelper;
+class WaylandLiriShell;
 
-class LIRIWAYLANDSERVER_EXPORT ShellHelperPrivate : public QtWaylandServer::liri_shell
+class LIRIWAYLANDSERVER_EXPORT WaylandLiriShellPrivate : public QtWaylandServer::liri_shell
 {
-    Q_DECLARE_PUBLIC(ShellHelper)
+    Q_DECLARE_PUBLIC(WaylandLiriShell)
 public:
-    explicit ShellHelperPrivate(ShellHelper *qq);
+    explicit WaylandLiriShellPrivate(WaylandLiriShell *qq);
 
-    static ShellHelperPrivate *get(ShellHelper *shell);
+    static WaylandLiriShellPrivate *get(WaylandLiriShell *shell);
 
     ProcessRunner *processRunner = nullptr;
     QWaylandSurface *grabSurface = nullptr;
 
 protected:
-    ShellHelper *q_ptr;
+    WaylandLiriShell *q_ptr;
 
 private:
     void liri_shell_bind_resource(Resource *r) override;
     void liri_shell_set_grab_surface(Resource *resource, struct ::wl_resource *wlSurface) override;
 };
 
-#endif // LIRI_LIRISHELL_P_H
+#endif // LIRI_WAYLANDLIRISHELL_P_H

@@ -28,8 +28,7 @@
 #include <QtWaylandCompositor/QWaylandSeat>
 #include <QtWaylandCompositor/QWaylandSurface>
 
-#include "shellhelper.h"
-#include "shellhelper_p.h"
+#include "waylandlirishell_p.h"
 #include "logging_p.h"
 
 #ifndef WL_DISPLAY_ERROR_IMPLEMENTATION
@@ -37,21 +36,21 @@
 #endif
 
 /*
- * ShellHelperPrivate
+ * WaylandLiriShellPrivate
  */
 
-ShellHelperPrivate::ShellHelperPrivate(ShellHelper *qq)
+WaylandLiriShellPrivate::WaylandLiriShellPrivate(WaylandLiriShell *qq)
     : QtWaylandServer::liri_shell()
     , q_ptr(qq)
 {
 }
 
-ShellHelperPrivate *ShellHelperPrivate::get(ShellHelper *shell)
+WaylandLiriShellPrivate *WaylandLiriShellPrivate::get(WaylandLiriShell *shell)
 {
     return shell->d_func();
 }
 
-void ShellHelperPrivate::liri_shell_bind_resource(Resource *r)
+void WaylandLiriShellPrivate::liri_shell_bind_resource(Resource *r)
 {
     // Make sure only an authorized client can bind
     pid_t pid;
@@ -81,9 +80,9 @@ void ShellHelperPrivate::liri_shell_bind_resource(Resource *r)
                                "client can bind only once");
 }
 
-void ShellHelperPrivate::liri_shell_set_grab_surface(Resource *resource, struct ::wl_resource *wlSurface)
+void WaylandLiriShellPrivate::liri_shell_set_grab_surface(Resource *resource, struct ::wl_resource *wlSurface)
 {
-    Q_Q(ShellHelper);
+    Q_Q(WaylandLiriShell);
 
     auto surface = QWaylandSurface::fromResource(wlSurface);
     if (surface) {
@@ -97,42 +96,42 @@ void ShellHelperPrivate::liri_shell_set_grab_surface(Resource *resource, struct 
 }
 
 /*
- * ShellHelper
+ * WaylandLiriShell
  */
 
-ShellHelper::ShellHelper()
-    : QWaylandCompositorExtensionTemplate<ShellHelper>()
-    , d_ptr(new ShellHelperPrivate(this))
+WaylandLiriShell::WaylandLiriShell()
+    : QWaylandCompositorExtensionTemplate<WaylandLiriShell>()
+    , d_ptr(new WaylandLiriShellPrivate(this))
 {
 }
 
-ShellHelper::ShellHelper(QWaylandCompositor *compositor)
-    : QWaylandCompositorExtensionTemplate<ShellHelper>(compositor)
-    , d_ptr(new ShellHelperPrivate(this))
+WaylandLiriShell::WaylandLiriShell(QWaylandCompositor *compositor)
+    : QWaylandCompositorExtensionTemplate<WaylandLiriShell>(compositor)
+    , d_ptr(new WaylandLiriShellPrivate(this))
 {
 }
 
-ShellHelper::~ShellHelper()
+WaylandLiriShell::~WaylandLiriShell()
 {
     delete d_ptr;
 }
 
-void ShellHelper::initialize()
+void WaylandLiriShell::initialize()
 {
-    Q_D(ShellHelper);
+    Q_D(WaylandLiriShell);
 
     QWaylandCompositorExtension::initialize();
     QWaylandCompositor *compositor = static_cast<QWaylandCompositor *>(extensionContainer());
     if (!compositor) {
-        qCWarning(lcWaylandServer) << "Failed to find QWaylandCompositor when initializing ShellHelper";
+        qCWarning(lcWaylandServer) << "Failed to find QWaylandCompositor when initializing WaylandLiriShell";
         return;
     }
     d->init(compositor->display(), 1);
 }
 
-void ShellHelper::grabCursor(GrabCursor cursor)
+void WaylandLiriShell::grabCursor(GrabCursor cursor)
 {
-    Q_D(ShellHelper);
+    Q_D(WaylandLiriShell);
 
     if (d->grabSurface) {
         auto resource = d->resourceMap().value(d->grabSurface->waylandClient());
@@ -147,12 +146,12 @@ void ShellHelper::grabCursor(GrabCursor cursor)
     }
 }
 
-const struct wl_interface *ShellHelper::interface()
+const struct wl_interface *WaylandLiriShell::interface()
 {
-    return ShellHelperPrivate::interface();
+    return WaylandLiriShellPrivate::interface();
 }
 
-QByteArray ShellHelper::interfaceName()
+QByteArray WaylandLiriShell::interfaceName()
 {
-    return ShellHelperPrivate::interfaceName();
+    return WaylandLiriShellPrivate::interfaceName();
 }

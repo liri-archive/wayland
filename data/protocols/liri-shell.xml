@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<protocol name="shell_helper">
+<protocol name="liri_shell">
   <copyright><![CDATA[
     Copyright (C) 2018 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
 

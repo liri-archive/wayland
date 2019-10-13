@@ -17,8 +17,8 @@ ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/wlr-output-management-unstable-v1.xml"
     BASENAME "wlr-output-management-unstable-v1")
 ecm_add_qtwayland_server_protocol(SOURCES
-    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/shell-helper.xml"
-    BASENAME "shell-helper")
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-shell.xml"
+    BASENAME "liri-shell")
 
 if(IS_ABSOLUTE "${INSTALL_LIBEXECDIR}")
     set(LIBEXECDIR "${INSTALL_LIBEXECDIR}")
@@ -39,9 +39,9 @@ liri_add_module(WaylandServer
         liridecoration.cpp
         liridecoration.h
         liridecoration_p.h
-        shellhelper.cpp
-        shellhelper.h
-        shellhelper_p.h
+        waylandlirishell.cpp
+        waylandlirishell.h
+        waylandlirishell_p.h
         waylandwlrlayershellv1.cpp
         waylandwlrlayershellv1.h
         waylandwlrlayershellv1_p.h
@@ -55,12 +55,12 @@ liri_add_module(WaylandServer
         GtkShell
         KdeServerDecoration
         LiriDecoration
-        ShellHelper
+        WaylandLiriShell
         WaylandWlrLayerShellV1
         WaylandWlrOutputManagerV1
     PRIVATE_HEADERS
         gtkshell_p.h
-        shellhelper_p.h
+        waylandlirishell_p.h
         waylandwlrlayershellv1_p.h
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-gtk-shell.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-gtk-shell-server-protocol.h"
@@ -68,8 +68,8 @@ liri_add_module(WaylandServer
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-server-decoration-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-decoration.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-decoration-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-shell-helper.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-shell-helper-server-protocol.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-shell.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-layer-shell-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-output-management-unstable-v1.h"

@@ -21,8 +21,8 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef LIRI_SHELLPHELPER_H
-#define LIRI_SHELLPHELPER_H
+#ifndef LIRI_WAYLANDLIRISHELL_H
+#define LIRI_WAYLANDLIRISHELL_H
 
 #include <QtWaylandCompositor/QWaylandCompositorExtension>
 
@@ -30,12 +30,12 @@
 
 class QWaylandSurface;
 
-class ShellHelperPrivate;
+class WaylandLiriShellPrivate;
 
-class LIRIWAYLANDSERVER_EXPORT ShellHelper : public QWaylandCompositorExtensionTemplate<ShellHelper>
+class LIRIWAYLANDSERVER_EXPORT WaylandLiriShell : public QWaylandCompositorExtensionTemplate<WaylandLiriShell>
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(ShellHelper)
+    Q_DECLARE_PRIVATE(WaylandLiriShell)
 public:
     enum GrabCursor {
         NoGrabCursor = 0,
@@ -53,13 +53,13 @@ public:
     };
     Q_ENUM(GrabCursor)
 
-    ShellHelper();
-    explicit ShellHelper(QWaylandCompositor *compositor);
-    ~ShellHelper();
+    WaylandLiriShell();
+    explicit WaylandLiriShell(QWaylandCompositor *compositor);
+    ~WaylandLiriShell();
 
     void initialize() override;
 
-    Q_INVOKABLE void grabCursor(ShellHelper::GrabCursor cursor);
+    Q_INVOKABLE void grabCursor(WaylandLiriShell::GrabCursor cursor);
 
     static const struct wl_interface *interface();
     static QByteArray interfaceName();
@@ -68,7 +68,7 @@ Q_SIGNALS:
     void grabSurfaceAdded(QWaylandSurface *surface);
 
 private:
-    ShellHelperPrivate *const d_ptr;
+    WaylandLiriShellPrivate *const d_ptr;
 };
 
-#endif // LIRI_SHELLPHELPER_H
+#endif // LIRI_WAYLANDLIRISHELL_H
