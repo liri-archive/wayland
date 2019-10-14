@@ -1,6 +1,3 @@
-find_package(Wayland 1.15 COMPONENTS Client)
-set_package_properties(Wayland PROPERTIES TYPE REQUIRED)
-
 find_package(QtWaylandScanner REQUIRED)
 
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -58,8 +55,8 @@ liri_add_module(WaylandClient
         Qt5::Gui
         Qt5::Qml
         Qt5::WaylandClient
-        Wayland::Client
     LIBRARIES
+        Wayland::Client
         Qt5::GuiPrivate
     PKGCONFIG_DEPENDENCIES
         Qt5Core
