@@ -21,33 +21,14 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef MOCKREGISTRY_H
-#define MOCKREGISTRY_H
+#include "waylandwlrforeigntoplevelmanagementv1qml.h"
 
-#include <QMap>
-
-#include "qwayland-wayland.h"
-
-#include "mockwlrforeigntoplevelmanagementv1.h"
-#include "mockwlrlayershellv1.h"
-#include "mockwlroutputmanagementv1.h"
-
-class MockRegistry : public QtWayland::wl_registry
+WaylandWlrForeignToplevelHandleV1Qml::WaylandWlrForeignToplevelHandleV1Qml(QObject *parent)
+    : WaylandWlrForeignToplevelHandleV1(parent)
 {
-public:
-    MockRegistry(struct ::wl_registry *object);
+}
 
-    QtWayland::wl_surface *createSurface();
-
-    QtWayland::wl_compositor *compositor = nullptr;
-    QMap<uint32_t, QtWayland::wl_output *> outputs;
-    MockWlrForeignToplevelManagerV1 *wlrForeignToplevel = nullptr;
-    MockWlrLayerShellV1 *wlrLayerShell = nullptr;
-    MockWlrOutputManagerV1 *wlrOutputManager = nullptr;
-
-protected:
-    void registry_global(uint32_t name, const QString &interface, uint32_t version) override;
-    void registry_global_remove(uint32_t name) override;
-};
-
-#endif // MOCKREGISTRY_H
+void WaylandWlrForeignToplevelHandleV1Qml::componentComplete()
+{
+    QMetaObject::invokeMethod(this, "initialize", Qt::QueuedConnection);
+}

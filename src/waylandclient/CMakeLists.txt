@@ -7,6 +7,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-shell.xml"
     BASENAME "liri-shell")
 ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/wlr-foreign-toplevel-management-unstable-v1.xml"
+    BASENAME "wlr-foreign-toplevel-management-unstable-v1")
+ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/wlr-layer-shell-unstable-v1.xml"
     BASENAME "wlr-layer-shell-unstable-v1")
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -17,6 +20,7 @@ set(_generated_files
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-xdg-shell-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-client-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-client-protocol.h"
 )
 set_source_files_properties(${_generated_files} PROPERTIES SKIP_AUTOMOC ON)
 
@@ -29,6 +33,9 @@ liri_add_module(WaylandClient
         lirishell_p.h
         logging.cpp
         logging_p.h
+        wlrforeigntoplevelmanagementv1.cpp
+        wlrforeigntoplevelmanagementv1.h
+        wlrforeigntoplevelmanagementv1_p.h
         wlrlayershellv1.cpp
         wlrlayershellv1.h
         wlrlayershellv1_p.h
@@ -38,14 +45,17 @@ liri_add_module(WaylandClient
         ${SOURCES}
     FORWARDING_HEADERS
         LiriShell
+        WlrForeignToplevelManagementV1
         WlrLayerShellV1
         WlrOutputManagementV1
     PRIVATE_HEADERS
         lirishell_p.h
+        wlrforeigntoplevelmanagementv1_p.h
         wlrlayershellv1_p.h
         wlroutputmanagementv1_p.h
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-shell.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-xdg-shell.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-foreign-toplevel-management-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-layer-shell-unstable-v1.h"
     DEFINES
         QT_NO_CAST_FROM_ASCII

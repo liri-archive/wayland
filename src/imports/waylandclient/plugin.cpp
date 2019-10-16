@@ -24,6 +24,7 @@
 #include <QtQml>
 
 #include <LiriWaylandClient/LiriShell>
+#include <LiriWaylandClient/WlrForeignToplevelManagementV1>
 #include <LiriWaylandClient/WlrLayerShellV1>
 #include <LiriWaylandClient/WlrOutputManagementV1>
 

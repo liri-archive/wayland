@@ -24,6 +24,7 @@
 #include <QtTest>
 #include <QMargins>
 
+#include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrOutputManagerV1>
 
@@ -37,6 +38,7 @@ public:
     TestWaylandServer(QObject *parent = nullptr);
 
 private slots:
+    void wlrForeignToplevel();
     void wlrLayer();
     void wlrOutputManager();
 };
@@ -44,6 +46,75 @@ private slots:
 TestWaylandServer::TestWaylandServer(QObject *parent)
     : QObject(parent)
 {
+}
+
+class WlrForeignToplevelCompositor : public TestCompositor
+{
+    Q_OBJECT
+public:
+    WlrForeignToplevelCompositor() : manager(this) {}
+    WaylandWlrForeignToplevelManagerV1 manager;
+};
+
+void TestWaylandServer::wlrForeignToplevel()
+{
+    WlrForeignToplevelCompositor compositor;
+    compositor.create();
+
+    MockClient client;
+    QTRY_VERIFY(client.registry->wlrForeignToplevel);
+
+    QSignalSpy addedSpy(&compositor.manager, SIGNAL(handleAdded(WaylandWlrForeignToplevelHandleV1*)));
+
+    auto *handle = new WaylandWlrForeignToplevelHandleV1();
+    handle->setCompositor(&compositor);
+    handle->setManager(&compositor.manager);
+    handle->setTitle(QStringLiteral("Window title"));
+    handle->setAppId(QStringLiteral("io.liri.App"));
+    handle->setMinimized(true);
+    handle->setMaximized(true);
+    handle->setFullscreen(true);
+    handle->setActivated(true);
+    handle->initialize();
+
+    compositor.flushClients();
+
+    QCOMPARE(addedSpy.count(), 1);
+
+    QTRY_COMPARE(client.registry->wlrForeignToplevel->handles.size(), 1);
+
+    auto *clientHandle = client.registry->wlrForeignToplevel->handles.last();
+
+    QTRY_COMPARE(clientHandle->effective.title, handle->title());
+    QTRY_COMPARE(clientHandle->effective.appId, handle->appId());
+    QTRY_COMPARE(clientHandle->effective.minimized, handle->isMinimized());
+    QTRY_COMPARE(clientHandle->effective.maximized, handle->isMaximized());
+    QTRY_COMPARE(clientHandle->effective.fullscreen, handle->isFullscreen());
+    QTRY_COMPARE(clientHandle->effective.activated, handle->isActivated());
+
+    handle->setTitle(QStringLiteral("New window title"));
+    compositor.flushClients();
+    QTRY_COMPARE(clientHandle->effective.title, handle->title());
+
+    handle->setAppId(QStringLiteral("io.liri.App2"));
+    compositor.flushClients();
+    QTRY_COMPARE(clientHandle->effective.appId, handle->appId());
+
+    handle->setMinimized(false);
+    compositor.flushClients();
+    QTRY_COMPARE(clientHandle->effective.minimized, handle->isMinimized());
+
+    handle->setMaximized(false);
+    compositor.flushClients();
+    QTRY_COMPARE(clientHandle->effective.maximized, handle->isMaximized());
+
+    handle->setFullscreen(false);
+    compositor.flushClients();
+    QTRY_COMPARE(clientHandle->effective.fullscreen, handle->isFullscreen());
+
+    handle->setActivated(false);
+    compositor.flushClients();
+    QTRY_COMPARE(clientHandle->effective.activated, handle->isActivated());
 }
 
 class WlrLayerCompositor : public TestCompositor

@@ -7,6 +7,8 @@ liri_add_qml_plugin(waylandserver
         "1.0"
     SOURCES
         plugin.cpp
+        waylandwlrforeigntoplevelmanagementv1qml.cpp
+        waylandwlrforeigntoplevelmanagementv1qml.h
     QML_FILES
         qmldir
     DEFINES

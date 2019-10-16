@@ -28,13 +28,17 @@
 #include <LiriWaylandServer/KdeServerDecoration>
 #include <LiriWaylandServer/LiriDecoration>
 #include <LiriWaylandServer/WaylandLiriShell>
+#include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrOutputManagerV1>
+
+#include "waylandwlrforeigntoplevelmanagementv1qml.h"
 
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(GtkShell)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(KdeServerDecorationManager)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(LiriDecorationManager)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriShell)
+Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrForeignToplevelManagerV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrLayerShellV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrOutputManagerV1)
 
@@ -63,6 +67,9 @@ public:
                                                    QStringLiteral("Cannot create instance of LiriDecoration"));
 
         qmlRegisterType<WaylandLiriShellQuickExtension>(uri, versionMajor, versionMinor, "LiriShell");
+
+        qmlRegisterType<WaylandWlrForeignToplevelManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrForeignToplevelManagerV1");
+        qmlRegisterType<WaylandWlrForeignToplevelHandleV1Qml>(uri, versionMajor, versionMinor, "WlrForeignToplevelHandleV1");
 
         qmlRegisterType<WaylandWlrLayerShellV1QuickExtension>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
         qmlRegisterUncreatableType<WaylandWlrLayerSurfaceV1>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1",
