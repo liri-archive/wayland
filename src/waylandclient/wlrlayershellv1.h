@@ -75,9 +75,9 @@ class LIRIWAYLANDCLIENT_EXPORT WlrLayerSurfaceV1 : public QObject
     Q_PROPERTY(WlrLayerSurfaceV1::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
     Q_PROPERTY(qint32 exclusiveZone READ exclusiveZone WRITE setExclusiveZone NOTIFY exclusiveZoneChanged)
     Q_PROPERTY(qint32 leftMargin READ leftMargin WRITE setLeftMargin NOTIFY leftMarginChanged)
-    Q_PROPERTY(qint32 rightMargin READ rightMargin WRITE setLeftMargin NOTIFY rightMarginChanged)
-    Q_PROPERTY(qint32 leftMargin READ leftMargin WRITE setLeftMargin NOTIFY topMarginChanged)
-    Q_PROPERTY(qint32 leftMargin READ leftMargin WRITE setLeftMargin NOTIFY bottomMarginChanged)
+    Q_PROPERTY(qint32 rightMargin READ rightMargin WRITE setRightMargin NOTIFY rightMarginChanged)
+    Q_PROPERTY(qint32 topMargin READ topMargin WRITE setTopMargin NOTIFY topMarginChanged)
+    Q_PROPERTY(qint32 bottomMargin READ bottomMargin WRITE setBottomMargin NOTIFY bottomMarginChanged)
     Q_PROPERTY(bool keyboardInteractivity READ keyboardInteractivity WRITE setKeyboardInteractivity NOTIFY keyboardInteractivityChanged)
 public:
     enum Anchor {
