@@ -133,6 +133,9 @@ public:
 
     Q_INVOKABLE void ackConfigure(quint32 serial);
 
+    Q_INVOKABLE void addMask(const QRect &rect);
+    Q_INVOKABLE void unsetMask();
+
 public Q_SLOTS:
     void initialize();
 

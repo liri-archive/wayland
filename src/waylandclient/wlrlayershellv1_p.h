@@ -62,6 +62,7 @@ public:
     WlrLayerShellV1 *shell = nullptr;
     WlrLayerShellV1::Layer layer = WlrLayerShellV1::Layer::BackgroundLayer;
     QString nameSpace;
+    QRegion mask;
     QWindow *window = nullptr;
     QSize size;
     WlrLayerSurfaceV1::Anchors anchors = 0;

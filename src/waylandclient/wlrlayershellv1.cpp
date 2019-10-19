@@ -373,6 +373,26 @@ void WlrLayerSurfaceV1::ackConfigure(quint32 serial)
         d->ack_configure(serial);
 }
 
+void WlrLayerSurfaceV1::addMask(const QRect &rect)
+{
+    Q_D(WlrLayerSurfaceV1);
+
+    if (d->window) {
+        d->mask += rect;
+        d->window->setMask(d->mask);
+    }
+}
+
+void WlrLayerSurfaceV1::unsetMask()
+{
+    Q_D(WlrLayerSurfaceV1);
+
+    if (d->window) {
+        d->mask = QRegion();
+        d->window->setMask(d->mask);
+    }
+}
+
 void WlrLayerSurfaceV1::initialize()
 {
     Q_D(WlrLayerSurfaceV1);
