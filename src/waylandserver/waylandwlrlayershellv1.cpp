@@ -213,14 +213,13 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
     : QObject(parent)
     , d_ptr(new WaylandWlrLayerSurfaceV1Private(this))
 {
-    d_ptr->surface = surface;
-    d_ptr->output = output;
-    d_ptr->layer = layer;
-    d_ptr->nameSpace = nameSpace;
+    Q_D(WaylandWlrLayerSurfaceV1);
+    d->surface = surface;
+    d->output = output;
+    d->layer = layer;
+    d->nameSpace = nameSpace;
 
-    connect(surface, &QWaylandSurface::redraw, this, [this] {
-        Q_D(WaylandWlrLayerSurfaceV1);
-
+    connect(surface, &QWaylandSurface::redraw, this, [this, d] {
         if (d->closed)
             return;
 
@@ -239,18 +238,18 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
         }
 
         // Set double-buffered properties
-        d_ptr->current.desiredSize = d_ptr->clientPending.desiredSize;
+        d->current.desiredSize = d->clientPending.desiredSize;
         Q_EMIT sizeChanged();
-        d_ptr->current.anchors = d_ptr->clientPending.anchors;
+        d->current.anchors = d->clientPending.anchors;
         Q_EMIT anchorsChanged();
-        d_ptr->current.exclusiveZone = d_ptr->clientPending.exclusiveZone;
+        d->current.exclusiveZone = d->clientPending.exclusiveZone;
         Q_EMIT exclusiveZoneChanged();
-        d_ptr->current.margins = d_ptr->clientPending.margins;
+        d->current.margins = d->clientPending.margins;
         Q_EMIT leftMarginChanged();
         Q_EMIT rightMarginChanged();
         Q_EMIT topMarginChanged();
         Q_EMIT bottomMarginChanged();
-        d_ptr->current.keyboardInteractivity = d_ptr->clientPending.keyboardInteractivity;
+        d->current.keyboardInteractivity = d->clientPending.keyboardInteractivity;
         Q_EMIT keyboardInteractivityChanged();
 
         if (!d->added)
