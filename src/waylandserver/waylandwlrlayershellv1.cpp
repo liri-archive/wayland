@@ -224,31 +224,31 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
             return;
 
         if (d->surface->hasContent() && !d->configured) {
-#if 0
-            // FIXME: Redraw is emitted when the configure is not yet acked,
-            // for now we just return instead of sending back an error
             qCWarning(lcWaylandServer, "layer_surface@%u has not yet been configured",
                       wl_resource_get_id(d->resource()->handle));
             wl_resource_post_error(d->resource()->handle,
                                    QtWaylandServer::zwlr_layer_shell_v1::error_already_constructed,
                                    "layer_surface@%u has never been configured",
                                    wl_resource_get_id(d->resource()->handle));
-#endif
             return;
         }
 
         // Set double-buffered properties
+        bool hasChanged = false;
         if (d->current.desiredSize != d->clientPending.desiredSize) {
             d->current.desiredSize = d->clientPending.desiredSize;
             Q_EMIT sizeChanged();
+            hasChanged = true;
         }
         if (d->current.anchors != d->clientPending.anchors) {
             d->current.anchors = d->clientPending.anchors;
             Q_EMIT anchorsChanged();
+            hasChanged = true;
         }
         if (d->current.exclusiveZone != d->clientPending.exclusiveZone) {
             d->current.exclusiveZone = d->clientPending.exclusiveZone;
             Q_EMIT exclusiveZoneChanged();
+            hasChanged = true;
         }
         if (d->current.margins != d->clientPending.margins) {
             d->current.margins = d->clientPending.margins;
@@ -256,11 +256,15 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
             Q_EMIT rightMarginChanged();
             Q_EMIT topMarginChanged();
             Q_EMIT bottomMarginChanged();
+            hasChanged = true;
         }
         if (d->current.keyboardInteractivity != d->clientPending.keyboardInteractivity) {
             d->current.keyboardInteractivity = d->clientPending.keyboardInteractivity;
             Q_EMIT keyboardInteractivityChanged();
+            hasChanged = true;
         }
+        if (hasChanged)
+            Q_EMIT changed();
 
         if (!d->added)
             d->added = true;

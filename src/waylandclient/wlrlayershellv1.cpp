@@ -428,5 +428,5 @@ void WlrLayerSurfaceV1::initialize()
     d->set_exclusive_zone(d->exclusiveZone);
     d->set_margin(d->margins.top(), d->margins.right(), d->margins.bottom(), d->margins.left());
     d->set_keyboard_interactivity(d->keyboardInteractivity ? 1 : 0);
-    d->window->show();
+    wl_surface_commit(getWlSurface(d->window));
 }

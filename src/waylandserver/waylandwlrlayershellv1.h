@@ -130,6 +130,7 @@ Q_SIGNALS:
     void rightMarginChanged();
     void bottomMarginChanged();
     void keyboardInteractivityChanged();
+    void changed();
     void mapped();
     void unmapped();
 
