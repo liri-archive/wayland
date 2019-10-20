@@ -238,19 +238,29 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
         }
 
         // Set double-buffered properties
-        d->current.desiredSize = d->clientPending.desiredSize;
-        Q_EMIT sizeChanged();
-        d->current.anchors = d->clientPending.anchors;
-        Q_EMIT anchorsChanged();
-        d->current.exclusiveZone = d->clientPending.exclusiveZone;
-        Q_EMIT exclusiveZoneChanged();
-        d->current.margins = d->clientPending.margins;
-        Q_EMIT leftMarginChanged();
-        Q_EMIT rightMarginChanged();
-        Q_EMIT topMarginChanged();
-        Q_EMIT bottomMarginChanged();
-        d->current.keyboardInteractivity = d->clientPending.keyboardInteractivity;
-        Q_EMIT keyboardInteractivityChanged();
+        if (d->current.desiredSize != d->clientPending.desiredSize) {
+            d->current.desiredSize = d->clientPending.desiredSize;
+            Q_EMIT sizeChanged();
+        }
+        if (d->current.anchors != d->clientPending.anchors) {
+            d->current.anchors = d->clientPending.anchors;
+            Q_EMIT anchorsChanged();
+        }
+        if (d->current.exclusiveZone != d->clientPending.exclusiveZone) {
+            d->current.exclusiveZone = d->clientPending.exclusiveZone;
+            Q_EMIT exclusiveZoneChanged();
+        }
+        if (d->current.margins != d->clientPending.margins) {
+            d->current.margins = d->clientPending.margins;
+            Q_EMIT leftMarginChanged();
+            Q_EMIT rightMarginChanged();
+            Q_EMIT topMarginChanged();
+            Q_EMIT bottomMarginChanged();
+        }
+        if (d->current.keyboardInteractivity != d->clientPending.keyboardInteractivity) {
+            d->current.keyboardInteractivity = d->clientPending.keyboardInteractivity;
+            Q_EMIT keyboardInteractivityChanged();
+        }
 
         if (!d->added)
             d->added = true;
