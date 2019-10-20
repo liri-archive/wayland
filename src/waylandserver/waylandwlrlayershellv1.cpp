@@ -146,7 +146,7 @@ void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_anchor(QtWayland
         return;
     }
 
-    clientPending.anchors = WaylandWlrLayerSurfaceV1::Anchors(anchor);
+    clientPending.anchors = static_cast<WaylandWlrLayerSurfaceV1::Anchors>(anchor);
 }
 
 void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_exclusive_zone(QtWaylandServer::zwlr_layer_surface_v1::Resource *resource, int32_t zone)
