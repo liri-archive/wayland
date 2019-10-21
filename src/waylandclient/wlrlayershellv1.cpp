@@ -215,8 +215,11 @@ void WlrLayerSurfaceV1::setSize(const QSize &size)
     d->size = size;
     Q_EMIT sizeChanged();
 
-    if (d->initialized)
+    if (d->initialized && size.isValid()) {
         d->set_size(size.width(), size.height());
+        if (d->window)
+            wl_surface_commit(getWlSurface(d->window));
+    }
 }
 
 WlrLayerSurfaceV1::Anchors WlrLayerSurfaceV1::anchors() const
