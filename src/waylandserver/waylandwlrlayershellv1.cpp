@@ -199,9 +199,7 @@ void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_ack_configure(QtWayl
     }
 
     lastAckedConfigure = config;
-    current.actualSize = config.size;
     configured = true;
-    Q_EMIT q->sizeChanged();
 }
 
 

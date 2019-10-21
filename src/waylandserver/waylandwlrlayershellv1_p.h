@@ -68,7 +68,6 @@ public:
         State() = default;
 
         QSize desiredSize = QSize(0, 0);
-        QSize actualSize = QSize(0, 0);
         WaylandWlrLayerSurfaceV1::Anchors anchors = 0;
         int exclusiveZone = 0;
         QMargins margins;
