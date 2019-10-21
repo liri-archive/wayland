@@ -64,7 +64,7 @@ public:
     QString nameSpace;
     QRegion mask;
     QWindow *window = nullptr;
-    QSize size;
+    QSize size = QSize(0, 0);
     WlrLayerSurfaceV1::Anchors anchors = 0;
     qint32 exclusiveZone = 0;
     QMargins margins;
