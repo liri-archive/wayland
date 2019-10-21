@@ -263,7 +263,7 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
             Q_EMIT keyboardInteractivityChanged();
             hasChanged = true;
         }
-        if (hasChanged)
+        if (hasChanged || !d->configured)
             Q_EMIT changed();
 
         if (!d->added)
