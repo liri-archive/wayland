@@ -20,11 +20,11 @@ ecm_add_qtwayland_client_protocol(SOURCES
     BASENAME "wlr-screencopy-unstable-v1")
 
 set(_generated_files
-    "${CMAKE_CURRENT_BINARY_DIR}/wayland-xdg-shell-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-screencopy-unstable-v1-client-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-xdg-shell-client-protocol.h"
 )
 set_source_files_properties(${_generated_files} PROPERTIES SKIP_AUTOMOC ON)
 
@@ -37,6 +37,7 @@ liri_add_module(WaylandClient
         lirishell_p.h
         logging.cpp
         logging_p.h
+        utils_p.h
         wlrforeigntoplevelmanagementv1.cpp
         wlrforeigntoplevelmanagementv1.h
         wlrforeigntoplevelmanagementv1_p.h
@@ -49,6 +50,9 @@ liri_add_module(WaylandClient
         wlrscreencopyv1.cpp
         wlrscreencopyv1.h
         wlrscreencopyv1_p.h
+        xdgshell.cpp
+        xdgshell.h
+        xdgshell_p.h
         ${SOURCES}
     FORWARDING_HEADERS
         LiriShell
@@ -56,17 +60,19 @@ liri_add_module(WaylandClient
         WlrLayerShellV1
         WlrOutputManagementV1
         WlrScreencopyV1
+        XdgShell
     PRIVATE_HEADERS
         lirishell_p.h
         wlrforeigntoplevelmanagementv1_p.h
         wlrlayershellv1_p.h
         wlroutputmanagementv1_p.h
         wlrscreencopyv1_p.h
+        xdgshell_p.h
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-shell.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-xdg-shell.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-foreign-toplevel-management-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-layer-shell-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-screencopy-unstable-v1.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-xdg-shell.h"
     DEFINES
         QT_NO_CAST_FROM_ASCII
         QT_NO_FOREACH

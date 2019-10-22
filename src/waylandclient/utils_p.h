@@ -31,6 +31,12 @@
 
 #include <wayland-client.h>
 
+static inline struct ::wl_seat *getWlSeat()
+{
+    void *seat = QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("seat");
+    return static_cast<struct ::wl_seat *>(seat);
+}
+
 static inline struct ::wl_surface *getWlSurface(QWindow *window)
 {
     if (!window)

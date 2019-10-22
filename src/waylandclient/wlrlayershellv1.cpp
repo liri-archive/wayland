@@ -21,9 +21,6 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include <QGuiApplication>
-#include <qpa/qplatformnativeinterface.h>
-
 #include "wlrlayershellv1_p.h"
 #include "logging_p.h"
 #include "utils_p.h"

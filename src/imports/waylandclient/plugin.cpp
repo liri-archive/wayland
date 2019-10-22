@@ -30,6 +30,7 @@
 #include <LiriWaylandClient/WlrScreencopyV1>
 
 #include "wlrlayersurfacev1qml.h"
+#include "xdgshellqml.h"
 
 class WaylandClientPlugin : public QQmlExtensionPlugin
 {
@@ -63,6 +64,14 @@ public:
         qmlRegisterType<WlrScreencopyManagerV1>(uri, versionMajor, versionMinor, "WlrScreencopyManagerV1");
         qmlRegisterUncreatableType<WlrScreencopyFrameV1>(uri, versionMajor, versionMinor, "WlrScreencopyFrameV1",
                                                          QStringLiteral("Cannot create a WlrScreencopyFrameV1 instance"));
+
+        qmlRegisterType<XdgWmBase>(uri, versionMajor, versionMinor, "XdgWmBase");
+        qmlRegisterType<XdgPositioner>();
+        qmlRegisterType<XdgPositionerQml>(uri, versionMajor, versionMinor, "XdgPositioner");
+        qmlRegisterType<XdgSurface>();
+        qmlRegisterType<XdgSurfaceQml>(uri, versionMajor, versionMinor, "XdgSurface");
+        qmlRegisterType<XdgPopup>();
+        qmlRegisterType<XdgPopupQml>(uri, versionMajor, versionMinor, "XdgPopup");
     }
 };
 

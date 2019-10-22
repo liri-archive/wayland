@@ -21,13 +21,47 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef LIRIWAYLANDCLIENTLOGGING_P_H
-#define LIRIWAYLANDCLIENTLOGGING_P_H
+#ifndef LIRI_XDGSHELLQML_H
+#define LIRI_XDGSHELLQML_H
 
-#include <QLoggingCategory>
+#include <QQmlParserStatus>
 
-Q_DECLARE_LOGGING_CATEGORY(lcWaylandClient)
-Q_DECLARE_LOGGING_CATEGORY(lcScreencopy)
-Q_DECLARE_LOGGING_CATEGORY(lcXdgShell)
+#include <LiriWaylandClient/XdgShell>
 
-#endif // LIRIWAYLANDCLIENTLOGGING_P_H
+class XdgSurfaceQml : public XdgSurface, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+public:
+    explicit XdgSurfaceQml(QObject *parent = nullptr);
+
+protected:
+    void classBegin() override {}
+    void componentComplete() override;
+};
+
+class XdgPositionerQml : public XdgPositioner, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+public:
+    explicit XdgPositionerQml(QObject *parent = nullptr);
+
+protected:
+    void classBegin() override {}
+    void componentComplete() override;
+};
+
+class XdgPopupQml : public XdgPopup, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+public:
+    explicit XdgPopupQml(QObject *parent = nullptr);
+
+protected:
+    void classBegin() override {}
+    void componentComplete() override;
+};
+
+#endif // LIRI_XDGSHELLQML_H

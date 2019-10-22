@@ -21,13 +21,37 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef LIRIWAYLANDCLIENTLOGGING_P_H
-#define LIRIWAYLANDCLIENTLOGGING_P_H
+#include "xdgshellqml.h"
 
-#include <QLoggingCategory>
+XdgSurfaceQml::XdgSurfaceQml(QObject *parent)
+    : XdgSurface(parent)
+{
+}
 
-Q_DECLARE_LOGGING_CATEGORY(lcWaylandClient)
-Q_DECLARE_LOGGING_CATEGORY(lcScreencopy)
-Q_DECLARE_LOGGING_CATEGORY(lcXdgShell)
+void XdgSurfaceQml::componentComplete()
+{
+    if (!isInitialized())
+        initialize();
+}
 
-#endif // LIRIWAYLANDCLIENTLOGGING_P_H
+XdgPositionerQml::XdgPositionerQml(QObject *parent)
+    : XdgPositioner(parent)
+{
+}
+
+void XdgPositionerQml::componentComplete()
+{
+    if (!isInitialized())
+        initialize();
+}
+
+XdgPopupQml::XdgPopupQml(QObject *parent)
+    : XdgPopup(parent)
+{
+}
+
+void XdgPopupQml::componentComplete()
+{
+    if (!isInitialized())
+        initialize();
+}
