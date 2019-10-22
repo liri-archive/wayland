@@ -92,6 +92,12 @@ void LiriShellPrivate::liri_shell_grab_cursor(uint32_t cursor)
         setCursorShape(grabWindow, grabCursor);
 }
 
+void LiriShellPrivate::liri_shell_quit()
+{
+    Q_Q(LiriShell);
+    emit q->quitRequested();
+}
+
 // LiriShell
 
 LiriShell::LiriShell()

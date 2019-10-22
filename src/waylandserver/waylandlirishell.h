@@ -61,6 +61,8 @@ public:
 
     Q_INVOKABLE void grabCursor(WaylandLiriShell::GrabCursor cursor);
 
+    Q_INVOKABLE void sendQuit();
+
     static const struct wl_interface *interface();
     static QByteArray interfaceName();
 

@@ -154,6 +154,15 @@ void WaylandLiriShell::grabCursor(GrabCursor cursor)
     }
 }
 
+void WaylandLiriShell::sendQuit()
+{
+    Q_D(WaylandLiriShell);
+
+    const auto values = d->resourceMap().values();
+    for (auto *resource : values)
+        d->send_quit(resource->handle);
+}
+
 const struct wl_interface *WaylandLiriShell::interface()
 {
     return WaylandLiriShellPrivate::interface();

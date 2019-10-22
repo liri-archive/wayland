@@ -68,6 +68,7 @@ public:
 
 Q_SIGNALS:
     void cursorChangeRequested(LiriShell::GrabCursor cursor);
+    void quitRequested();
 
 private:
     LiriShellPrivate *const d_ptr;

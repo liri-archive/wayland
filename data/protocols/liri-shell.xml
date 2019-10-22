@@ -72,5 +72,12 @@
         revealing the desktop.
       </description>
     </request>
+
+    <event name="quit">
+      <description summary="tell the client to quit">
+        During the shutdown, the compositor emits this event in order
+        to let the client exit cleanly.
+      </description>
+    </event>
   </interface>
 </protocol>
