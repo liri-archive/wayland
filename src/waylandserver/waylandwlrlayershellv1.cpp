@@ -94,6 +94,14 @@ void WaylandWlrLayerShellV1::initialize()
     d->init(compositor->display(), WaylandWlrLayerShellV1Private::interfaceVersion());
 }
 
+void WaylandWlrLayerShellV1::closeAllSurfaces()
+{
+    Q_D(WaylandWlrLayerShellV1);
+
+    for (auto *surface : qAsConst(d->surfaces))
+        surface->close();
+}
+
 const wl_interface *WaylandWlrLayerShellV1::interface()
 {
     return WaylandWlrLayerShellV1Private::interface();

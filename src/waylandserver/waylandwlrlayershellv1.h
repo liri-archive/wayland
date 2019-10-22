@@ -58,6 +58,8 @@ public:
 
     void initialize() override;
 
+    Q_INVOKABLE void closeAllSurfaces();
+
     static const wl_interface *interface();
     static QByteArray interfaceName();
 
