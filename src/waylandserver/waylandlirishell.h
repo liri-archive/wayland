@@ -31,6 +31,7 @@
 QT_FORWARD_DECLARE_CLASS(QWaylandSurface)
 
 class WaylandLiriShellPrivate;
+class WaylandLiriOsdPrivate;
 
 class LIRIWAYLANDSERVER_EXPORT WaylandLiriShell : public QWaylandCompositorExtensionTemplate<WaylandLiriShell>
 {
@@ -72,6 +73,27 @@ Q_SIGNALS:
 
 private:
     WaylandLiriShellPrivate *const d_ptr;
+};
+
+class LIRIWAYLANDSERVER_EXPORT WaylandLiriOsd : public QWaylandCompositorExtensionTemplate<WaylandLiriOsd>
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(WaylandLiriOsd)
+public:
+    WaylandLiriOsd();
+    WaylandLiriOsd(QWaylandCompositor *compositor);
+    ~WaylandLiriOsd();
+
+    void initialize() override;
+
+    Q_INVOKABLE void showText(const QString &iconName, const QString &text = QString());
+    Q_INVOKABLE void showProgress(const QString &iconName, quint32 value);
+
+    static const struct wl_interface *interface();
+    static QByteArray interfaceName();
+
+private:
+    WaylandLiriOsdPrivate *const d_ptr;
 };
 
 #endif // LIRI_WAYLANDLIRISHELL_H

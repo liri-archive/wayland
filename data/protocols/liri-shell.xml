@@ -80,4 +80,28 @@
       </description>
     </event>
   </interface>
+
+  <interface name="liri_osd" version="1">
+    <description summary="on-screen display">
+      With this interface, the compositor asks the client to display
+      either a text or a progress inside the on-screen display surface.
+    </description>
+
+    <event name="text">
+      <description summary="show text on screen">
+        Show an icon with text on screen.
+      </description>
+      <arg name="icon_name" type="string"/>
+      <arg name="text" type="string"/>
+    </event>
+
+    <event name="progress">
+      <description summary="show progress on screen">
+        Show an icon with a progress bar on screen.
+        The value can be an integer number from 0 to 100.
+      </description>
+      <arg name="icon_name" type="string"/>
+      <arg name="value" type="uint"/>
+    </event>
+  </interface>
 </protocol>

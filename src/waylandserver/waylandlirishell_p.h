@@ -48,4 +48,14 @@ private:
     void liri_shell_ready(Resource *resource) override;
 };
 
+class LIRIWAYLANDSERVER_EXPORT WaylandLiriOsdPrivate : public QtWaylandServer::liri_osd
+{
+    Q_DECLARE_PUBLIC(WaylandLiriOsd)
+public:
+    explicit WaylandLiriOsdPrivate(WaylandLiriOsd *self);
+
+protected:
+    WaylandLiriOsd *q_ptr;
+};
+
 #endif // LIRI_WAYLANDLIRISHELL_P_H

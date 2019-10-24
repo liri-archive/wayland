@@ -27,6 +27,7 @@
 #include <QtGui/qpa/qplatformnativeinterface.h>
 
 #include "lirishell_p.h"
+#include "logging_p.h"
 
 static inline struct ::wl_surface *getWlSurface(QWindow *window)
 {
@@ -139,4 +140,48 @@ void LiriShell::sendReady()
 const wl_interface *LiriShell::interface()
 {
     return QtWayland::liri_shell::interface();
+}
+
+// LiriOsdPrivate
+
+LiriOsdPrivate::LiriOsdPrivate(LiriOsd *self)
+    : QtWayland::liri_osd()
+    , q_ptr(self)
+{
+}
+
+void LiriOsdPrivate::liri_osd_text(const QString &icon_name, const QString &label)
+{
+    Q_Q(LiriOsd);
+    emit q->textRequested(icon_name, label);
+}
+
+void LiriOsdPrivate::liri_osd_progress(const QString &icon_name, uint32_t value)
+{
+    Q_Q(LiriOsd);
+    emit q->progressRequested(icon_name, value);
+}
+
+// LiriOsd
+
+LiriOsd::LiriOsd()
+    : QWaylandClientExtensionTemplate(1)
+    , d_ptr(new LiriOsdPrivate(this))
+{
+}
+
+LiriOsd::~LiriOsd()
+{
+    delete d_ptr;
+}
+
+void LiriOsd::init(struct ::wl_registry *registry, int id, int version)
+{
+    Q_D(LiriOsd);
+    d->init(registry, id, version);
+}
+
+const wl_interface *LiriOsd::interface()
+{
+    return LiriOsdPrivate::interface();
 }

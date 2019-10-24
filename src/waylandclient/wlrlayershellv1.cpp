@@ -146,13 +146,19 @@ void WlrLayerSurfaceV1::setLayer(WlrLayerShellV1::Layer layer)
     if (d->layer == layer)
         return;
 
-    if (d->initialized) {
+    if (d->initialized && d->interface()->version < ZWLR_LAYER_SURFACE_V1_SET_LAYER_SINCE_VERSION) {
         qCWarning(lcWaylandClient, "Unable to change WlrLayerSurfaceV1::layer after initialization");
         return;
     }
 
     d->layer = layer;
     Q_EMIT layerChanged();
+
+    if (d->initialized && d->interface()->version >= ZWLR_LAYER_SURFACE_V1_SET_LAYER_SINCE_VERSION) {
+        d->set_layer(d->layer);
+        if (d->window)
+            wl_surface_commit(getWlSurface(d->window));
+    }
 }
 
 QString WlrLayerSurfaceV1::nameSpace() const

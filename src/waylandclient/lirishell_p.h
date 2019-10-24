@@ -46,6 +46,8 @@ public:
 
     void setCursorShape(QWindow *window, LiriShell::GrabCursor cursor);
 
+    static LiriShellPrivate *get(LiriShell *shell) { return shell ? shell->d_func() : nullptr; }
+
     QWindow *grabWindow = nullptr;
 
 protected:
@@ -54,6 +56,22 @@ protected:
 private:
     void liri_shell_grab_cursor(uint32_t cursor) override;
     void liri_shell_quit() override;
+};
+
+class LiriOsdPrivate : public QtWayland::liri_osd
+{
+    Q_DECLARE_PUBLIC(LiriOsd)
+public:
+    LiriOsdPrivate(LiriOsd *self);
+
+    bool initialized = false;
+    LiriShell *shell = nullptr;
+
+protected:
+    LiriOsd *q_ptr;
+
+    void liri_osd_text(const QString &icon_name, const QString &label) override;
+    void liri_osd_progress(const QString &icon_name, uint32_t value) override;
 };
 
 #endif // LIRI_LIRISHELL_P_CLIENT_H

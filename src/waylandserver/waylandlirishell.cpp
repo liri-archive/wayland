@@ -172,3 +172,79 @@ QByteArray WaylandLiriShell::interfaceName()
 {
     return WaylandLiriShellPrivate::interfaceName();
 }
+
+/*
+ * WaylandLiriOsdPrivate
+ */
+
+WaylandLiriOsdPrivate::WaylandLiriOsdPrivate(WaylandLiriOsd *self)
+    : q_ptr(self)
+{
+}
+
+/*
+ * WaylandLiriOsd
+ */
+
+WaylandLiriOsd::WaylandLiriOsd()
+    : QWaylandCompositorExtensionTemplate<WaylandLiriOsd>()
+    , d_ptr(new WaylandLiriOsdPrivate(this))
+{
+}
+
+WaylandLiriOsd::WaylandLiriOsd(QWaylandCompositor *compositor)
+    : QWaylandCompositorExtensionTemplate<WaylandLiriOsd>(compositor)
+    , d_ptr(new WaylandLiriOsdPrivate(this))
+{
+}
+
+WaylandLiriOsd::~WaylandLiriOsd()
+{
+    delete d_ptr;
+}
+
+void WaylandLiriOsd::initialize()
+{
+    Q_D(WaylandLiriOsd);
+
+    QWaylandCompositorExtension::initialize();
+    QWaylandCompositor *compositor = static_cast<QWaylandCompositor *>(extensionContainer());
+    if (!compositor) {
+        qCWarning(lcWaylandServer) << "Failed to find QWaylandCompositor when initializing WaylandLiriOsd";
+        return;
+    }
+    d->init(compositor->display(), 1);
+}
+
+void WaylandLiriOsd::showText(const QString &iconName, const QString &text)
+{
+    Q_D(WaylandLiriOsd);
+
+    const auto values = d->resourceMap().values();
+    for (auto *resource : qAsConst(values))
+        d->send_text(resource->handle, iconName, text);
+}
+
+void WaylandLiriOsd::showProgress(const QString &iconName, quint32 value)
+{
+    Q_D(WaylandLiriOsd);
+
+    if (value > 100) {
+        qCWarning(lcWaylandServer) << "Invalid OSD progress value" << value;
+        return;
+    }
+
+    const auto values = d->resourceMap().values();
+    for (auto *resource : qAsConst(values))
+        d->send_progress(resource->handle, iconName, value);
+}
+
+const struct wl_interface *WaylandLiriOsd::interface()
+{
+    return WaylandLiriOsdPrivate::interface();
+}
+
+QByteArray WaylandLiriOsd::interfaceName()
+{
+    return WaylandLiriOsdPrivate::interfaceName();
+}

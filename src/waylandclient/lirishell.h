@@ -34,6 +34,7 @@
 QT_FORWARD_DECLARE_CLASS(QWindow)
 
 class LiriShellPrivate;
+class LiriOsdPrivate;
 
 class LIRIWAYLANDCLIENT_EXPORT LiriShell : public QWaylandClientExtensionTemplate<LiriShell>
 {
@@ -72,6 +73,26 @@ Q_SIGNALS:
 
 private:
     LiriShellPrivate *const d_ptr;
+};
+
+class LIRIWAYLANDCLIENT_EXPORT LiriOsd : public QWaylandClientExtensionTemplate<LiriOsd>
+{
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(LiriOsd)
+public:
+    LiriOsd();
+    ~LiriOsd();
+
+    void init(struct ::wl_registry *registry, int id, int version);
+
+    static const struct ::wl_interface *interface();
+
+Q_SIGNALS:
+    void textRequested(const QString &iconName, const QString &text);
+    void progressRequested(const QString &iconName, quint32 value);
+
+private:
+    LiriOsdPrivate *const d_ptr;
 };
 
 #endif // LIRI_LIRISHELL_CLIENT_H

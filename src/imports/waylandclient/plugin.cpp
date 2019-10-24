@@ -44,6 +44,7 @@ public:
         const int versionMinor = 0;
 
         qmlRegisterType<LiriShell>(uri, versionMajor, versionMinor, "LiriShell");
+        qmlRegisterType<LiriOsd>(uri, versionMajor, versionMinor, "LiriOsd");
 
         qmlRegisterType<WlrLayerShellV1>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
         qmlRegisterType<WlrLayerSurfaceV1Qml>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1");
