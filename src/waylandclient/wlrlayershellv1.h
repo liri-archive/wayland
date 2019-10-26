@@ -70,6 +70,7 @@ class LIRIWAYLANDCLIENT_EXPORT WlrLayerSurfaceV1 : public QObject
     Q_PROPERTY(WlrLayerShellV1 *shell READ shell WRITE setShell NOTIFY shellChanged)
     Q_PROPERTY(WlrLayerShellV1::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
     Q_PROPERTY(QString nameSpace READ nameSpace WRITE setNameSpace NOTIFY nameSpaceChanged)
+    Q_PROPERTY(bool showOnAllScreens READ showOnAllScreens WRITE setShowOnAllScreens NOTIFY showOnAllScreensChanged)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(WlrLayerSurfaceV1::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
@@ -101,6 +102,9 @@ public:
 
     QString nameSpace() const;
     void setNameSpace(const QString &nameSpace);
+
+    bool showOnAllScreens() const;
+    void setShowOnAllScreens(bool show);
 
     QWindow *window() const;
     void setWindow(QWindow *window);
@@ -145,6 +149,7 @@ Q_SIGNALS:
     void shellChanged();
     void layerChanged();
     void nameSpaceChanged();
+    void showOnAllScreensChanged();
     void windowChanged();
     void sizeChanged();
     void anchorsChanged();

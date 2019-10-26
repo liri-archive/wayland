@@ -29,12 +29,16 @@
 
 static inline struct ::wl_surface *getWlSurface(QWindow *window)
 {
+    if (!window)
+        return nullptr;
     void *surface = QGuiApplication::platformNativeInterface()->nativeResourceForWindow("surface", window);
     return static_cast<struct ::wl_surface *>(surface);
 }
 
 static inline struct ::wl_output *getWlOutput(QScreen *screen)
 {
+    if (!screen)
+        return nullptr;
     void *output = QGuiApplication::platformNativeInterface()->nativeResourceForScreen("output", screen);
     return static_cast<struct ::wl_output *>(output);
 }
@@ -51,9 +55,7 @@ struct ::zwlr_layer_surface_v1 *WlrLayerShellV1Private::createLayerSurface(QWind
         return nullptr;
     }
 
-    auto output = getWlOutput(screen);
-
-    return get_layer_surface(surface, output,
+    return get_layer_surface(surface, getWlOutput(screen),
                              static_cast<uint32_t>(layer),
                              nameSpace);
 }
@@ -181,6 +183,28 @@ void WlrLayerSurfaceV1::setNameSpace(const QString &nameSpace)
 
     d->nameSpace = nameSpace;
     Q_EMIT nameSpaceChanged();
+}
+
+bool WlrLayerSurfaceV1::showOnAllScreens() const
+{
+    Q_D(const WlrLayerSurfaceV1);
+    return d->showOnAllScreens;
+}
+
+void WlrLayerSurfaceV1::setShowOnAllScreens(bool show)
+{
+    Q_D(WlrLayerSurfaceV1);
+
+    if (d->showOnAllScreens == show)
+        return;
+
+    if (d->initialized) {
+        qCWarning(lcWaylandClient, "Unable to change WlrLayerSurfaceV1::showOnAllScreens after initialization");
+        return;
+    }
+
+    d->showOnAllScreens = show;
+    Q_EMIT showOnAllScreensChanged();
 }
 
 QWindow *WlrLayerSurfaceV1::window() const
@@ -427,7 +451,7 @@ void WlrLayerSurfaceV1::initialize()
 
     // Create layer surface object
     auto layerSurface = WlrLayerShellV1Private::get(d->shell)->createLayerSurface(
-                d->window, d->window->screen(), d->layer, d->nameSpace);
+                d->window, d->showOnAllScreens ? nullptr : d->window->screen(), d->layer, d->nameSpace);
     d->init(layerSurface);
 
     // Set layer surface properties

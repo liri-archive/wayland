@@ -63,6 +63,7 @@ public:
     WlrLayerShellV1::Layer layer = WlrLayerShellV1::Layer::BackgroundLayer;
     QString nameSpace;
     QRegion mask;
+    bool showOnAllScreens = true;
     QWindow *window = nullptr;
     QSize size = QSize(0, 0);
     WlrLayerSurfaceV1::Anchors anchors = 0;
