@@ -67,6 +67,7 @@ public:
     struct State {
         State() = default;
 
+        WaylandWlrLayerShellV1::Layer layer = WaylandWlrLayerShellV1::BackgroundLayer;
         QSize desiredSize = QSize(0, 0);
         WaylandWlrLayerSurfaceV1::Anchors anchors = 0;
         int exclusiveZone = 0;
@@ -95,7 +96,6 @@ public:
 
     QWaylandSurface *surface = nullptr;
     QWaylandOutput *output = nullptr;
-    WaylandWlrLayerShellV1::Layer layer = WaylandWlrLayerShellV1::BackgroundLayer;
     QString nameSpace;
 
     bool added = false;
@@ -122,6 +122,7 @@ protected:
     void zwlr_layer_surface_v1_set_keyboard_interactivity(Resource *resource, uint32_t keyboard_interactivity) override;
     void zwlr_layer_surface_v1_get_popup(Resource *resource, struct ::wl_resource *popup) override;
     void zwlr_layer_surface_v1_ack_configure(Resource *resource, uint32_t serial) override;
+    void zwlr_layer_surface_v1_set_layer(Resource *resource, uint32_t layer) override;
 };
 
 #endif // LIRI_WAYLANDWLRLAYERSHELLV1_P_H

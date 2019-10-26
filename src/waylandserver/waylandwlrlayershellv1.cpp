@@ -210,6 +210,19 @@ void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_ack_configure(QtWayl
     configured = true;
 }
 
+void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_layer(Resource *resource, uint32_t layer)
+{
+    Q_UNUSED(resource)
+
+    if (layer > QtWaylandServer::zwlr_layer_shell_v1::layer_overlay) {
+        wl_resource_post_error(resource->handle, QtWaylandServer::zwlr_layer_shell_v1::error_invalid_layer,
+                               "invalid layer %d", layer);
+        return;
+    }
+
+    clientPending.layer = static_cast<WaylandWlrLayerShellV1::Layer>(layer);
+}
+
 
 WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
                                                    QWaylandOutput *output,
@@ -222,7 +235,8 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
     Q_D(WaylandWlrLayerSurfaceV1);
     d->surface = surface;
     d->output = output;
-    d->layer = layer;
+    d->current.layer = layer;
+    d->clientPending.layer = layer;
     d->nameSpace = nameSpace;
 
     connect(surface, &QWaylandSurface::redraw, this, [this, d] {
@@ -241,6 +255,11 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
 
         // Set double-buffered properties
         bool hasChanged = false;
+        if (d->current.layer != d->clientPending.layer) {
+            d->current.layer = d->clientPending.layer;
+            Q_EMIT layerChanged();
+            hasChanged = true;
+        }
         if (d->current.desiredSize != d->clientPending.desiredSize) {
             d->current.desiredSize = d->clientPending.desiredSize;
             Q_EMIT sizeChanged();
@@ -305,7 +324,7 @@ QWaylandOutput *WaylandWlrLayerSurfaceV1::output() const
 WaylandWlrLayerShellV1::Layer WaylandWlrLayerSurfaceV1::layer() const
 {
     Q_D(const WaylandWlrLayerSurfaceV1);
-    return d->layer;
+    return d->current.layer;
 }
 
 QString WaylandWlrLayerSurfaceV1::nameSpace() const

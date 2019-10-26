@@ -43,7 +43,7 @@ void MockRegistry::registry_global(uint32_t name, const QString &interface, uint
     } else if (interface == QLatin1String("zwlr_foreign_toplevel_manager_v1")) {
         wlrForeignToplevel = new MockWlrForeignToplevelManagerV1(object(), name, qMin<uint32_t>(version, 2));
     } else if (interface == QLatin1String("zwlr_layer_shell_v1")) {
-        wlrLayerShell = new MockWlrLayerShellV1(object(), name, qMin<uint32_t>(version, 1));
+        wlrLayerShell = new MockWlrLayerShellV1(object(), name, qMin<uint32_t>(version, 2));
     } else if (interface == QLatin1String("zwlr_output_manager_v1")) {
         wlrOutputManager = new MockWlrOutputManagerV1(object(), name, qMin<uint32_t>(version, 1));
     }

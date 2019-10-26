@@ -76,7 +76,7 @@ class LIRIWAYLANDSERVER_EXPORT WaylandWlrLayerSurfaceV1 : public QObject
     Q_DECLARE_PRIVATE(WaylandWlrLayerSurfaceV1)
     Q_PROPERTY(QWaylandSurface *surface READ surface CONSTANT)
     Q_PROPERTY(QWaylandOutput *output READ output CONSTANT)
-    Q_PROPERTY(WaylandWlrLayerShellV1::Layer layer READ layer CONSTANT)
+    Q_PROPERTY(WaylandWlrLayerShellV1::Layer layer READ layer NOTIFY layerChanged)
     Q_PROPERTY(QString nameSpace READ nameSpace CONSTANT)
     Q_PROPERTY(quint32 width READ width NOTIFY sizeChanged)
     Q_PROPERTY(quint32 height READ height NOTIFY sizeChanged)
@@ -124,6 +124,7 @@ public:
     static QWaylandSurfaceRole *role();
 
 Q_SIGNALS:
+    void layerChanged();
     void sizeChanged();
     void anchorsChanged();
     void exclusiveZoneChanged();

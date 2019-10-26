@@ -146,9 +146,12 @@ void TestWaylandServer::wlrLayer()
     QTRY_COMPARE(compositor.surfaces.size(), 1);
 
     auto *wlrSurface = client.registry->wlrLayerShell->createSurface(surface->object(), nullptr,
-                                                                     MockWlrLayerShellV1::layer_background,
+                                                                     MockWlrLayerShellV1::layer_bottom,
                                                                      QStringLiteral("bg"));
     QTRY_VERIFY(compositor.layerSurface);
+
+    QSignalSpy changedSpy(compositor.layerSurface, SIGNAL(changed()));
+    QSignalSpy layerChangedSpy(compositor.layerSurface, SIGNAL(layerChanged()));
 
     compositor.layerSurface->sendConfigure(100, 100);
     surface->commit();
@@ -160,11 +163,18 @@ void TestWaylandServer::wlrLayer()
     wlrSurface->set_margin(5, 5, 5, 5);
     wlrSurface->set_size(50, 50);
     surface->commit();
+    QTRY_COMPARE(compositor.layerSurface->layer(), WaylandWlrLayerShellV1::BottomLayer);
     QTRY_COMPARE(compositor.layerSurface->anchors(), WaylandWlrLayerSurfaceV1::LeftAnchor | WaylandWlrLayerSurfaceV1::RightAnchor);
     QTRY_COMPARE(compositor.layerSurface->exclusiveZone(), 42);
     QTRY_COMPARE(compositor.layerSurface->keyboardInteractivity(), true);
     QTRY_COMPARE(compositor.layerSurface->margins(), QMargins(5, 5, 5, 5));
     QTRY_COMPARE(compositor.layerSurface->size(), QSize(50, 50));
+
+    wlrSurface->set_layer(MockWlrLayerShellV1::layer_overlay);
+    surface->commit();
+    QTRY_COMPARE(changedSpy.count(), 3);
+    QTRY_COMPARE(layerChangedSpy.count(), 1);
+    QCOMPARE(compositor.layerSurface->layer(), WaylandWlrLayerShellV1::OverlayLayer);
 
     compositor.layerSurface->close();
     surface->destroy();

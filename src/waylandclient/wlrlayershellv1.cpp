@@ -60,7 +60,7 @@ struct ::zwlr_layer_surface_v1 *WlrLayerShellV1Private::createLayerSurface(QWind
 
 
 WlrLayerShellV1::WlrLayerShellV1()
-    : QWaylandClientExtensionTemplate<WlrLayerShellV1>(1)
+    : QWaylandClientExtensionTemplate<WlrLayerShellV1>(2)
     , d_ptr(new WlrLayerShellV1Private)
 {
 }
