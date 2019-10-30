@@ -26,7 +26,8 @@ find_package(Wayland 1.15 COMPONENTS Client Server)
 set_package_properties(Wayland PROPERTIES TYPE REQUIRED)
 
 ## Find wayland-protocols:
-find_package(WaylandProtocols 1.15 REQUIRED)
+find_package(WaylandProtocols 1.15)
+set_package_properties(WaylandProtocols PROPERTIES TYPE REQUIRED)
 
 ## Find Qt 5:
 find_package(Qt5 "${QT_MIN_VERSION}"
