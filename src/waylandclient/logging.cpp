@@ -24,3 +24,4 @@
 #include "logging_p.h"
 
 Q_LOGGING_CATEGORY(lcWaylandClient, "liri.waylandclient", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcScreencopy, "liri.waylandclient.screencopy", QtInfoMsg)

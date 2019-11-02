@@ -31,6 +31,7 @@
 #include "mockwlrforeigntoplevelmanagementv1.h"
 #include "mockwlrlayershellv1.h"
 #include "mockwlroutputmanagementv1.h"
+#include "mockwlrscreencopyv1.h"
 
 class MockRegistry : public QtWayland::wl_registry
 {
@@ -41,9 +42,11 @@ public:
 
     QtWayland::wl_compositor *compositor = nullptr;
     QMap<uint32_t, QtWayland::wl_output *> outputs;
+    QtWayland::wl_shm *shm = nullptr;
     MockWlrForeignToplevelManagerV1 *wlrForeignToplevel = nullptr;
     MockWlrLayerShellV1 *wlrLayerShell = nullptr;
     MockWlrOutputManagerV1 *wlrOutputManager = nullptr;
+    MockWlrScreencopyManagerV1 *wlrScreencopyManager = nullptr;
 
 protected:
     void registry_global(uint32_t name, const QString &interface, uint32_t version) override;

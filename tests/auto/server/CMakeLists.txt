@@ -12,6 +12,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
 ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wlr-output-management-unstable-v1.xml"
     BASENAME "wlr-output-management-unstable-v1")
+ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wlr-screencopy-unstable-v1.xml"
+    BASENAME "wlr-screencopy-unstable-v1")
 
 liri_add_test(tst_waylandserver
     SOURCES
@@ -26,6 +29,8 @@ liri_add_test(tst_waylandserver
         mockwlrlayershellv1.h
         mockwlroutputmanagementv1.cpp
         mockwlroutputmanagementv1.h
+        mockwlrscreencopyv1.cpp
+        mockwlrscreencopyv1.h
         testcompositor.cpp
         testcompositor.h
         ${SOURCES}
@@ -35,3 +40,5 @@ liri_add_test(tst_waylandserver
         Wayland::Server
         Liri::WaylandServer
 )
+
+target_link_options(tst_waylandserver PRIVATE -lrt)

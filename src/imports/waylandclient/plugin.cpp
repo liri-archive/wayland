@@ -27,6 +27,7 @@
 #include <LiriWaylandClient/WlrForeignToplevelManagementV1>
 #include <LiriWaylandClient/WlrLayerShellV1>
 #include <LiriWaylandClient/WlrOutputManagementV1>
+#include <LiriWaylandClient/WlrScreencopyV1>
 
 #include "wlrlayersurfacev1qml.h"
 
@@ -58,6 +59,10 @@ public:
                                                              QStringLiteral("Cannot create a WlrOutputConfigurationV1 instance"));
         qmlRegisterUncreatableType<WlrOutputConfigurationHeadV1>(uri, versionMajor, versionMinor, "WlrOutputConfigurationHeadV1",
                                                                  QStringLiteral("Cannot create a WlrOutputConfigurationHeadV1 instance"));
+
+        qmlRegisterType<WlrScreencopyManagerV1>(uri, versionMajor, versionMinor, "WlrScreencopyManagerV1");
+        qmlRegisterUncreatableType<WlrScreencopyFrameV1>(uri, versionMajor, versionMinor, "WlrScreencopyFrameV1",
+                                                         QStringLiteral("Cannot create a WlrScreencopyFrameV1 instance"));
     }
 };
 

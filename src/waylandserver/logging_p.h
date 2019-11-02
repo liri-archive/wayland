@@ -27,5 +27,6 @@
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(lcWaylandServer)
+Q_DECLARE_LOGGING_CATEGORY(lcScreencopy)
 
 #endif // LIRIWAYLANDSERVERLOGGING_P_H

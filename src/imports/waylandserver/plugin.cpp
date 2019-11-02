@@ -31,6 +31,7 @@
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrOutputManagerV1>
+#include <LiriWaylandServer/WaylandWlrScreencopyV1>
 
 #include "waylandwlrforeigntoplevelmanagementv1qml.h"
 
@@ -42,6 +43,7 @@ Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriOsd)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrForeignToplevelManagerV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrLayerShellV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrOutputManagerV1)
+Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrScreencopyManagerV1)
 
 class WaylandServerPlugin : public QQmlExtensionPlugin
 {
@@ -84,6 +86,10 @@ public:
         qmlRegisterType<WaylandWlrOutputConfigurationV1>(uri, versionMajor, versionMinor, "WlrOutputConfigurationV1");
         qmlRegisterUncreatableType<WaylandWlrOutputConfigurationHeadV1>(uri, versionMajor, versionMinor, "WlrOutputConfigurationHeadV1",
                                                                         QStringLiteral("Cannot create instance of WlrOutputConfigurationHeadV1"));
+
+        qmlRegisterType<WaylandWlrScreencopyManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrScreencopyManagerV1");
+        qmlRegisterUncreatableType<WaylandWlrScreencopyFrameV1>(uri, versionMajor, versionMinor, "WlrScreencopyFrameV1",
+                                                                QStringLiteral("Cannot create instance of WlrScreencopyFrameV1"));
     }
 };
 

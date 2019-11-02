@@ -26,23 +26,7 @@
 
 #include "wlrlayershellv1_p.h"
 #include "logging_p.h"
-
-static inline struct ::wl_surface *getWlSurface(QWindow *window)
-{
-    if (!window)
-        return nullptr;
-    void *surface = QGuiApplication::platformNativeInterface()->nativeResourceForWindow("surface", window);
-    return static_cast<struct ::wl_surface *>(surface);
-}
-
-static inline struct ::wl_output *getWlOutput(QScreen *screen)
-{
-    if (!screen)
-        return nullptr;
-    void *output = QGuiApplication::platformNativeInterface()->nativeResourceForScreen("output", screen);
-    return static_cast<struct ::wl_output *>(output);
-}
-
+#include "utils_p.h"
 
 struct ::zwlr_layer_surface_v1 *WlrLayerShellV1Private::createLayerSurface(QWindow *window,
                                                                            QScreen *screen,

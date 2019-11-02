@@ -21,37 +21,9 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include <QGuiApplication>
-#include <qpa/qplatformnativeinterface.h>
-#include <QWindow>
-#include <QScreen>
-
 #include "logging_p.h"
+#include "utils_p.h"
 #include "wlrforeigntoplevelmanagementv1_p.h"
-
-static inline struct ::wl_surface *getWlSurface(QWindow *window)
-{
-    void *surface = QGuiApplication::platformNativeInterface()->nativeResourceForWindow("surface", window);
-    return static_cast<struct ::wl_surface *>(surface);
-}
-
-static inline struct ::wl_output *getWlOutput(QScreen *screen)
-{
-    void *output = QGuiApplication::platformNativeInterface()->nativeResourceForScreen("output", screen);
-    return static_cast<struct ::wl_output *>(output);
-}
-
-static inline QScreen *getScreen(struct ::wl_output *output)
-{
-    const auto screens = QGuiApplication::screens();
-    for (auto screen : screens) {
-        if (getWlOutput(screen) == output)
-            return screen;
-    }
-
-    return nullptr;
-}
-
 
 WlrForeignToplevelManagerV1Private::WlrForeignToplevelManagerV1Private(WlrForeignToplevelManagerV1 *self)
     : QtWayland::zwlr_foreign_toplevel_manager_v1()
