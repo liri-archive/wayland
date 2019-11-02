@@ -118,6 +118,7 @@ public:
     Q_INVOKABLE void sendOutputLeave(QWaylandOutput *output);
     Q_INVOKABLE void sendClosed();
 
+public Q_SLOTS:
     void initialize();
 
 Q_SIGNALS:
