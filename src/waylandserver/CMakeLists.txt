@@ -96,7 +96,6 @@ liri_add_module(WaylandServer
     DEFINES
         QT_NO_CAST_FROM_ASCII
         QT_NO_FOREACH
-        QT_WAYLAND_COMPOSITOR_QUICK
         INSTALL_LIBEXECDIR="${LIBEXECDIR}"
     PUBLIC_LIBRARIES
         Qt5::Core

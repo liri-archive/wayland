@@ -24,15 +24,11 @@
 #ifndef LIRI_WAYLANDWLROUTPUTMANAGERV1_H
 #define LIRI_WAYLANDWLROUTPUTMANAGERV1_H
 
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-#include <QQmlComponent>
-#include <QQmlListProperty>
-#include <QQmlParserStatus>
-#endif
 #include <QWaylandCompositor>
 #include <QWaylandCompositorExtension>
 #include <QWaylandOutput>
 #include <qwaylandquickchildren.h>
+#include <QWaylandResource>
 
 #include <LiriWaylandServer/liriwaylandserverglobal.h>
 
@@ -74,6 +70,7 @@ public:
 Q_SIGNALS:
     void compositorChanged();
     void headAdded(WaylandWlrOutputHeadV1 *head);
+    void configurationRequested(const QWaylandResource &resource);
     void configurationCreated(WaylandWlrOutputConfigurationV1 *configuration);
     void clientStopped(QWaylandClient *client);
 
@@ -153,30 +150,6 @@ private:
     WaylandWlrOutputHeadV1Private *const d_ptr;
 };
 
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-QML_DECLARE_TYPE(WaylandWlrOutputHeadV1)
-#endif
-
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-class LIRIWAYLANDSERVER_EXPORT WaylandWlrOutputHeadV1Qml : public WaylandWlrOutputHeadV1, public QQmlParserStatus
-{
-    Q_OBJECT
-    Q_WAYLAND_COMPOSITOR_DECLARE_QUICK_CHILDREN(WaylandWlrOutputHeadV1Qml)
-    Q_INTERFACES(QQmlParserStatus)
-    Q_PROPERTY(QQmlListProperty<WaylandWlrOutputModeV1> modes READ modesList NOTIFY modesChanged)
-public:
-    explicit WaylandWlrOutputHeadV1Qml(QObject *parent = nullptr);
-
-    QQmlListProperty<WaylandWlrOutputModeV1> modesList();
-
-protected:
-    void classBegin() override {}
-    void componentComplete() override;
-};
-
-QML_DECLARE_TYPE(WaylandWlrOutputHeadV1Qml)
-#endif
-
 class LIRIWAYLANDSERVER_EXPORT WaylandWlrOutputModeV1 : public QObject
 {
     Q_OBJECT
@@ -203,10 +176,6 @@ Q_SIGNALS:
 private:
     WaylandWlrOutputModeV1Private *const d_ptr;
 };
-
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-QML_DECLARE_TYPE(WaylandWlrOutputModeV1)
-#endif
 
 class LIRIWAYLANDSERVER_EXPORT WaylandWlrOutputConfigurationHeadV1 : public QObject
 {
@@ -245,33 +214,27 @@ private:
     friend class WaylandWlrOutputConfigurationV1Private;
 };
 
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-QML_DECLARE_TYPE(WaylandWlrOutputConfigurationHeadV1)
-#endif
-
 class LIRIWAYLANDSERVER_EXPORT WaylandWlrOutputConfigurationV1 : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(WaylandWlrOutputConfigurationV1)
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-    Q_PROPERTY(QQmlListProperty<WaylandWlrOutputConfigurationHeadV1> enabledHeads READ enabledHeadsList NOTIFY enabledHeadsChanged)
-    Q_PROPERTY(QQmlListProperty<WaylandWlrOutputHeadV1> disabledHeads READ disabledHeadsList NOTIFY disabledHeadsChanged)
-#endif
 public:
     explicit WaylandWlrOutputConfigurationV1(QObject *parent = nullptr);
+    WaylandWlrOutputConfigurationV1(WaylandWlrOutputManagerV1 *manager,
+                                    const QWaylandResource &resource);
     ~WaylandWlrOutputConfigurationV1();
 
     QVector<WaylandWlrOutputConfigurationHeadV1 *> enabledHeads() const;
     QVector<WaylandWlrOutputHeadV1 *> disabledHeads() const;
 
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-    QQmlListProperty<WaylandWlrOutputConfigurationHeadV1> enabledHeadsList();
-    QQmlListProperty<WaylandWlrOutputHeadV1> disabledHeadsList();
-#endif
+    Q_INVOKABLE void initialize(WaylandWlrOutputManagerV1 *manager,
+                                const QWaylandResource &resource);
 
     Q_INVOKABLE void sendSucceeded();
     Q_INVOKABLE void sendFailed();
     Q_INVOKABLE void sendCancelled();
+
+    static WaylandWlrOutputConfigurationV1 *fromResource(struct ::wl_resource *resource);
 
 Q_SIGNALS:
     void enabledHeadsChanged();

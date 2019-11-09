@@ -9,12 +9,13 @@ liri_add_qml_plugin(waylandserver
         plugin.cpp
         waylandwlrforeigntoplevelmanagementv1qml.cpp
         waylandwlrforeigntoplevelmanagementv1qml.h
+        waylandwlroutputmanagementv1qml.cpp
+        waylandwlroutputmanagementv1qml.h
     QML_FILES
         qmldir
     DEFINES
         QT_NO_CAST_FROM_ASCII
         QT_NO_FOREACH
-        QT_WAYLAND_COMPOSITOR_QUICK
     PUBLIC_LIBRARIES
         Qt5::Qml
         Qt5::Quick

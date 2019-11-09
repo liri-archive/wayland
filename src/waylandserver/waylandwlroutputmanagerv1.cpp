@@ -74,13 +74,22 @@ void WaylandWlrOutputManagerV1Private::zwlr_output_manager_v1_create_configurati
     if (stoppedClients.contains(resource->client()))
         return;
 
-    auto version = WaylandWlrOutputConfigurationV1Private::interfaceVersion();
-    auto *configuration = new WaylandWlrOutputConfigurationV1(q);
-    WaylandWlrOutputConfigurationV1Private::get(configuration)->manager = q;
-    WaylandWlrOutputConfigurationV1Private::get(configuration)->add(resource->client(), id, version);
-    configurations[serial] = configuration;
+    QWaylandResource configResource(wl_resource_create(
+                                        resource->client(), &zwlr_output_configuration_v1_interface,
+                                        wl_resource_get_version(resource->handle), id));
 
-    Q_EMIT q->configurationCreated(configuration);
+    emit q->configurationRequested(configResource);
+
+    auto *config = WaylandWlrOutputConfigurationV1::fromResource(configResource.resource());
+    if (!config) {
+        // WaylandWlrOutputConfigurationV1 was not created in response to the configurationRequested signal
+        // so we have to create a fallback one here
+        config = new WaylandWlrOutputConfigurationV1(q, configResource);
+    }
+
+    configurations[serial] = config;
+
+    emit q->configurationCreated(config);
 }
 
 void WaylandWlrOutputManagerV1Private::zwlr_output_manager_v1_stop(QtWaylandServer::zwlr_output_manager_v1::Resource *resource)
@@ -568,36 +577,6 @@ void WaylandWlrOutputHeadV1::setScale(qreal scale)
 }
 
 
-
-WaylandWlrOutputHeadV1Qml::WaylandWlrOutputHeadV1Qml(QObject *parent)
-    : WaylandWlrOutputHeadV1(parent)
-{
-}
-
-QQmlListProperty<WaylandWlrOutputModeV1> WaylandWlrOutputHeadV1Qml::modesList()
-{
-    auto countFunc = [](QQmlListProperty<WaylandWlrOutputModeV1> *prop) {
-        return static_cast<WaylandWlrOutputHeadV1 *>(prop->object)->modes().size();
-    };
-    auto atFunc = [](QQmlListProperty<WaylandWlrOutputModeV1> *prop, int index) {
-        return static_cast<WaylandWlrOutputHeadV1 *>(prop->object)->modes().at(index);
-    };
-    return QQmlListProperty<WaylandWlrOutputModeV1>(this, this, countFunc, atFunc);
-}
-
-void WaylandWlrOutputHeadV1Qml::componentComplete()
-{
-    if (!isInitialized()) {
-        initialize();
-
-        if (!isInitialized())
-            qCWarning(lcWaylandServer,
-                      "Unable to find WlrOutputManagerV1: %p head will not be registered",
-                      this);
-    }
-}
-
-
 WaylandWlrOutputModeV1Private::WaylandWlrOutputModeV1Private(WaylandWlrOutputModeV1 *self)
     : QtWaylandServer::zwlr_output_mode_v1()
     , q_ptr(self)
@@ -960,6 +939,13 @@ WaylandWlrOutputConfigurationV1::WaylandWlrOutputConfigurationV1(QObject *parent
 {
 }
 
+WaylandWlrOutputConfigurationV1::WaylandWlrOutputConfigurationV1(WaylandWlrOutputManagerV1 *manager, const QWaylandResource &resource)
+    : QObject(manager)
+    , d_ptr(new WaylandWlrOutputConfigurationV1Private(this))
+{
+    initialize(manager, resource);
+}
+
 WaylandWlrOutputConfigurationV1::~WaylandWlrOutputConfigurationV1()
 {
     delete d_ptr;
@@ -977,29 +963,12 @@ QVector<WaylandWlrOutputHeadV1 *> WaylandWlrOutputConfigurationV1::disabledHeads
     return d->disabledHeads;
 }
 
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-QQmlListProperty<WaylandWlrOutputConfigurationHeadV1> WaylandWlrOutputConfigurationV1::enabledHeadsList()
+void WaylandWlrOutputConfigurationV1::initialize(WaylandWlrOutputManagerV1 *manager, const QWaylandResource &resource)
 {
-    auto countFunc = [](QQmlListProperty<WaylandWlrOutputConfigurationHeadV1> *prop) {
-        return static_cast<WaylandWlrOutputConfigurationV1 *>(prop->object)->enabledHeads().size();
-    };
-    auto atFunc = [](QQmlListProperty<WaylandWlrOutputConfigurationHeadV1> *prop, int index) {
-        return static_cast<WaylandWlrOutputConfigurationV1 *>(prop->object)->enabledHeads().at(index);
-    };
-    return QQmlListProperty<WaylandWlrOutputConfigurationHeadV1>(this, this, countFunc, atFunc);
+    Q_D(WaylandWlrOutputConfigurationV1);
+    d->manager = manager;
+    d->init(resource.resource());
 }
-
-QQmlListProperty<WaylandWlrOutputHeadV1> WaylandWlrOutputConfigurationV1::disabledHeadsList()
-{
-    auto countFunc = [](QQmlListProperty<WaylandWlrOutputHeadV1> *prop) {
-        return static_cast<WaylandWlrOutputConfigurationV1 *>(prop->object)->disabledHeads().size();
-    };
-    auto atFunc = [](QQmlListProperty<WaylandWlrOutputHeadV1> *prop, int index) {
-        return static_cast<WaylandWlrOutputConfigurationV1 *>(prop->object)->disabledHeads().at(index);
-    };
-    return QQmlListProperty<WaylandWlrOutputHeadV1>(this, this, countFunc, atFunc);
-}
-#endif
 
 void WaylandWlrOutputConfigurationV1::sendSucceeded()
 {
@@ -1026,4 +995,12 @@ void WaylandWlrOutputConfigurationV1::sendCancelled()
     const auto values = d->resourceMap().values();
     for (auto *resource : values)
         d->send_cancelled(resource->handle);
+}
+
+WaylandWlrOutputConfigurationV1 *WaylandWlrOutputConfigurationV1::fromResource(struct ::wl_resource *resource)
+{
+    WaylandWlrOutputConfigurationV1Private::Resource *res = WaylandWlrOutputConfigurationV1Private::Resource::fromResource(resource);
+    if (res)
+        return static_cast<WaylandWlrOutputConfigurationV1Private *>(res->zwlr_output_configuration_v1_object)->q_func();
+    return nullptr;
 }

@@ -30,10 +30,10 @@
 #include <LiriWaylandServer/WaylandLiriShell>
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
-#include <LiriWaylandServer/WaylandWlrOutputManagerV1>
 #include <LiriWaylandServer/WaylandWlrScreencopyV1>
 
 #include "waylandwlrforeigntoplevelmanagementv1qml.h"
+#include "waylandwlroutputmanagementv1qml.h"
 
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(GtkShell)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(KdeServerDecorationManager)
@@ -83,7 +83,7 @@ public:
         qmlRegisterType<WaylandWlrOutputHeadV1Qml>(uri, versionMajor, versionMinor, "WlrOutputHeadV1");
         qmlRegisterType<WaylandWlrOutputModeV1>(uri, versionMajor, versionMinor, "WlrOutputModeV1");
         qmlRegisterType<WaylandWlrOutputManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrOutputManagerV1");
-        qmlRegisterType<WaylandWlrOutputConfigurationV1>(uri, versionMajor, versionMinor, "WlrOutputConfigurationV1");
+        qmlRegisterType<WaylandWlrOutputConfigurationV1Qml>(uri, versionMajor, versionMinor, "WlrOutputConfigurationV1");
         qmlRegisterUncreatableType<WaylandWlrOutputConfigurationHeadV1>(uri, versionMajor, versionMinor, "WlrOutputConfigurationHeadV1",
                                                                         QStringLiteral("Cannot create instance of WlrOutputConfigurationHeadV1"));
 
