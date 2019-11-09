@@ -61,7 +61,7 @@ private:
     GtkShellPrivate *const d_ptr;
 };
 
-class LIRIWAYLANDSERVER_EXPORT GtkSurface : public QWaylandShellSurfaceTemplate<GtkSurface>
+class LIRIWAYLANDSERVER_EXPORT GtkSurface : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(GtkSurface)
@@ -70,9 +70,10 @@ class LIRIWAYLANDSERVER_EXPORT GtkSurface : public QWaylandShellSurfaceTemplate<
     Q_PROPERTY(GtkShell *shell READ shell NOTIFY shellChanged)
     Q_PROPERTY(QString appId READ appId NOTIFY appIdChanged)
 public:
-    GtkSurface();
+    GtkSurface(QObject *parent = nullptr);
     GtkSurface(GtkShell *shell, QWaylandSurface *surface,
-               const QWaylandResource &resource);
+               const QWaylandResource &resource,
+               QObject *parent = nullptr);
     ~GtkSurface();
 
     Q_INVOKABLE void initialize(GtkShell *shell, QWaylandSurface *surface,
@@ -87,10 +88,6 @@ public:
     QString windowObjectPath() const;
     QString appObjectPath() const;
     QString uniqueBusName() const;
-
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-    QWaylandQuickShellIntegration *createIntegration(QWaylandQuickShellSurfaceItem *item) override;
-#endif
 
     static const struct wl_interface *interface();
     static QByteArray interfaceName();
@@ -113,8 +110,6 @@ Q_SIGNALS:
 
 private:
     GtkSurfacePrivate *const d_ptr;
-
-    void initialize() override;
 };
 
 #endif // LIRI_GTKSHELL_H

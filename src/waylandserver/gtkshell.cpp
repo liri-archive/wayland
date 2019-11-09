@@ -182,15 +182,15 @@ void GtkSurfacePrivate::gtk_surface_unset_modal(Resource *resource)
  * GtkSurface
  */
 
-GtkSurface::GtkSurface()
-    : QWaylandShellSurfaceTemplate<GtkSurface>(nullptr)
+GtkSurface::GtkSurface(QObject *parent)
+    : QObject(parent)
     , d_ptr(new GtkSurfacePrivate(this))
 {
 }
 
 GtkSurface::GtkSurface(GtkShell *shell, QWaylandSurface *surface,
-                       const QWaylandResource &resource)
-    : QWaylandShellSurfaceTemplate<GtkSurface>(nullptr)
+                       const QWaylandResource &resource, QObject *parent)
+    : QObject(parent)
     , d_ptr(new GtkSurfacePrivate(this))
 {
     initialize(shell, surface, resource);
@@ -208,10 +208,8 @@ void GtkSurface::initialize(GtkShell *shell, QWaylandSurface *surface,
     d->m_shell = shell;
     d->m_surface = surface;
     d->init(resource.resource());
-    setExtensionContainer(surface);
     Q_EMIT surfaceChanged();
     Q_EMIT shellChanged();
-    QWaylandCompositorExtension::initialize();
 }
 
 QWaylandSurface *GtkSurface::surface() const
@@ -262,14 +260,6 @@ QString GtkSurface::uniqueBusName() const
     return d->m_uniqueBusName;
 }
 
-#ifdef QT_WAYLAND_COMPOSITOR_QUICK
-QWaylandQuickShellIntegration *GtkSurface::createIntegration(QWaylandQuickShellSurfaceItem *item)
-{
-    Q_UNUSED(item);
-    return nullptr;
-}
-#endif
-
 const struct wl_interface *GtkSurface::interface()
 {
     return GtkSurfacePrivate::interface();
@@ -286,9 +276,4 @@ GtkSurface *GtkSurface::fromResource(wl_resource *resource)
     if (res)
         return static_cast<GtkSurfacePrivate *>(res->gtk_surface_object)->q_func();
     return nullptr;
-}
-
-void GtkSurface::initialize()
-{
-    QWaylandCompositorExtension::initialize();
 }
