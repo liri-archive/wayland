@@ -27,7 +27,7 @@
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrOutputManagerV1>
-#include <LiriWaylandServer/WaylandWlrScreenCopyV1>
+#include <LiriWaylandServer/WaylandWlrScreencopyV1>
 
 #include "mockclient.h"
 #include "testcompositor.h"
