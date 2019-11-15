@@ -66,8 +66,6 @@ public:
                                                          QStringLiteral("Cannot create a WlrScreencopyFrameV1 instance"));
 
         qmlRegisterType<XdgWmBase>(uri, versionMajor, versionMinor, "XdgWmBase");
-        qmlRegisterType<XdgPositioner>();
-        qmlRegisterType<XdgPositionerQml>(uri, versionMajor, versionMinor, "XdgPositioner");
         qmlRegisterType<XdgSurface>();
         qmlRegisterType<XdgSurfaceQml>(uri, versionMajor, versionMinor, "XdgSurface");
         qmlRegisterType<XdgPopup>();

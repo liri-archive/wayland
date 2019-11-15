@@ -52,24 +52,6 @@ protected:
     void xdg_wm_base_ping(uint32_t serial) override;
 };
 
-class LIRIWAYLANDCLIENT_EXPORT XdgPositionerPrivate : public QtWayland::xdg_positioner
-{
-public:
-    XdgPositionerPrivate() = default;
-    ~XdgPositionerPrivate();
-
-    bool initialized = false;
-    XdgWmBase *xdgWmBase = nullptr;
-    QSize size;
-    QRect anchorRect;
-    XdgPositioner::Anchor anchor = XdgPositioner::NoAnchor;
-    XdgPositioner::Gravity gravity = XdgPositioner::NoGravity;
-    XdgPositioner::ConstraintAdjustments constraintAdjustments = XdgPositioner::NoConstraintAdjustment;
-    QPoint offset;
-
-    static XdgPositionerPrivate *get(XdgPositioner *xdgPositioner) { return xdgPositioner ? xdgPositioner->d_func() : nullptr; }
-};
-
 class LIRIWAYLANDCLIENT_EXPORT XdgSurfacePrivate : public QtWayland::xdg_surface
 {
 public:
@@ -99,7 +81,12 @@ public:
     bool initialized = false;
     XdgSurface *xdgSurfaceParent = nullptr;
     XdgSurface *xdgSurface = nullptr;
-    XdgPositioner *xdgPositioner = nullptr;
+    QSize size;
+    QRect anchorRect;
+    XdgPopup::Anchor anchor = XdgPopup::NoAnchor;
+    XdgPopup::Gravity gravity = XdgPopup::NoGravity;
+    XdgPopup::ConstraintAdjustments constraintAdjustments = XdgPopup::NoConstraintAdjustment;
+    QPoint offset;
 
 protected:
     XdgPopup *q_ptr;

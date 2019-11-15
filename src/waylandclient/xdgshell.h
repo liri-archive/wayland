@@ -32,8 +32,6 @@
 QT_FORWARD_DECLARE_CLASS(QWindow)
 
 class XdgWmBasePrivate;
-class XdgPositioner;
-class XdgPositionerPrivate;
 class XdgSurface;
 class XdgSurfacePrivate;
 class XdgToplevelPrivate;
@@ -56,17 +54,46 @@ private:
     XdgWmBasePrivate *const d_ptr;
 };
 
-class LIRIWAYLANDCLIENT_EXPORT XdgPositioner : public QObject
+class LIRIWAYLANDCLIENT_EXPORT XdgSurface : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(XdgPositioner)
-    Q_PROPERTY(bool valid READ isValid NOTIFY validChanged)
     Q_PROPERTY(XdgWmBase *xdgWmBase READ xdgWmBase WRITE setXdgWmBase NOTIFY xdgWmBaseChanged)
+    Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
+    Q_DECLARE_PRIVATE(XdgSurface)
+public:
+    explicit XdgSurface(QObject *parent = nullptr);
+    ~XdgSurface();
+
+    bool isInitialized() const;
+
+    XdgWmBase *xdgWmBase() const;
+    void setXdgWmBase(XdgWmBase *xdgWmBase);
+
+    QWindow *window() const;
+    void setWindow(QWindow *window);
+
+public Q_SLOTS:
+    void initialize();
+
+Q_SIGNALS:
+    void xdgWmBaseChanged();
+    void windowChanged();
+
+private:
+    XdgSurfacePrivate *const d_ptr;
+};
+
+class LIRIWAYLANDCLIENT_EXPORT XdgPopup : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(XdgSurface *xdgSurfaceParent READ xdgSurfaceParent WRITE setXdgSurfaceParent NOTIFY xdgSurfaceParentChanged)
+    Q_PROPERTY(XdgSurface *xdgSurface READ xdgSurface WRITE setXdgSurface NOTIFY xdgSurfaceChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(QRect anchorRect READ anchorRect WRITE setAnchorRect NOTIFY anchorRectChanged)
     Q_PROPERTY(Anchor anchor READ anchor WRITE setAnchor NOTIFY anchorChanged)
     Q_PROPERTY(Gravity gravity READ gravity WRITE setGravity NOTIFY gravityChanged)
     Q_PROPERTY(ConstraintAdjustments constraintAdjustments READ constraintAdjustments WRITE setConstraintAdjustments NOTIFY constraintAdjustmentsChanged)
+    Q_DECLARE_PRIVATE(XdgPopup)
 public:
     enum Anchor {
         NoAnchor = 0,
@@ -106,14 +133,16 @@ public:
     Q_ENUM(ConstraintAdjustment)
     Q_DECLARE_FLAGS(ConstraintAdjustments, ConstraintAdjustment)
 
-    explicit XdgPositioner(QObject *parent = nullptr);
-    ~XdgPositioner();
+    explicit XdgPopup(QObject *parent = nullptr);
+    ~XdgPopup();
 
     bool isInitialized() const;
-    bool isValid() const;
 
-    XdgWmBase *xdgWmBase() const;
-    void setXdgWmBase(XdgWmBase *xdgWmBase);
+    XdgSurface *xdgSurfaceParent() const;
+    void setXdgSurfaceParent(XdgSurface *xdgSurfaceParent);
+
+    XdgSurface *xdgSurface() const;
+    void setXdgSurface(XdgSurface *xdgSurface);
 
     QSize size() const;
     void setSize(const QSize &size);
@@ -133,76 +162,6 @@ public:
     QPoint offset() const;
     void setOffset(const QPoint &offset);
 
-public Q_SLOTS:
-    void initialize();
-
-Q_SIGNALS:
-    void validChanged();
-    void xdgWmBaseChanged();
-    void sizeChanged();
-    void anchorRectChanged();
-    void anchorChanged();
-    void gravityChanged();
-    void constraintAdjustmentsChanged();
-    void offsetChanged();
-
-private:
-    XdgPositionerPrivate *const d_ptr;
-};
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(XdgPositioner::ConstraintAdjustments)
-
-class LIRIWAYLANDCLIENT_EXPORT XdgSurface : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(XdgWmBase *xdgWmBase READ xdgWmBase WRITE setXdgWmBase NOTIFY xdgWmBaseChanged)
-    Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
-    Q_DECLARE_PRIVATE(XdgSurface)
-public:
-    explicit XdgSurface(QObject *parent = nullptr);
-    ~XdgSurface();
-
-    bool isInitialized() const;
-
-    XdgWmBase *xdgWmBase() const;
-    void setXdgWmBase(XdgWmBase *xdgWmBase);
-
-    QWindow *window() const;
-    void setWindow(QWindow *window);
-
-public Q_SLOTS:
-    void initialize();
-
-Q_SIGNALS:
-    void xdgWmBaseChanged();
-    void windowChanged();
-
-private:
-    XdgSurfacePrivate *const d_ptr;
-};
-
-class LIRIWAYLANDCLIENT_EXPORT XdgPopup : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(XdgSurface *xdgSurfaceParent READ xdgSurfaceParent WRITE setXdgSurfaceParent NOTIFY xdgSurfaceParentChanged)
-    Q_PROPERTY(XdgSurface *xdgSurface READ xdgSurface WRITE setXdgSurface NOTIFY xdgSurfaceChanged)
-    Q_PROPERTY(XdgPositioner *xdgPositioner READ xdgPositioner WRITE setXdgPositioner NOTIFY xdgPositionerChanged)
-    Q_DECLARE_PRIVATE(XdgPopup)
-public:
-    explicit XdgPopup(QObject *parent = nullptr);
-    ~XdgPopup();
-
-    bool isInitialized() const;
-
-    XdgSurface *xdgSurfaceParent() const;
-    void setXdgSurfaceParent(XdgSurface *xdgSurfaceParent);
-
-    XdgSurface *xdgSurface() const;
-    void setXdgSurface(XdgSurface *xdgSurface);
-
-    XdgPositioner *xdgPositioner() const;
-    void setXdgPositioner(XdgPositioner *xdgPositioner);
-
     Q_INVOKABLE void grab();
 
 public Q_SLOTS:
@@ -211,12 +170,19 @@ public Q_SLOTS:
 Q_SIGNALS:
     void xdgSurfaceParentChanged();
     void xdgSurfaceChanged();
-    void xdgPositionerChanged();
+    void sizeChanged();
+    void anchorRectChanged();
+    void anchorChanged();
+    void gravityChanged();
+    void constraintAdjustmentsChanged();
+    void offsetChanged();
     void configured(const QRect &rect);
     void done();
 
 private:
     XdgPopupPrivate *const d_ptr;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(XdgPopup::ConstraintAdjustments)
 
 #endif // LIRI_XDGSHELL_CLIENT_H

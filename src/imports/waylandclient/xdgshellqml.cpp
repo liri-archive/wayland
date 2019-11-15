@@ -34,17 +34,6 @@ void XdgSurfaceQml::componentComplete()
         initialize();
 }
 
-XdgPositionerQml::XdgPositionerQml(QObject *parent)
-    : XdgPositioner(parent)
-{
-}
-
-void XdgPositionerQml::componentComplete()
-{
-    if (!isInitialized())
-        initialize();
-}
-
 XdgPopupQml::XdgPopupQml(QObject *parent)
     : XdgPopup(parent)
 {

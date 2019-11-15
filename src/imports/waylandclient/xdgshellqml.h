@@ -40,18 +40,6 @@ protected:
     void componentComplete() override;
 };
 
-class XdgPositionerQml : public XdgPositioner, public QQmlParserStatus
-{
-    Q_OBJECT
-    Q_INTERFACES(QQmlParserStatus)
-public:
-    explicit XdgPositionerQml(QObject *parent = nullptr);
-
-protected:
-    void classBegin() override {}
-    void componentComplete() override;
-};
-
 class XdgPopupQml : public XdgPopup, public QQmlParserStatus
 {
     Q_OBJECT

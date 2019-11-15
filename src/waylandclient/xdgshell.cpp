@@ -66,216 +66,6 @@ const wl_interface *XdgWmBase::interface()
 }
 
 /*
- * XdgPositionerPrivate
- */
-
-XdgPositionerPrivate::~XdgPositionerPrivate()
-{
-    destroy();
-}
-
-/*
- * XdgPositioner
- */
-
-XdgPositioner::XdgPositioner(QObject *parent)
-    : QObject(parent)
-    , d_ptr(new XdgPositionerPrivate())
-{
-}
-
-XdgPositioner::~XdgPositioner()
-{
-    delete d_ptr;
-}
-
-bool XdgPositioner::isInitialized() const
-{
-    Q_D(const XdgPositioner);
-    return d->initialized;
-}
-
-bool XdgPositioner::isValid() const
-{
-    Q_D(const XdgPositioner);
-    return !d->size.isEmpty() && d->anchorRect.isValid();
-}
-
-XdgWmBase *XdgPositioner::xdgWmBase() const
-{
-    Q_D(const XdgPositioner);
-    return d->xdgWmBase;
-}
-
-void XdgPositioner::setXdgWmBase(XdgWmBase *xdgWmBase)
-{
-    Q_D(XdgPositioner);
-
-    if (d->xdgWmBase == xdgWmBase)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPositioner::xdgWmBase after initialization");
-        return;
-    }
-
-    d->xdgWmBase = xdgWmBase;
-    emit xdgWmBaseChanged();
-}
-
-QSize XdgPositioner::size() const
-{
-    Q_D(const XdgPositioner);
-    return d->size;
-}
-
-void XdgPositioner::setSize(const QSize &size)
-{
-    Q_D(XdgPositioner);
-
-    if (d->size == size)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPositioner::size after initialization");
-        return;
-    }
-
-    d->size = size;
-    emit sizeChanged();
-}
-
-QRect XdgPositioner::anchorRect() const
-{
-    Q_D(const XdgPositioner);
-    return d->anchorRect;
-}
-
-void XdgPositioner::setAnchorRect(const QRect &rect)
-{
-    Q_D(XdgPositioner);
-
-    if (d->anchorRect == rect)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPositioner::anchorRect after initialization");
-        return;
-    }
-
-    d->anchorRect = rect;
-    emit anchorRectChanged();
-}
-
-XdgPositioner::Anchor XdgPositioner::anchor() const
-{
-    Q_D(const XdgPositioner);
-    return d->anchor;
-}
-
-void XdgPositioner::setAnchor(XdgPositioner::Anchor anchor)
-{
-    Q_D(XdgPositioner);
-
-    if (d->anchor == anchor)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPositioner::anchor after initialization");
-        return;
-    }
-
-    d->anchor = anchor;
-    emit anchorChanged();
-}
-
-XdgPositioner::Gravity XdgPositioner::gravity() const
-{
-    Q_D(const XdgPositioner);
-    return d->gravity;
-}
-
-void XdgPositioner::setGravity(XdgPositioner::Gravity gravity)
-{
-    Q_D(XdgPositioner);
-
-    if (d->gravity == gravity)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPositioner::gravity after initialization");
-        return;
-    }
-
-    d->gravity = gravity;
-    emit gravityChanged();
-}
-
-XdgPositioner::ConstraintAdjustments XdgPositioner::constraintAdjustments() const
-{
-    Q_D(const XdgPositioner);
-    return d->constraintAdjustments;
-}
-
-void XdgPositioner::setConstraintAdjustments(ConstraintAdjustments constraintAdjustments)
-{
-    Q_D(XdgPositioner);
-
-    if (d->constraintAdjustments == constraintAdjustments)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPositioner::constraintAdjustments after initialization");
-        return;
-    }
-
-    d->constraintAdjustments = constraintAdjustments;
-    emit constraintAdjustmentsChanged();
-}
-
-QPoint XdgPositioner::offset() const
-{
-    Q_D(const XdgPositioner);
-    return d->offset;
-}
-
-void XdgPositioner::setOffset(const QPoint &offset)
-{
-    Q_D(XdgPositioner);
-
-    if (d->offset == offset)
-        return;
-
-    if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPositioner::offset after initialization");
-        return;
-    }
-
-    d->offset = offset;
-    emit offsetChanged();
-}
-
-void XdgPositioner::initialize()
-{
-    Q_D(XdgPositioner);
-
-    if (d->initialized)
-        return;
-
-    d->initialized = true;
-
-    d->init(XdgWmBasePrivate::get(d->xdgWmBase)->create_positioner());
-    if (!d->size.isEmpty())
-        d->set_size(d->size.width(), d->size.height());
-    if (!d->anchorRect.isEmpty())
-        d->set_anchor_rect(d->anchorRect.x(), d->anchorRect.y(), d->anchorRect.width(), d->anchorRect.height());
-    d->set_anchor(static_cast<uint32_t>(d->anchor));
-    d->set_gravity(static_cast<uint32_t>(d->gravity));
-    d->set_constraint_adjustment(static_cast<uint32_t>(d->constraintAdjustments));
-    d->set_offset(d->offset.x(), d->offset.y());
-}
-
-/*
  * XdgSurfacePrivate
  */
 
@@ -471,26 +261,146 @@ void XdgPopup::setXdgSurface(XdgSurface *xdgSurface)
     emit xdgSurfaceChanged();
 }
 
-XdgPositioner *XdgPopup::xdgPositioner() const
+QSize XdgPopup::size() const
 {
     Q_D(const XdgPopup);
-    return d->xdgPositioner;
+    return d->size;
 }
 
-void XdgPopup::setXdgPositioner(XdgPositioner *xdgPositioner)
+void XdgPopup::setSize(const QSize &size)
 {
     Q_D(XdgPopup);
 
-    if (d->xdgPositioner == xdgPositioner)
+    if (d->size == size)
         return;
 
     if (d->initialized) {
-        qCWarning(lcXdgShell, "Cannot change XdgPopup::xdgPositioner after initialization");
+        qCWarning(lcXdgShell, "Cannot change XdgPopup::size after initialization");
         return;
     }
 
-    d->xdgPositioner = xdgPositioner;
-    emit xdgPositionerChanged();
+    if (size.width() < 1 || size.height() < 1) {
+        qCWarning(lcXdgShell, "Size must be positive and non-zero");
+        return;
+    }
+
+    d->size = size;
+    emit sizeChanged();
+}
+
+QRect XdgPopup::anchorRect() const
+{
+    Q_D(const XdgPopup);
+    return d->anchorRect;
+}
+
+void XdgPopup::setAnchorRect(const QRect &rect)
+{
+    Q_D(XdgPopup);
+
+    if (d->anchorRect == rect)
+        return;
+
+    if (d->initialized) {
+        qCWarning(lcXdgShell, "Cannot change XdgPopup::anchorRect after initialization");
+        return;
+    }
+
+    if (rect.width() < 0 || rect.height() < 0) {
+        qCWarning(lcXdgShell, "Anchor rect size must be positive");
+        return;
+    }
+
+    d->anchorRect = rect;
+    emit anchorRectChanged();
+}
+
+XdgPopup::Anchor XdgPopup::anchor() const
+{
+    Q_D(const XdgPopup);
+    return d->anchor;
+}
+
+void XdgPopup::setAnchor(XdgPopup::Anchor anchor)
+{
+    Q_D(XdgPopup);
+
+    if (d->anchor == anchor)
+        return;
+
+    if (d->initialized) {
+        qCWarning(lcXdgShell, "Cannot change XdgPopup::anchor after initialization");
+        return;
+    }
+
+    d->anchor = anchor;
+    emit anchorChanged();
+}
+
+XdgPopup::Gravity XdgPopup::gravity() const
+{
+    Q_D(const XdgPopup);
+    return d->gravity;
+}
+
+void XdgPopup::setGravity(XdgPopup::Gravity gravity)
+{
+    Q_D(XdgPopup);
+
+    if (d->gravity == gravity)
+        return;
+
+    if (d->initialized) {
+        qCWarning(lcXdgShell, "Cannot change XdgPopup::gravity after initialization");
+        return;
+    }
+
+    d->gravity = gravity;
+    emit gravityChanged();
+}
+
+XdgPopup::ConstraintAdjustments XdgPopup::constraintAdjustments() const
+{
+    Q_D(const XdgPopup);
+    return d->constraintAdjustments;
+}
+
+void XdgPopup::setConstraintAdjustments(ConstraintAdjustments constraintAdjustments)
+{
+    Q_D(XdgPopup);
+
+    if (d->constraintAdjustments == constraintAdjustments)
+        return;
+
+    if (d->initialized) {
+        qCWarning(lcXdgShell, "Cannot change XdgPopup::constraintAdjustments after initialization");
+        return;
+    }
+
+    d->constraintAdjustments = constraintAdjustments;
+    emit constraintAdjustmentsChanged();
+}
+
+QPoint XdgPopup::offset() const
+{
+    Q_D(const XdgPopup);
+    return d->offset;
+}
+
+void XdgPopup::setOffset(const QPoint &offset)
+{
+    Q_D(XdgPopup);
+
+    if (d->offset == offset)
+        return;
+
+    if (d->initialized) {
+        qCWarning(lcXdgShell, "Cannot change XdgPopup::offset after initialization");
+        return;
+    }
+
+    d->offset = offset;
+    emit offsetChanged();
 }
 
 void XdgPopup::grab()
@@ -521,15 +431,26 @@ void XdgPopup::initialize()
         return;
     }
 
-    if (!d->xdgPositioner) {
-        qCWarning(lcXdgShell, "Unable to initialize XdgPopup: xdgPositioner was not assigned");
-        return;
-    }
-
     d->initialized = true;
 
     auto *xdgSurfacePriv  = XdgSurfacePrivate::get(d->xdgSurface);
     auto *xdgSurfaceParent = d->xdgSurfaceParent ? XdgSurfacePrivate::get(d->xdgSurfaceParent)->object() : nullptr;
-    auto *xdgPositioner = XdgPositionerPrivate::get(d->xdgPositioner)->object();
-    d->init(xdgSurfacePriv->get_popup(xdgSurfaceParent, xdgPositioner));
+    auto *xdgWmBasePriv = XdgWmBasePrivate::get(xdgSurfacePriv->xdgWmBase);
+
+    auto *xdgPositioner = new QtWayland::xdg_positioner(xdgWmBasePriv->create_positioner());
+    if (!d->size.isEmpty())
+        xdgPositioner->set_size(d->size.width(), d->size.height());
+    if (!d->anchorRect.isEmpty())
+        xdgPositioner->set_anchor_rect(d->anchorRect.x(), d->anchorRect.y(), d->anchorRect.width(), d->anchorRect.height());
+    xdgPositioner->set_anchor(static_cast<uint32_t>(d->anchor));
+    xdgPositioner->set_gravity(static_cast<uint32_t>(d->gravity));
+    xdgPositioner->set_constraint_adjustment(static_cast<uint32_t>(d->constraintAdjustments));
+    xdgPositioner->set_offset(d->offset.x(), d->offset.y());
+
+    d->init(xdgSurfacePriv->get_popup(xdgSurfaceParent, xdgPositioner->object()));
+
+    wl_surface_commit(xdgSurfacePriv->surface);
+
+    xdgPositioner->destroy();
+    xdgPositioner = nullptr;
 }
