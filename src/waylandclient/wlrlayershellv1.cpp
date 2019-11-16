@@ -24,6 +24,7 @@
 #include "wlrlayershellv1_p.h"
 #include "logging_p.h"
 #include "utils_p.h"
+#include "xdgshell_p.h"
 
 struct ::zwlr_layer_surface_v1 *WlrLayerShellV1Private::createLayerSurface(QWindow *window,
                                                                            QScreen *screen,
@@ -114,6 +115,28 @@ void WlrLayerSurfaceV1::setShell(WlrLayerShellV1 *shell)
 
     d->shell = shell;
     Q_EMIT shellChanged();
+}
+
+XdgPopup *WlrLayerSurfaceV1::xdgPopup() const
+{
+    Q_D(const WlrLayerSurfaceV1);
+    return d->xdgPopup;
+}
+
+void WlrLayerSurfaceV1::setXdgPopup(XdgPopup *xdgPopup)
+{
+    Q_D(WlrLayerSurfaceV1);
+
+    if (d->xdgPopup == xdgPopup)
+        return;
+
+    if (d->initialized) {
+        qCWarning(lcWaylandClient, "Unable to change WlrLayerSurfaceV1::xdgPopup after initialization");
+        return;
+    }
+
+    d->xdgPopup = xdgPopup;
+    emit xdgPopupChanged();
 }
 
 WlrLayerShellV1::Layer WlrLayerSurfaceV1::layer() const
@@ -442,5 +465,9 @@ void WlrLayerSurfaceV1::initialize()
     d->set_exclusive_zone(d->exclusiveZone);
     d->set_margin(d->margins.top(), d->margins.right(), d->margins.bottom(), d->margins.left());
     d->set_keyboard_interactivity(d->keyboardInteractivity ? 1 : 0);
+    if (d->xdgPopup) {
+        d->get_popup(XdgPopupPrivate::get(d->xdgPopup)->object());
+        d->xdgPopup->grab();
+    }
     wl_surface_commit(getWlSurface(d->window));
 }

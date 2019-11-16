@@ -35,6 +35,8 @@
 
 #include <wayland-client.h>
 
+class XdgPopup;
+
 class WlrLayerShellV1Private;
 class WlrLayerSurfaceV1;
 class WlrLayerSurfaceV1Private;
@@ -68,6 +70,7 @@ class LIRIWAYLANDCLIENT_EXPORT WlrLayerSurfaceV1 : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(WlrLayerSurfaceV1)
     Q_PROPERTY(WlrLayerShellV1 *shell READ shell WRITE setShell NOTIFY shellChanged)
+    Q_PROPERTY(XdgPopup *xdgPopup READ xdgPopup WRITE setXdgPopup NOTIFY xdgPopupChanged)
     Q_PROPERTY(WlrLayerShellV1::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
     Q_PROPERTY(QString nameSpace READ nameSpace WRITE setNameSpace NOTIFY nameSpaceChanged)
     Q_PROPERTY(bool showOnAllScreens READ showOnAllScreens WRITE setShowOnAllScreens NOTIFY showOnAllScreensChanged)
@@ -96,6 +99,9 @@ public:
 
     WlrLayerShellV1 *shell() const;
     void setShell(WlrLayerShellV1 *shell);
+
+    XdgPopup *xdgPopup() const;
+    void setXdgPopup(XdgPopup *xdgPopup);
 
     WlrLayerShellV1::Layer layer() const;
     void setLayer(WlrLayerShellV1::Layer layer);
@@ -147,6 +153,7 @@ Q_SIGNALS:
     void configured(quint32 serial, quint32 width, quint32 height);
     void closed();
     void shellChanged();
+    void xdgPopupChanged();
     void layerChanged();
     void nameSpaceChanged();
     void showOnAllScreensChanged();

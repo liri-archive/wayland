@@ -25,6 +25,7 @@
 #define LIRI_WLRLAYERSHELLV1_P_CLIENT_H
 
 #include <LiriWaylandClient/WlrLayerShellV1>
+#include <LiriWaylandClient/XdgShell>
 #include <LiriWaylandClient/private/qwayland-xdg-shell.h>
 #include <LiriWaylandClient/private/qwayland-wlr-layer-shell-unstable-v1.h>
 
@@ -60,6 +61,7 @@ public:
 
     bool initialized = false;
     WlrLayerShellV1 *shell = nullptr;
+    XdgPopup *xdgPopup = nullptr;
     WlrLayerShellV1::Layer layer = WlrLayerShellV1::Layer::BackgroundLayer;
     QString nameSpace;
     QRegion mask;
