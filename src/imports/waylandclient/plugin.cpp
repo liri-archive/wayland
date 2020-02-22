@@ -24,6 +24,7 @@
 #include <QtQml>
 
 #include <LiriWaylandClient/LiriShell>
+#include <LiriWaylandClient/WlrExportDmabufV1>
 #include <LiriWaylandClient/WlrForeignToplevelManagementV1>
 #include <LiriWaylandClient/WlrLayerShellV1>
 #include <LiriWaylandClient/WlrOutputManagementV1>
@@ -47,6 +48,10 @@ public:
 
         qmlRegisterType<LiriShell>(uri, versionMajor, versionMinor, "LiriShell");
         qmlRegisterType<LiriOsd>(uri, versionMajor, versionMinor, "LiriOsd");
+
+        qmlRegisterType<WlrExportDmabufManagerV1>(uri, versionMajor, versionMinor, "WlrExportDmabufManagerV1");
+        qmlRegisterUncreatableType<WlrExportDmabufFrameV1>(uri, versionMajor, versionMinor, "WlrExportDmabufFrameV1",
+                                                           QStringLiteral("Cannot create a WlrExportDmabufFrameV1 instance"));
 
         qmlRegisterType<WlrLayerShellV1>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
         qmlRegisterType<WlrLayerSurfaceV1Qml>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1");

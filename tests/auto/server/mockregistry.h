@@ -28,6 +28,7 @@
 
 #include "qwayland-wayland.h"
 
+#include "mockwlrexportdmabufv1.h"
 #include "mockwlrforeigntoplevelmanagementv1.h"
 #include "mockwlrlayershellv1.h"
 #include "mockwlroutputmanagementv1.h"
@@ -43,6 +44,7 @@ public:
     QtWayland::wl_compositor *compositor = nullptr;
     QMap<uint32_t, QtWayland::wl_output *> outputs;
     QtWayland::wl_shm *shm = nullptr;
+    MockWlrExportDmabufManagerV1 *wlrExportDmabuf = nullptr;
     MockWlrForeignToplevelManagerV1 *wlrForeignToplevel = nullptr;
     MockWlrLayerShellV1 *wlrLayerShell = nullptr;
     MockWlrOutputManagerV1 *wlrOutputManager = nullptr;

@@ -28,6 +28,7 @@
 #include <LiriWaylandServer/KdeServerDecoration>
 #include <LiriWaylandServer/LiriDecoration>
 #include <LiriWaylandServer/WaylandLiriShell>
+#include <LiriWaylandServer/WaylandWlrExportDmabufV1>
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrScreencopyV1>
@@ -40,6 +41,7 @@ Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(KdeServerDecorationManager)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(LiriDecorationManager)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriShell)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriOsd)
+Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrExportDmabufManagerV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrForeignToplevelManagerV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrLayerShellV1)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandWlrOutputManagerV1)
@@ -71,6 +73,10 @@ public:
 
         qmlRegisterType<WaylandLiriShellQuickExtension>(uri, versionMajor, versionMinor, "LiriShell");
         qmlRegisterType<WaylandLiriOsdQuickExtension>(uri, versionMajor, versionMinor, "LiriOsd");
+
+        qmlRegisterType<WaylandWlrExportDmabufManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrExportDmabufManagerV1");
+        qmlRegisterUncreatableType<WaylandWlrExportDmabufFrameV1>(uri, versionMajor, versionMinor, "WlrExportDmabufFrameV1",
+                                                                  QStringLiteral("Cannot create instance of WlrExportDmabufFrameV1"));
 
         qmlRegisterType<WaylandWlrForeignToplevelManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrForeignToplevelManagerV1");
         qmlRegisterType<WaylandWlrForeignToplevelHandleV1Qml>(uri, versionMajor, versionMinor, "WlrForeignToplevelHandleV1");

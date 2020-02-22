@@ -24,6 +24,7 @@
 #include <QtTest>
 #include <QMargins>
 
+#include <LiriWaylandServer/WaylandWlrExportDmabufV1>
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrOutputManagerV1>
@@ -39,6 +40,7 @@ public:
     TestWaylandServer(QObject *parent = nullptr);
 
 private slots:
+    void wlrExportDmabuf();
     void wlrForeignToplevel();
     void wlrLayer();
     void wlrOutputManager();
@@ -48,6 +50,87 @@ private slots:
 TestWaylandServer::TestWaylandServer(QObject *parent)
     : QObject(parent)
 {
+}
+
+class WlrExportDmabufCompositor : public TestCompositor
+{
+    Q_OBJECT
+public:
+    WlrExportDmabufCompositor()
+        : TestCompositor()
+        , manager(this)
+    {
+        connect(&manager, &WaylandWlrExportDmabufManagerV1::outputCaptureRequested, this,
+                [this](WaylandWlrExportDmabufFrameV1 *f) {
+            frame = f;
+        });
+    }
+
+    WaylandWlrExportDmabufManagerV1 manager;
+    WaylandWlrExportDmabufFrameV1 *frame = nullptr;
+};
+
+void TestWaylandServer::wlrExportDmabuf()
+{
+    WlrExportDmabufCompositor compositor;
+    compositor.create();
+
+    QWaylandOutputMode serverMode(QSize(1024, 768), 60000);
+    compositor.defaultOutput()->addMode(serverMode, true);
+    compositor.defaultOutput()->setCurrentMode(serverMode);
+
+    QSignalSpy capturedSpy(&compositor.manager, SIGNAL(outputCaptureRequested(WaylandWlrExportDmabufFrameV1*)));
+
+    MockClient client;
+    QTRY_VERIFY(client.registry->wlrExportDmabuf);
+
+    auto *output = client.registry->outputs.first()->object();
+    auto *frameObject = client.registry->wlrExportDmabuf->capture_output(1, output);
+    QTRY_VERIFY(frameObject);
+
+    auto *frame = new MockWlrExportDmabufFrameV1(frameObject);
+    QTRY_VERIFY(frame->isInitialized());
+
+    QTRY_VERIFY(compositor.frame);
+    QCOMPARE(capturedSpy.count(), 1);
+
+    compositor.flushClients();
+
+    compositor.frame->frame(
+                QSize(100, 100), QPoint(50, 50),
+                WaylandWlrExportDmabufFrameV1::YInvert,
+                WaylandWlrExportDmabufFrameV1::Transient,
+                42, 69, 1);
+    compositor.flushClients();
+    QTRY_VERIFY(frame->frame.size.isValid());
+    QCOMPARE(frame->frame.size, QSize(100, 100));
+    QCOMPARE(frame->frame.offset, QPoint(50, 50));
+    QCOMPARE(frame->frame.bufferFlags, WaylandWlrExportDmabufFrameV1::YInvert);
+    QCOMPARE(frame->frame.flags, MockWlrExportDmabufFrameV1::flags_transient);
+    QCOMPARE(frame->frame.format, 42);
+    QCOMPARE(frame->frame.modifier, 69);
+    QCOMPARE(frame->frame.numObjects, 1);
+    QCOMPARE(frame->frame.objects.capacity(), 1);
+
+    compositor.frame->object(0, 0, 1024, 0, 100 * 100 * 24, 0);
+    compositor.flushClients();
+    QTRY_COMPARE(frame->frame.objects.size(), 1);
+    QVERIFY(frame->frame.objects.first()->fd > 0);
+    QCOMPARE(frame->frame.objects.first()->size, 1024);
+    QCOMPARE(frame->frame.objects.first()->offset, 0);
+    QCOMPARE(frame->frame.objects.first()->stride, 100 * 100 * 24);
+    QCOMPARE(frame->frame.objects.first()->planeIndex, 0);
+
+    compositor.frame->ready(13, 37);
+    compositor.flushClients();
+    QTRY_COMPARE(frame->time.tv_sec, 13);
+    QCOMPARE(frame->time.tv_nsec, 37);
+    QCOMPARE(frame->ready, true);
+
+    compositor.frame->cancel(WaylandWlrExportDmabufFrameV1::Resizing);
+    compositor.flushClients();
+    QTRY_COMPARE(frame->cancellation.canceled, true);
+    QCOMPARE(frame->cancellation.reason, MockWlrExportDmabufFrameV1::cancel_reason_resizing);
 }
 
 class WlrForeignToplevelCompositor : public TestCompositor

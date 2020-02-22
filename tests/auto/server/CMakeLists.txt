@@ -4,6 +4,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wayland.xml"
     BASENAME "wayland")
 ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wlr-export-dmabuf-unstable-v1.xml"
+    BASENAME "wlr-export-dmabuf-unstable-v1")
+ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wlr-foreign-toplevel-management-unstable-v1.xml"
     BASENAME "wlr-foreign-toplevel-management-unstable-v1")
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -23,6 +26,8 @@ liri_add_test(tst_waylandserver
         mockclient.h
         mockregistry.cpp
         mockregistry.h
+        mockwlrexportdmabufv1.cpp
+        mockwlrexportdmabufv1.h
         mockwlrforeigntoplevelmanagementv1.cpp
         mockwlrforeigntoplevelmanagementv1.h
         mockwlrlayershellv1.cpp
