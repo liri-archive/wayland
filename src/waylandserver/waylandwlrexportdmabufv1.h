@@ -75,14 +75,15 @@ public:
     QWaylandOutput *output() const;
 
     Q_INVOKABLE void frame(const QSize &size, const QPoint &offset,
-                           BufferFlags bufferFlags, FrameFlags flags,
+                           WaylandWlrExportDmabufFrameV1::BufferFlags bufferFlags,
+                           WaylandWlrExportDmabufFrameV1::FrameFlags flags,
                            quint32 drmFormat, quint64 modifier,
                            quint32 numObjects);
     Q_INVOKABLE void object(quint32 index, quint32 fd, quint32 size,
                             quint32 offset, quint32 stride,
                             quint32 planeIndex);
     Q_INVOKABLE void ready(quint64 tv_sec, quint32 tv_nsec);
-    Q_INVOKABLE void cancel(CancelReason reason);
+    Q_INVOKABLE void cancel(WaylandWlrExportDmabufFrameV1::CancelReason reason);
 
 private:
     WaylandWlrExportDmabufFrameV1Private *const d_ptr = nullptr;

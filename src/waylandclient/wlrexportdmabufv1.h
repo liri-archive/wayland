@@ -68,14 +68,15 @@ public:
 
 Q_SIGNALS:
     void frame(const QSize &size, const QPoint &offset,
-               BufferFlags bufferFlags, FrameFlags flags,
+               WlrExportDmabufFrameV1::BufferFlags bufferFlags,
+               WlrExportDmabufFrameV1::FrameFlags flags,
                quint32 format, quint64 modifier,
                quint32 numObjects);
     void object(quint32 index, quint32 fd, quint32 size,
                 quint32 offset, quint32 stride,
                 quint32 planeIndex);
     void ready(quint64 tv_sec, quint32 tv_nsec);
-    void cancel(CancelReason reason);
+    void cancel(WlrExportDmabufFrameV1::CancelReason reason);
 
 private:
     WlrExportDmabufFrameV1Private *const d_ptr = nullptr;
