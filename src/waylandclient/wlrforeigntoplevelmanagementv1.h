@@ -65,7 +65,7 @@ class LIRIWAYLANDCLIENT_EXPORT WlrForeignToplevelHandleV1 : public QObject
     Q_PROPERTY(bool minimized READ isMinimized NOTIFY minimizedChanged)
     Q_PROPERTY(bool maximized READ isMaximized NOTIFY maximizedChanged)
     Q_PROPERTY(bool fullscreen READ isFullscreen NOTIFY fullscreenChanged)
-    Q_PROPERTY(bool actived READ isActived NOTIFY activatedChanged)
+    Q_PROPERTY(bool active READ isActive NOTIFY activeChanged)
 public:
     explicit WlrForeignToplevelHandleV1(QObject *parent = nullptr);
     ~WlrForeignToplevelHandleV1();
@@ -76,7 +76,7 @@ public:
     bool isMinimized() const;
     bool isMaximized() const;
     bool isFullscreen() const;
-    bool isActived() const;
+    bool isActive() const;
 
     Q_INVOKABLE void setMinimized();
     Q_INVOKABLE void unsetMinimized();
@@ -99,7 +99,7 @@ Q_SIGNALS:
     void minimizedChanged(bool minimized);
     void maximizedChanged(bool maximized);
     void fullscreenChanged(bool fullscreen);
-    void activatedChanged(bool activated);
+    void activeChanged(bool activated);
     void enteredOutput(QScreen *screen);
     void leftOutput(QScreen *screen);
     void closed();

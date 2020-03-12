@@ -137,7 +137,7 @@ void WlrForeignToplevelHandleV1Private::zwlr_foreign_toplevel_handle_v1_done()
     }
     if (effective.activated != pending.activated) {
         effective.activated = pending.activated;
-        emit q->activatedChanged(effective.activated);
+        emit q->activeChanged(effective.activated);
     }
 }
 
@@ -212,7 +212,7 @@ bool WlrForeignToplevelHandleV1::isFullscreen() const
     return d->effective.fullscreen;
 }
 
-bool WlrForeignToplevelHandleV1::isActived() const
+bool WlrForeignToplevelHandleV1::isActive() const
 {
     Q_D(const WlrForeignToplevelHandleV1);
     return d->effective.activated;
