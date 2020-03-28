@@ -158,6 +158,11 @@ WlrScreencopyFrameV1Private::WlrScreencopyFrameV1Private(WlrScreencopyFrameV1 *s
 
 WlrScreencopyFrameV1Private::~WlrScreencopyFrameV1Private()
 {
+    if (buffer.data)
+        munmap(static_cast<void *>(buffer.data), buffer.stride * buffer.size.height());
+    if (buffer.shmBuffer)
+        wl_buffer_destroy(buffer.shmBuffer);
+
     destroy();
 }
 
