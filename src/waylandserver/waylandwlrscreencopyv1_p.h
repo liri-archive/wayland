@@ -72,7 +72,6 @@ public:
     ~WaylandWlrScreencopyFrameV1Private();
 
     void setup();
-    QImage grabItem(QQuickItem *item);
     void copy(Resource *resource, struct ::wl_resource *buffer_res);
 
     WaylandWlrScreencopyFrameEventFilter *filterObject = nullptr;

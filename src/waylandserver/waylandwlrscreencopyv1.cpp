@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 #include <QDateTime>
-#include <QEventLoop>
 #include <QPainter>
 #include <QQuickItem>
 #include <QQuickItemGrabResult>
@@ -229,19 +228,6 @@ void WaylandWlrScreencopyFrameV1Private::setup()
     tv_sec_lo = secs & 0xffffffff;
 }
 
-QImage WaylandWlrScreencopyFrameV1Private::grabItem(QQuickItem *item)
-{
-    QSharedPointer<QQuickItemGrabResult> result = item->grabToImage();
-    if (result.isNull() || result->image().isNull()) {
-        QEventLoop loop;
-        QObject::connect(result.data(), &QQuickItemGrabResult::ready,
-                         &loop, &QEventLoop::quit);
-        loop.exec();
-    }
-
-    return result->image();
-}
-
 void WaylandWlrScreencopyFrameV1Private::copy(Resource *resource, wl_resource *buffer_res)
 {
     Q_Q(WaylandWlrScreencopyFrameV1);
@@ -374,38 +360,57 @@ void WaylandWlrScreencopyFrameV1::copy(const QString &childToCapture)
         wl_shm_buffer_begin_access(d->buffer);
         void *data = wl_shm_buffer_get_data(d->buffer);
 
+        auto sendReadyFunc = [d]() {
+            wl_shm_buffer_end_access(d->buffer);
+
+            d->send_flags(static_cast<uint32_t>(d->flags));
+            d->send_ready(d->tv_sec_hi, d->tv_sec_lo, 0);
+        };
+
         auto *quickWindow = qobject_cast<QQuickWindow *>(d->output->window());
         if (quickWindow) {
             // QtQuick compositors draw the software cursor as an item on top of the UI,
             // if we capture the UI layer we'll avoid the cursor
             auto *item = quickWindow->contentItem();
-            auto *uiItem = d->overlayCursor ? nullptr : quickWindow->findChild<QQuickItem *>(childToCapture);
-            QImage finalImage = d->grabItem(uiItem ? uiItem : item);
+            auto *uiItem = d->overlayCursor ? item : quickWindow->findChild<QQuickItem *>(childToCapture);
 
-            if (d->rect.x() > 0 || d->rect.y() > 0)
-                finalImage = finalImage.copy(d->rect);
+            QSharedPointer<QQuickItemGrabResult> result = uiItem->grabToImage();
 
-            // The buffer format is decided before grabbing the window contents,
-            // we don't know the QImage format at that time, so we convert it
-            // if needed
-            auto bufferFormat = static_cast<wl_shm_format>(wl_shm_buffer_get_format(d->buffer));
-            auto imageFormat = fromWaylandShmFormat(bufferFormat);
-            if (finalImage.format() != imageFormat)
-                finalImage.convertTo(imageFormat);
+            auto captureFunc = [this, d, data, item, uiItem, result]() {
+                QImage finalImage = result->image();
 
-            memcpy(data, finalImage.bits(), finalImage.sizeInBytes());
+                if (d->rect.x() > 0 || d->rect.y() > 0)
+                    finalImage = finalImage.copy(d->rect);
+
+                // The buffer format is decided before grabbing the window contents,
+                // we don't know the QImage format at that time, so we convert it
+                // if needed
+                auto bufferFormat = static_cast<wl_shm_format>(wl_shm_buffer_get_format(d->buffer));
+                auto imageFormat = fromWaylandShmFormat(bufferFormat);
+                if (finalImage.format() != imageFormat)
+                    finalImage.convertTo(imageFormat);
+
+                memcpy(data, finalImage.bits(), finalImage.sizeInBytes());
+            };
+
+            if (result.isNull() || result->image().isNull()) {
+                connect(result.data(), &QQuickItemGrabResult::ready, this, [captureFunc, sendReadyFunc] {
+                    captureFunc();
+                    sendReadyFunc();
+                });
+            } else {
+                captureFunc();
+                sendReadyFunc();
+            }
         } else {
             QRect rect = d->rect.translated(d->output->position());
 
             // Read window pixels, including the cursor if rendered
             glPixelStorei(GL_PACK_ALIGNMENT, 1);
             glReadPixels(rect.x(), rect.y(), rect.width(), rect.height(), GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+            sendReadyFunc();
         }
-
-        wl_shm_buffer_end_access(d->buffer);
-
-        d->send_flags(static_cast<uint32_t>(d->flags));
-        d->send_ready(d->tv_sec_hi, d->tv_sec_lo, 0);
     } else {
         qCWarning(lcScreencopy, "Cannot copy a frame that is not ready");
     }
