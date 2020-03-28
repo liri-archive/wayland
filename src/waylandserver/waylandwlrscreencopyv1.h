@@ -81,8 +81,7 @@ public:
     Flags flags() const;
     void setFlags(Flags flags);
 
-    Q_INVOKABLE void grabCursorItem(QQuickItem *item);
-    Q_INVOKABLE void copy();
+    Q_INVOKABLE void copy(const QString &childToCapture = QString());
 
 Q_SIGNALS:
     void flagsChanged();

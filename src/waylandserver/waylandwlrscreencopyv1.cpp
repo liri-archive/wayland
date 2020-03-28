@@ -366,20 +366,7 @@ void WaylandWlrScreencopyFrameV1::setFlags(WaylandWlrScreencopyFrameV1::Flags fl
     emit flagsChanged();
 }
 
-void WaylandWlrScreencopyFrameV1::grabCursorItem(QQuickItem *item)
-{
-    Q_D(WaylandWlrScreencopyFrameV1);
-
-    if (!d->overlayCursor) {
-        qCWarning(lcScreencopy, "Invoking grabCursorItem() on a frame with overlayCursor disabled has no effect");
-        return;
-    }
-
-    d->cursorPosition = item->position();
-    d->cursorImage = d->grabItem(item);
-}
-
-void WaylandWlrScreencopyFrameV1::copy()
+void WaylandWlrScreencopyFrameV1::copy(const QString &childToCapture)
 {
     Q_D(WaylandWlrScreencopyFrameV1);
 
@@ -389,12 +376,11 @@ void WaylandWlrScreencopyFrameV1::copy()
 
         auto *quickWindow = qobject_cast<QQuickWindow *>(d->output->window());
         if (quickWindow) {
-            QImage finalImage = d->grabItem(quickWindow->contentItem());
-
-            if (d->overlayCursor) {
-                QPainter painter(&finalImage);
-                painter.drawImage(d->cursorPosition, d->cursorImage);
-            }
+            // QtQuick compositors draw the software cursor as an item on top of the UI,
+            // if we capture the UI layer we'll avoid the cursor
+            auto *item = quickWindow->contentItem();
+            auto *uiItem = d->overlayCursor ? nullptr : quickWindow->findChild<QQuickItem *>(childToCapture);
+            QImage finalImage = d->grabItem(uiItem ? uiItem : item);
 
             if (d->rect.x() > 0 || d->rect.y() > 0)
                 finalImage = finalImage.copy(d->rect);
@@ -411,6 +397,7 @@ void WaylandWlrScreencopyFrameV1::copy()
         } else {
             QRect rect = d->rect.translated(d->output->position());
 
+            // Read window pixels, including the cursor if rendered
             glPixelStorei(GL_PACK_ALIGNMENT, 1);
             glReadPixels(rect.x(), rect.y(), rect.width(), rect.height(), GL_RGBA, GL_UNSIGNED_BYTE, data);
         }

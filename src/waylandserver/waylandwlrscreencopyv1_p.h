@@ -87,8 +87,6 @@ public:
     struct ::wl_shm_buffer *buffer = nullptr;
     quint32 tv_sec_hi = 0, tv_sec_lo = 0;
     bool ready = false;
-    QPointF cursorPosition;
-    QImage cursorImage;
 
     static WaylandWlrScreencopyFrameV1Private *get(WaylandWlrScreencopyFrameV1 *frame) { return frame ? frame->d_func() : nullptr; }
 
