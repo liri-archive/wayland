@@ -86,7 +86,7 @@ void WaylandWlrScreencopyManagerV1Private::zwlr_screencopy_manager_v1_capture_ou
     auto *screencopyFramePriv = WaylandWlrScreencopyFrameV1Private::get(screencopyFrame);
     screencopyFramePriv->overlayCursor = overlay_cursor == 1;
     screencopyFramePriv->output = output;
-    screencopyFramePriv->rect = output->geometry();
+    screencopyFramePriv->rect = QRect(QPoint(0, 0), output->geometry().size());
     screencopyFramePriv->stride = 4 * output->geometry().width();
     screencopyFramePriv->init(resource->client(), frame, resource->version());
 
