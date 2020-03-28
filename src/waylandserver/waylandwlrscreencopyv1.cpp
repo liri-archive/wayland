@@ -33,6 +33,27 @@
 #include "waylandwlrscreencopyv1_p.h"
 #include "logging_p.h"
 
+static inline QImage::Format fromWaylandShmFormat(wl_shm_format format)
+{
+    switch (format) {
+    case WL_SHM_FORMAT_XRGB8888: return QImage::Format_RGB32;
+    case WL_SHM_FORMAT_ARGB8888: return QImage::Format_ARGB32_Premultiplied;
+    case WL_SHM_FORMAT_RGB565: return QImage::Format_RGB16;
+    case WL_SHM_FORMAT_XRGB1555: return QImage::Format_RGB555;
+    case WL_SHM_FORMAT_RGB888: return QImage::Format_RGB888;
+    case WL_SHM_FORMAT_XRGB4444: return QImage::Format_RGB444;
+    case WL_SHM_FORMAT_ARGB4444: return QImage::Format_ARGB4444_Premultiplied;
+    case WL_SHM_FORMAT_XBGR8888: return QImage::Format_RGBX8888;
+    case WL_SHM_FORMAT_ABGR8888: return QImage::Format_RGBA8888_Premultiplied;
+    case WL_SHM_FORMAT_XBGR2101010: return QImage::Format_BGR30;
+    case WL_SHM_FORMAT_ABGR2101010: return QImage::Format_A2BGR30_Premultiplied;
+    case WL_SHM_FORMAT_XRGB2101010: return QImage::Format_RGB30;
+    case WL_SHM_FORMAT_ARGB2101010: return QImage::Format_A2RGB30_Premultiplied;
+    case WL_SHM_FORMAT_C8: return QImage::Format_Alpha8;
+    default: return QImage::Format_Invalid;
+    }
+}
+
 /*
  * WaylandWlrScreencopyFrameEventFilter
  */
@@ -200,7 +221,7 @@ WaylandWlrScreencopyFrameV1Private::~WaylandWlrScreencopyFrameV1Private()
 
 void WaylandWlrScreencopyFrameV1Private::setup()
 {
-    send_buffer(WL_SHM_FORMAT_XRGB8888, rect.width(), rect.height(), stride);
+    send_buffer(requestedBufferFormat, rect.width(), rect.height(), stride);
 
     QDateTime dateTime(QDateTime::currentDateTimeUtc());
     qint64 secs = dateTime.toSecsSinceEpoch();
@@ -248,7 +269,7 @@ void WaylandWlrScreencopyFrameV1Private::copy(Resource *resource, wl_resource *b
     int32_t bufferHeight = wl_shm_buffer_get_height(shmBuffer);
     int32_t bufferStride = wl_shm_buffer_get_stride(shmBuffer);
 
-    if (bufferFormat != WL_SHM_FORMAT_XRGB8888 || bufferWidth != rect.width() ||
+    if (bufferFormat != requestedBufferFormat || bufferWidth != rect.width() ||
             bufferHeight != rect.height() || bufferStride != stride) {
         qCWarning(lcScreencopy, "Invalid buffer attributes");
         wl_resource_post_error(resource->handle, error_invalid_buffer,
@@ -366,11 +387,9 @@ void WaylandWlrScreencopyFrameV1::copy()
         wl_shm_buffer_begin_access(d->buffer);
         void *data = wl_shm_buffer_get_data(d->buffer);
 
-        QImage finalImage;
-
         auto *quickWindow = qobject_cast<QQuickWindow *>(d->output->window());
         if (quickWindow) {
-            finalImage = d->grabItem(quickWindow->contentItem());
+            QImage finalImage = d->grabItem(quickWindow->contentItem());
 
             if (d->overlayCursor) {
                 QPainter painter(&finalImage);
@@ -379,6 +398,14 @@ void WaylandWlrScreencopyFrameV1::copy()
 
             if (d->rect.x() > 0 || d->rect.y() > 0)
                 finalImage = finalImage.copy(d->rect);
+
+            // The buffer format is decided before grabbing the window contents,
+            // we don't know the QImage format at that time, so we convert it
+            // if needed
+            auto bufferFormat = static_cast<wl_shm_format>(wl_shm_buffer_get_format(d->buffer));
+            auto imageFormat = fromWaylandShmFormat(bufferFormat);
+            if (finalImage.format() != imageFormat)
+                finalImage.convertTo(imageFormat);
 
             memcpy(data, finalImage.bits(), finalImage.sizeInBytes());
         } else {

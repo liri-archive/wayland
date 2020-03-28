@@ -83,6 +83,7 @@ public:
     bool withDamage = false;
     QRect damageRect;
     uint32_t stride = 0;
+    wl_shm_format requestedBufferFormat = WL_SHM_FORMAT_ABGR8888;
     struct ::wl_shm_buffer *buffer = nullptr;
     quint32 tv_sec_hi = 0, tv_sec_lo = 0;
     bool ready = false;
