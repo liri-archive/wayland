@@ -26,6 +26,7 @@
 
 #include <LiriWaylandServer/GtkShell>
 #include <LiriWaylandServer/KdeServerDecoration>
+#include <LiriWaylandServer/WaylandLiriColorPicker>
 #include <LiriWaylandServer/LiriDecoration>
 #include <LiriWaylandServer/WaylandLiriShell>
 #include <LiriWaylandServer/WaylandWlrExportDmabufV1>
@@ -38,6 +39,7 @@
 
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(GtkShell)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(KdeServerDecorationManager)
+Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriColorPickerManager)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(LiriDecorationManager)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriShell)
 Q_COMPOSITOR_DECLARE_QUICK_EXTENSION_CLASS(WaylandLiriOsd)
@@ -66,6 +68,8 @@ public:
         qmlRegisterType<KdeServerDecorationManagerQuickExtension>(uri, versionMajor, versionMinor, "KdeServerDecorationManager");
         qmlRegisterUncreatableType<KdeServerDecoration>(uri, versionMajor, versionMinor, "KdeServerDecoration",
                                                         QStringLiteral("Cannot create instance of KdeServerDecoration"));
+
+        qmlRegisterType<WaylandLiriColorPickerManagerQuickExtension>(uri, versionMajor, versionMinor, "LiriColorPickerManager");
 
         qmlRegisterType<LiriDecorationManagerQuickExtension>(uri, versionMajor, versionMinor, "LiriDecorationManager");
         qmlRegisterUncreatableType<LiriDecoration>(uri, versionMajor, versionMinor, "LiriDecoration",

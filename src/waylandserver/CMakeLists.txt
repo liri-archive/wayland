@@ -25,6 +25,9 @@ ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/wlr-screencopy-unstable-v1.xml"
     BASENAME "wlr-screencopy-unstable-v1")
 ecm_add_qtwayland_server_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-color-picker.xml"
+    BASENAME "liri-color-picker")
+ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-shell.xml"
     BASENAME "liri-shell")
 
@@ -47,6 +50,9 @@ liri_add_module(WaylandServer
         liridecoration.cpp
         liridecoration.h
         liridecoration_p.h
+        waylandliricolorpicker.cpp
+        waylandliricolorpicker.h
+        waylandliricolorpicker_p.h
         waylandlirishell.cpp
         waylandlirishell.h
         waylandlirishell_p.h
@@ -71,6 +77,7 @@ liri_add_module(WaylandServer
     FORWARDING_HEADERS
         GtkShell
         KdeServerDecoration
+        WaylandLiriColorPicker
         LiriDecoration
         WaylandLiriShell
         WaylandWlrExportDmabufV1
@@ -80,6 +87,7 @@ liri_add_module(WaylandServer
         WaylandWlrScreencopyV1
     PRIVATE_HEADERS
         gtkshell_p.h
+        waylandliricolorpicker_p.h
         waylandlirishell_p.h
         waylandwlrexportdmabufv1_p.h
         waylandwlrforeigntoplevelmanagementv1_p.h
@@ -89,6 +97,8 @@ liri_add_module(WaylandServer
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-gtk-shell-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-server-decoration.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-server-decoration-server-protocol.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-color-picker.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-decoration.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-decoration-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-shell.h"

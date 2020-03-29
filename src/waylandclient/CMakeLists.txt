@@ -4,6 +4,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${WaylandProtocols_DATADIR}/stable/xdg-shell/xdg-shell.xml"
     BASENAME "xdg-shell")
 ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-color-picker.xml"
+    BASENAME "liri-color-picker")
+ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-shell.xml"
     BASENAME "liri-shell")
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -23,6 +26,7 @@ ecm_add_qtwayland_client_protocol(SOURCES
     BASENAME "wlr-screencopy-unstable-v1")
 
 set(_generated_files
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-export-dmabuf-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-client-protocol.h"
@@ -36,6 +40,9 @@ liri_add_module(WaylandClient
     DESCRIPTION
         "Wayland client extensions"
     SOURCES
+        liricolorpicker.cpp
+        liricolorpicker.h
+        liricolorpicker_p.h
         lirishell.cpp
         lirishell.h
         lirishell_p.h
@@ -62,6 +69,7 @@ liri_add_module(WaylandClient
         xdgshell_p.h
         ${SOURCES}
     FORWARDING_HEADERS
+        LiriColorPicker
         LiriShell
         WlrExportDmabufV1
         WlrForeignToplevelManagementV1
@@ -70,6 +78,7 @@ liri_add_module(WaylandClient
         WlrScreencopyV1
         XdgShell
     PRIVATE_HEADERS
+        liricolorpicker_p.h
         lirishell_p.h
         wlrexportdmabufv1_p.h
         wlrforeigntoplevelmanagementv1_p.h
@@ -77,6 +86,8 @@ liri_add_module(WaylandClient
         wlroutputmanagementv1_p.h
         wlrscreencopyv1_p.h
         xdgshell_p.h
+        "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-client-protocol.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-color-picker.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-shell.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-export-dmabuf-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-foreign-toplevel-management-unstable-v1.h"

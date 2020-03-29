@@ -27,6 +27,7 @@
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(lcWaylandClient)
+Q_DECLARE_LOGGING_CATEGORY(lcColorPickerClient)
 Q_DECLARE_LOGGING_CATEGORY(lcScreencopy)
 Q_DECLARE_LOGGING_CATEGORY(lcXdgShell)
 

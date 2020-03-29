@@ -25,4 +25,5 @@
 
 Q_LOGGING_CATEGORY(lcWaylandServer, "liri.waylandserver", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcExportDmabuf, "liri.waylandserver.exportdmabuf", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcColorPickerServer, "liri.waylandserver.colorpicker", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcScreencopy, "liri.waylandserver.screencopy", QtInfoMsg)
