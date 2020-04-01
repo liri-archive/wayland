@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
+#include <QGuiApplication>
 #include <QQuickItem>
 #include <QQuickItemGrabResult>
 #include <QQuickWindow>
@@ -26,59 +27,8 @@ void WaylandLiriColorPicker::liri_color_picker_destroy_resource(Resource *resour
 {
     Q_UNUSED(resource)
 
-    WaylandLiriColorPickerManagerPrivate::get(manager)->pickers.remove(output);
+    WaylandLiriColorPickerManagerPrivate::get(manager)->pickers.removeOne(this);
     deleteLater();
-}
-
-void WaylandLiriColorPicker::liri_color_picker_pick_at_location(Resource *resource,
-                                                                uint32_t serial,
-                                                                uint32_t x, uint32_t y)
-{
-    Q_UNUSED(resource)
-
-    QColor color;
-
-    if (output->window()) {
-        auto *quickWindow = qobject_cast<QQuickWindow *>(output->window());
-        if (quickWindow) {
-            color = quickWindow->grabWindow().pixelColor(x, y);
-        } else {
-            auto winId = output->window()->winId();
-            auto pixmap = output->window()->screen()->grabWindow(winId);
-            color = pixmap.toImage().pixelColor(x, y);
-        }
-    }
-
-    if (color.isValid())
-        send_picked(serial, static_cast<uint32_t>(color.rgba()));
-}
-
-void WaylandLiriColorPicker::liri_color_picker_pick_interactively(Resource *resource,
-                                                                  struct ::wl_resource *seat_res,
-                                                                  uint32_t serial)
-{
-    Q_UNUSED(resource)
-
-    if (output->window()) {
-        auto *seat = QWaylandSeat::fromSeatResource(seat_res);
-        if (!seat) {
-            auto seatId = wl_resource_get_id(seat_res);
-            qCWarning(lcColorPickerServer, "Resource wl_seat@%d doesn't exist", seatId);
-            wl_resource_post_error(resource->handle, WL_DISPLAY_ERROR_INVALID_OBJECT,
-                                   "resource wl_seat@%d doesn't exit", seatId);
-            return;
-        }
-
-        if (filter) {
-            qCWarning(lcColorPickerServer, "Previous interactive color picking is still in progress");
-            wl_resource_post_error(resource->handle, error_still_in_progress,
-                                   "previous interactive color picking is still in progress");
-            return;
-        }
-
-        filter = new WaylandLiriColorPickerEventFilter(this, seat, serial, this);
-        output->window()->installEventFilter(filter.data());
-    }
 }
 
 void WaylandLiriColorPicker::liri_color_picker_destroy(Resource *resource)
@@ -92,16 +42,14 @@ void WaylandLiriColorPicker::liri_color_picker_destroy(Resource *resource)
 
 WaylandLiriColorPickerEventFilter::WaylandLiriColorPickerEventFilter(WaylandLiriColorPicker *picker,
                                                                      QWaylandSeat *seat,
-                                                                     quint32 serial,
                                                                      QObject *parent)
     : QObject(parent)
     , m_picker(picker)
     , m_seat(seat)
-    , m_serial(serial)
 {
 }
 
-bool WaylandLiriColorPickerEventFilter::eventFilter(QObject *watched, QEvent *event)
+bool WaylandLiriColorPickerEventFilter::eventFilter(QObject *receiver, QEvent *event)
 {
     // When the mouse button is pressed, we select the pixel at the pointer
     // location and then send the result back to the client when the button
@@ -109,13 +57,27 @@ bool WaylandLiriColorPickerEventFilter::eventFilter(QObject *watched, QEvent *ev
     if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonRelease) {
         auto *mouseEvent = static_cast<QMouseEvent *>(event);
 
+        // Find the target window
+        QWindow *foundWindow = nullptr;
+        auto windows = QGuiApplication::topLevelWindows();
+        for (auto *window : qAsConst(windows)) {
+            if (window->isVisible() && window->geometry().contains(mouseEvent->globalPos())) {
+                foundWindow = window;
+                break;
+            }
+        }
+        if (!foundWindow) {
+            qCWarning(lcColorPickerServer, "Unable to find window from mouse event");
+            return false;
+        }
+
         // Verify that this mouse event is for the target seat
         auto *detectedSeat = m_seat->compositor()->seatFor(mouseEvent);
         if (detectedSeat == m_seat) {
             if (event->type() == QEvent::MouseButtonPress) {
-                auto pos = mouseEvent->localPos();
+                auto pos = mouseEvent->localPos().toPoint();
 
-                auto *quickWindow = qobject_cast<QQuickWindow *>(m_picker->output->window());
+                auto *quickWindow = qobject_cast<QQuickWindow *>(foundWindow);
                 if (quickWindow) {
                     auto layerName = m_picker->manager->layerName();
                     auto *item = quickWindow->contentItem();
@@ -131,18 +93,18 @@ bool WaylandLiriColorPickerEventFilter::eventFilter(QObject *watched, QEvent *ev
                         loop.exec();
                     }
 
-                    m_color = result->image().pixelColor(pos.toPoint());
+                    m_color = result->image().pixelColor(pos);
                 } else {
-                    auto winId = m_picker->output->window()->winId();
-                    auto pixmap = m_picker->output->window()->screen()->grabWindow(winId);
-                    m_color = pixmap.toImage().pixelColor(pos.toPoint());
+                    auto winId = foundWindow->winId();
+                    auto pixmap = foundWindow->screen()->grabWindow(winId);
+                    m_color = pixmap.toImage().pixelColor(pos);
                 }
 
                 return true;
             } else if (event->type() == QEvent::MouseButtonRelease) {
-                m_picker->send_picked(m_serial, static_cast<uint32_t>(m_color.rgba()));
+                m_picker->send_picked(static_cast<uint32_t>(m_color.rgba()));
 
-                m_picker->output->removeEventFilter(this);
+                QGuiApplication::instance()->removeEventFilter(this);
                 deleteLater();
 
                 return true;
@@ -150,7 +112,7 @@ bool WaylandLiriColorPickerEventFilter::eventFilter(QObject *watched, QEvent *ev
         }
     }
 
-    return QObject::eventFilter(watched, event);
+    return QObject::eventFilter(receiver, event);
 }
 
 /*
@@ -163,9 +125,9 @@ WaylandLiriColorPickerManagerPrivate::WaylandLiriColorPickerManagerPrivate(Wayla
 {
 }
 
-void WaylandLiriColorPickerManagerPrivate::liri_color_picker_manager_create_picker(Resource *resource,
-                                                                                   uint32_t id,
-                                                                                   struct ::wl_resource *output_res)
+void WaylandLiriColorPickerManagerPrivate::liri_color_picker_manager_pick_at_location(
+        Resource *resource, uint32_t id, struct ::wl_resource *output_res,
+        uint32_t x, uint32_t y)
 {
     Q_Q(WaylandLiriColorPickerManager);
 
@@ -178,7 +140,14 @@ void WaylandLiriColorPickerManagerPrivate::liri_color_picker_manager_create_pick
         return;
     }
 
-    if (pickers.contains(output)) {
+    bool found = false;
+    for (auto *picker : qAsConst(pickers)) {
+        if (picker->output == output) {
+            found = true;
+            break;
+        }
+    }
+    if (found) {
         qCWarning(lcColorPickerServer, "A color picker for the same output already exist");
         wl_resource_post_error(resource->handle, error_already_constructed,
                                "a color picker already exist for wl_output@%d", outputId);
@@ -189,7 +158,54 @@ void WaylandLiriColorPickerManagerPrivate::liri_color_picker_manager_create_pick
     picker->manager = q;
     picker->output = output;
     picker->init(resource->client(), id, resource->version());
-    pickers[output] = picker;
+    pickers.append(picker);
+
+    QColor color;
+
+    if (output->window()) {
+        auto *quickWindow = qobject_cast<QQuickWindow *>(output->window());
+        if (quickWindow) {
+            color = quickWindow->grabWindow().pixelColor(x, y);
+        } else {
+            auto winId = output->window()->winId();
+            auto pixmap = output->window()->screen()->grabWindow(winId);
+            color = pixmap.toImage().pixelColor(x, y);
+        }
+    }
+
+    if (color.isValid())
+        picker->send_picked(static_cast<uint32_t>(color.rgba()));
+}
+
+void WaylandLiriColorPickerManagerPrivate::liri_color_picker_manager_pick_interactively(Resource *resource, uint32_t id,
+                                                                                        struct ::wl_resource *seat_res)
+{
+    Q_Q(WaylandLiriColorPickerManager);
+
+    auto *seat = QWaylandSeat::fromSeatResource(seat_res);
+    if (!seat) {
+        auto seatId = wl_resource_get_id(seat_res);
+        qCWarning(lcColorPickerServer, "Resource wl_seat@%d doesn't exist", seatId);
+        wl_resource_post_error(resource->handle, WL_DISPLAY_ERROR_INVALID_OBJECT,
+                               "resource wl_seat@%d doesn't exit", seatId);
+        return;
+    }
+
+    auto *picker = new WaylandLiriColorPicker(q);
+    picker->manager = q;
+    picker->output = nullptr;
+    picker->init(resource->client(), id, resource->version());
+    pickers.append(picker);
+
+    if (picker->filter) {
+        qCWarning(lcColorPickerServer, "Previous interactive color picking is still in progress");
+        wl_resource_post_error(resource->handle, error_still_in_progress,
+                               "previous interactive color picking is still in progress");
+        return;
+    }
+
+    picker->filter = new WaylandLiriColorPickerEventFilter(picker, seat, picker);
+    QGuiApplication::instance()->installEventFilter(picker->filter.data());
 }
 
 /*

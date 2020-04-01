@@ -25,15 +25,15 @@ public:
     LiriColorPickerManager();
     ~LiriColorPickerManager();
 
-    Q_INVOKABLE quint32 pickAtLocation(QScreen *screen, const QPoint &location);
-    Q_INVOKABLE quint32 pickInteractively(QScreen *screen);
+    Q_INVOKABLE void pickAtLocation(QScreen *screen, const QPoint &location);
+    Q_INVOKABLE void pickInteractively();
 
     void init(struct ::wl_registry *registry, int id, int version);
 
     static const struct ::wl_interface *interface();
 
 Q_SIGNALS:
-    void colorPicked(quint32 serial, const QColor &color);
+    void colorPicked(const QColor &color);
 
 private:
     LiriColorPickerManagerPrivate *const d_ptr = nullptr;

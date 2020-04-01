@@ -34,36 +34,7 @@
 
     <enum name="error">
       <entry name="already_constructed" value="0" summary="a color picker for the same output already exist"/>
-    </enum>
-
-    <request name="create_picker">
-      <description summary="create a picker object">
-        Instantiate an interface extention for the given wl_output to
-        pick the color from a specific location.
-      </description>
-      <arg name="id" type="new_id" interface="liri_color_picker"/>
-      <arg name="output" type="object" interface="wl_output"/>
-    </request>
-
-    <request name="destroy" type="destructor">
-      <description summary="destroy the manager">
-        All objects created by the manager will still remain valid, until their
-        appropriate destroy request has been called.
-      </description>
-    </request>
-  </interface>
-
-  <interface name="liri_color_picker" version="1">
-    <description summary="color picker">
-      This object represent a single color picker request for an output.
-      It is possible to pick the color of a well known location within the
-      output bounds, or start an interactive request to pick the color of
-      the mouse pointer location at the time when the user presses a
-      mouse button.
-    </description>
-
-    <enum name="error">
-      <entry name="still_in_progress" value="0" summary="another pick_interactive request is still in progress"/>
+      <entry name="still_in_progress" value="1" summary="another pick_interactive request is still in progress"/>
     </enum>
 
     <request name="pick_at_location">
@@ -71,7 +42,8 @@
         Pick the color of a pixel at specific coordinates within the
         bounds of the output.
       </description>
-      <arg name="serial" type="uint" summary="serial number of the pick request"/>
+      <arg name="id" type="new_id" interface="liri_color_picker"/>
+      <arg name="output" type="object" interface="wl_output"/>
       <arg name="x" type="uint" summary="x coordinates in output space"/>
       <arg name="y" type="uint" summary="y coordinates in output space"/>
     </request>
@@ -86,15 +58,29 @@
         regardless of what liri_color_picker object originated it and regardless
         of which output is involved.
       </description>
+      <arg name="id" type="new_id" interface="liri_color_picker"/>
       <arg name="seat" type="object" interface="wl_seat" summary="seat whose pointer is used"/>
-      <arg name="serial" type="uint" summary="serial number of the pick_interactive request"/>
     </request>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the manager">
+        All objects created by the manager will still remain valid, until their
+        appropriate destroy request has been called.
+      </description>
+    </request>
+  </interface>
+
+  <interface name="liri_color_picker" version="1">
+    <description summary="color picker">
+      This object is created in response to a color picker request.
+      The picked event is emitted as soon as the operation is completed,
+      and when that happens the client has to destroy the object.
+    </description>
 
     <event name="picked">
       <description summary="result of the pick request">
         The ARGB color of the selected pixel is available.
       </description>
-      <arg name="serial" type="uint" summary="serial number of the request"/>
       <arg name="value" type="uint" summary="ARGB color value"/>
     </event>
 

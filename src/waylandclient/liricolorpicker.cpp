@@ -8,7 +8,14 @@
 
 #include <wayland-client.h>
 
-// lcColorPickerClient
+/*
+ * LiriColorPickerManagerPrivate
+ */
+
+LiriColorPickerManagerPrivate::~LiriColorPickerManagerPrivate()
+{
+    qDeleteAll(pickers);
+}
 
 /*
  * LiriColorPicker
@@ -20,10 +27,17 @@ LiriColorPicker::LiriColorPicker(struct ::liri_color_picker *object, QObject *pa
 {
 }
 
-void LiriColorPicker::liri_color_picker_picked(uint32_t serial, uint32_t value)
+LiriColorPicker::~LiriColorPicker()
+{
+    destroy();
+}
+
+void LiriColorPicker::liri_color_picker_picked(uint32_t value)
 {
     auto rgba = static_cast<QRgb>(value);
-    Q_EMIT manager->colorPicked(serial, QColor::fromRgba(rgba));
+    Q_EMIT manager->colorPicked(QColor::fromRgba(rgba));
+
+    deleteLater();
 }
 
 /*
@@ -41,28 +55,24 @@ LiriColorPickerManager::~LiriColorPickerManager()
     delete d_ptr;
 }
 
-quint32 LiriColorPickerManager::pickAtLocation(QScreen *screen, const QPoint &location)
+void LiriColorPickerManager::pickAtLocation(QScreen *screen, const QPoint &location)
 {
     Q_D(LiriColorPickerManager);
 
-    auto serial = d->atomicInteger++;
-    auto *picker = new LiriColorPicker(d->create_picker(getWlOutput(screen)), this);
+    auto *object = d->pick_at_location(getWlOutput(screen), location.x(), location.y());
+    auto *picker = new LiriColorPicker(object, this);
     picker->manager = this;
-    picker->pick_at_location(serial, location.x(), location.y());
-
-    return serial;
+    d->pickers.append(picker);
 }
 
-quint32 LiriColorPickerManager::pickInteractively(QScreen *screen)
+void LiriColorPickerManager::pickInteractively()
 {
     Q_D(LiriColorPickerManager);
 
-    auto serial = d->atomicInteger++;
-    auto *picker = new LiriColorPicker(d->create_picker(getWlOutput(screen)), this);
+    auto *object = d->pick_interactively(getWlSeat());
+    auto *picker = new LiriColorPicker(object, this);
     picker->manager = this;
-    picker->pick_interactively(getWlSeat(), serial);
-
-    return serial;
+    d->pickers.append(picker);
 }
 
 void LiriColorPickerManager::init(struct ::wl_registry *registry, int id, int version)

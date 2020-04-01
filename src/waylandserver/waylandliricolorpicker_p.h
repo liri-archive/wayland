@@ -39,13 +39,6 @@ public:
 
 protected:
     void liri_color_picker_destroy_resource(Resource *resource) override;
-    void liri_color_picker_pick_at_location(
-            Resource *resource, uint32_t serial,
-            uint32_t x, uint32_t y) override;
-    void liri_color_picker_pick_interactively(
-            Resource *resource,
-            struct ::wl_resource *seat_res,
-            uint32_t serial) override;
     void liri_color_picker_destroy(Resource *resource) override;
 };
 
@@ -56,17 +49,15 @@ class LIRIWAYLANDSERVER_EXPORT WaylandLiriColorPickerEventFilter
 public:
     explicit WaylandLiriColorPickerEventFilter(WaylandLiriColorPicker *picker,
                                                QWaylandSeat *seat,
-                                               quint32 serial,
                                                QObject *parent = nullptr);
 
 private:
     WaylandLiriColorPicker *m_picker = nullptr;
     QWaylandSeat *m_seat = nullptr;
-    quint32 m_serial = 0;
     QColor m_color;
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event) override;
+    bool eventFilter(QObject *receiver, QEvent *event) override;
 };
 
 class LIRIWAYLANDSERVER_EXPORT WaylandLiriColorPickerManagerPrivate
@@ -79,14 +70,20 @@ public:
     static WaylandLiriColorPickerManagerPrivate *get(WaylandLiriColorPickerManager *self) { return self ? self->d_func() : nullptr; }
 
     QString layerName;
-    QMap<QWaylandOutput *, WaylandLiriColorPicker *> pickers;
+    QVector<WaylandLiriColorPicker *> pickers;
 
 protected:
     WaylandLiriColorPickerManager *q_ptr = nullptr;
 
-    void liri_color_picker_manager_create_picker(Resource *resource,
-                                                 uint32_t id,
-                                                 struct ::wl_resource *output_res) override;
+    void liri_color_picker_manager_pick_at_location(
+            Resource *resource,
+            uint32_t id,
+            struct ::wl_resource *output_res,
+            uint32_t x, uint32_t y) override;
+    void liri_color_picker_manager_pick_interactively(
+            Resource *resource,
+            uint32_t id,
+            struct ::wl_resource *seat_res) override;
 };
 
 #endif // LIRI_WAYLANDLIRICOLORPICKER_P_H

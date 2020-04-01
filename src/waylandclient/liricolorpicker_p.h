@@ -5,8 +5,6 @@
 #ifndef LIRI_IRICOLORPICKER_P_CLIENT_H
 #define LIRI_IRICOLORPICKER_P_CLIENT_H
 
-#include <QAtomicInteger>
-
 #include <LiriWaylandClient/LiriColorPicker>
 #include <LiriWaylandClient/private/qwayland-liri-color-picker.h>
 
@@ -21,13 +19,16 @@
 // We mean it.
 //
 
+class LiriColorPicker;
+
 class LIRIWAYLANDCLIENT_EXPORT LiriColorPickerManagerPrivate
         : public QtWayland::liri_color_picker_manager
 {
 public:
     LiriColorPickerManagerPrivate() = default;
+    ~LiriColorPickerManagerPrivate();
 
-    QAtomicInteger<quint32> atomicInteger;
+    QVector<LiriColorPicker *> pickers;
 };
 
 class LIRIWAYLANDCLIENT_EXPORT LiriColorPicker
@@ -38,11 +39,12 @@ class LIRIWAYLANDCLIENT_EXPORT LiriColorPicker
 public:
     explicit LiriColorPicker(struct ::liri_color_picker *object,
                              QObject *parent = nullptr);
+    ~LiriColorPicker();
 
     LiriColorPickerManager *manager = nullptr;
 
 protected:
-    void liri_color_picker_picked(uint32_t serial, uint32_t value) override;
+    void liri_color_picker_picked(uint32_t value) override;
 };
 
 #endif // LIRI_IRICOLORPICKER_P_CLIENT_H
