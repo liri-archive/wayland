@@ -29,6 +29,7 @@ LiriColorPicker::LiriColorPicker(struct ::liri_color_picker *object, QObject *pa
 
 LiriColorPicker::~LiriColorPicker()
 {
+    LiriColorPickerManagerPrivate::get(manager)->pickers.removeOne(this);
     destroy();
 }
 

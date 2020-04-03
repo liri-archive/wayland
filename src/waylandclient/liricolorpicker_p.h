@@ -28,6 +28,8 @@ public:
     LiriColorPickerManagerPrivate() = default;
     ~LiriColorPickerManagerPrivate();
 
+    static LiriColorPickerManagerPrivate *get(LiriColorPickerManager *self) { return self ? self->d_func() : nullptr; }
+
     QVector<LiriColorPicker *> pickers;
 };
 
