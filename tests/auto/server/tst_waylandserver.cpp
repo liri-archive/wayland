@@ -23,7 +23,9 @@
 
 #include <QtTest>
 #include <QMargins>
+#include <QQuickWindow>
 
+#include <LiriWaylandServer/WaylandLiriColorPicker>
 #include <LiriWaylandServer/WaylandWlrExportDmabufV1>
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
@@ -40,6 +42,7 @@ public:
     TestWaylandServer(QObject *parent = nullptr);
 
 private slots:
+    void liriColorPicker();
     void wlrExportDmabuf();
     void wlrForeignToplevel();
     void wlrLayer();
@@ -50,6 +53,46 @@ private slots:
 TestWaylandServer::TestWaylandServer(QObject *parent)
     : QObject(parent)
 {
+}
+
+class LiriColorPickerCompositor : public TestCompositor
+{
+    Q_OBJECT
+public:
+    LiriColorPickerCompositor() : manager(this) {}
+
+    WaylandLiriColorPickerManager manager;
+};
+
+void TestWaylandServer::liriColorPicker()
+{
+    auto red = QColor(Qt::red);
+    auto redValue = static_cast<uint32_t>(red.rgba());
+
+    QQuickWindow *window = new QQuickWindow();
+    window->setColor(red);
+    window->resize(QSize(1024, 768));
+    window->create();
+
+    LiriColorPickerCompositor compositor;
+    compositor.prepare();
+
+    QWaylandOutputMode serverMode(QSize(1024, 768), 60000);
+    compositor.defaultOutput()->addMode(serverMode, true);
+    compositor.defaultOutput()->setCurrentMode(serverMode);
+    compositor.defaultOutput()->setWindow(window);
+
+    compositor.create();
+
+    MockClient client;
+    QTRY_VERIFY(client.registry->liriColorPickerManager);
+
+    MockLiriColorPicker *picker = nullptr;
+
+    auto *output = client.registry->outputs.first();
+    picker = client.registry->liriColorPickerManager->pickAtLocation(output, QPoint(50, 50));
+    QVERIFY(picker);
+    QTRY_COMPARE(picker->lastPickedValue(), redValue);
 }
 
 class WlrExportDmabufCompositor : public TestCompositor
@@ -73,6 +116,7 @@ public:
 void TestWaylandServer::wlrExportDmabuf()
 {
     WlrExportDmabufCompositor compositor;
+    compositor.prepare();
     compositor.create();
 
     QWaylandOutputMode serverMode(QSize(1024, 768), 60000);
@@ -144,6 +188,7 @@ public:
 void TestWaylandServer::wlrForeignToplevel()
 {
     WlrForeignToplevelCompositor compositor;
+    compositor.prepare();
     compositor.create();
 
     MockClient client;
@@ -222,6 +267,7 @@ public:
 void TestWaylandServer::wlrLayer()
 {
     WlrLayerCompositor compositor;
+    compositor.prepare();
     compositor.create();
 
     MockClient client;
@@ -292,6 +338,7 @@ public:
 void TestWaylandServer::wlrOutputManager()
 {
     WlrOutputManagerCompositor compositor;
+    compositor.prepare();
     compositor.create();
 
     QWaylandOutputMode serverMode(QSize(1024, 768), 60000);
@@ -420,6 +467,7 @@ public:
 void TestWaylandServer::wlrScreencopy()
 {
     WlrScreencopyCompositor compositor;
+    compositor.prepare();
     compositor.create();
 
     QWaylandOutputMode serverMode(QSize(1024, 768), 60000);

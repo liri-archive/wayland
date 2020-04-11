@@ -34,12 +34,10 @@ TestCompositor::TestCompositor()
     setSocketName("wayland-liri-test-0");
 }
 
-void TestCompositor::create()
+void TestCompositor::prepare()
 {
     auto *output = new QWaylandOutput(this, nullptr);
     setDefaultOutput(output);
-
-    QWaylandCompositor::create();
 
     connect(this, &QWaylandCompositor::surfaceCreated,
             this, &TestCompositor::handleSurfaceCreated);

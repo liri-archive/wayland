@@ -34,7 +34,7 @@ class TestCompositor : public QWaylandCompositor
 public:
     TestCompositor();
 
-    void create() override;
+    void prepare();
 
     void flushClients();
 
