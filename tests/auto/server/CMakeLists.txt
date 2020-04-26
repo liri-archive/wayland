@@ -51,4 +51,4 @@ liri_add_test(tst_waylandserver
         Liri::WaylandServer
 )
 
-target_link_options(tst_waylandserver PRIVATE -lrt)
+target_link_libraries(tst_waylandserver PUBLIC -lrt)
