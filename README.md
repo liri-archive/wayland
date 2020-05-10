@@ -3,8 +3,8 @@ wayland
 
 [![License](https://img.shields.io/badge/license-LGPLv3.0-blue.svg)](http://www.gnu.org/licenses/lgpl.txt)
 [![GitHub release](https://img.shields.io/github/release/lirios/wayland.svg)](https://github.com/lirios/wayland)
-[![CI](https://github.com/lirios/wayland/workflows/CI/badge.svg?branch=develop)](https://github.com/lirios/wayland/actions?query=workflow%3ACI)
 [![GitHub issues](https://img.shields.io/github/issues/lirios/wayland.svg)](https://github.com/lirios/wayland/issues)
+[![CI](https://github.com/lirios/wayland/workflows/CI/badge.svg?branch=develop)](https://github.com/lirios/wayland/actions?query=workflow%3ACI)
 
 Wayland client and server extensions.
 
