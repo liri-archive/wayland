@@ -5,6 +5,8 @@
 #ifndef LIRI_IRICOLORPICKER_P_CLIENT_H
 #define LIRI_IRICOLORPICKER_P_CLIENT_H
 
+#include <QVector>
+
 #include <LiriWaylandClient/LiriColorPicker>
 #include <LiriWaylandClient/private/qwayland-liri-color-picker.h>
 
