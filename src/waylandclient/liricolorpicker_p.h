@@ -19,20 +19,6 @@
 // We mean it.
 //
 
-class LiriColorPicker;
-
-class LIRIWAYLANDCLIENT_EXPORT LiriColorPickerManagerPrivate
-        : public QtWayland::liri_color_picker_manager
-{
-public:
-    LiriColorPickerManagerPrivate() = default;
-    ~LiriColorPickerManagerPrivate();
-
-    static LiriColorPickerManagerPrivate *get(LiriColorPickerManager *self) { return self ? self->d_func() : nullptr; }
-
-    QVector<LiriColorPicker *> pickers;
-};
-
 class LIRIWAYLANDCLIENT_EXPORT LiriColorPicker
         : public QObject
         , public QtWayland::liri_color_picker
@@ -47,6 +33,18 @@ public:
 
 protected:
     void liri_color_picker_picked(uint32_t value) override;
+};
+
+class LIRIWAYLANDCLIENT_EXPORT LiriColorPickerManagerPrivate
+        : public QtWayland::liri_color_picker_manager
+{
+public:
+    LiriColorPickerManagerPrivate() = default;
+    ~LiriColorPickerManagerPrivate();
+
+    static LiriColorPickerManagerPrivate *get(LiriColorPickerManager *self) { return self ? self->d_func() : nullptr; }
+
+    QVector<LiriColorPicker *> pickers;
 };
 
 #endif // LIRI_IRICOLORPICKER_P_CLIENT_H
