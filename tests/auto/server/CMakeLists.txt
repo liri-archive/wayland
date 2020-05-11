@@ -1,5 +1,3 @@
-find_package(WaylandClient REQUIRED)
-find_package(WaylandServer REQUIRED)
 find_package(QtWaylandScanner REQUIRED)
 
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -48,9 +46,9 @@ liri_add_test(tst_waylandserver
         ${SOURCES}
     LIBRARIES
         Qt5::GuiPrivate
+        Wayland::Client
+        Wayland::Server
         Liri::WaylandServer
-        PkgConfig::WaylandClient
-        PkgConfig::WaylandServer
 )
 
 target_link_libraries(tst_waylandserver PUBLIC -lrt)

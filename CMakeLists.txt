@@ -21,6 +21,10 @@ set(QT_MIN_VERSION "5.12.0")
 ## Liri specific setup common for all modules:
 include(LiriSetup)
 
+## Find Wayland:
+find_package(Wayland 1.15 COMPONENTS Client Server)
+set_package_properties(Wayland PROPERTIES TYPE REQUIRED)
+
 ## Find wayland-protocols:
 find_package(WaylandProtocols 1.15)
 set_package_properties(WaylandProtocols PROPERTIES TYPE REQUIRED)
