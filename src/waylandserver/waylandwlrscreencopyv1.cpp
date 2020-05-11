@@ -385,10 +385,14 @@ void WaylandWlrScreencopyFrameV1::copy(const QString &childToCapture)
                 // The buffer format is decided before grabbing the window contents,
                 // we don't know the QImage format at that time, so we convert it
                 // if needed
+#if QT_VERSION >= QT_VERSION_CHECK(5,13,0)
                 auto bufferFormat = static_cast<wl_shm_format>(wl_shm_buffer_get_format(d->buffer));
                 auto imageFormat = fromWaylandShmFormat(bufferFormat);
                 if (finalImage.format() != imageFormat)
                     finalImage.convertTo(imageFormat);
+#else
+#warning "Image format conversion is not supported, please upgrade to Qt >= 5.13"
+#endif
 
                 memcpy(data, finalImage.bits(), finalImage.sizeInBytes());
             };
