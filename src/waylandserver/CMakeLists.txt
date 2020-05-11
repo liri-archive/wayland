@@ -1,3 +1,4 @@
+find_package(WaylandServer REQUIRED)
 find_package(QtWaylandScanner REQUIRED)
 
 ecm_add_qtwayland_server_protocol(SOURCES
@@ -123,7 +124,7 @@ liri_add_module(WaylandServer
         Qt5::Quick
         Qt5::WaylandCompositor
     LIBRARIES
-        Wayland::Server
+        PkgConfig::WaylandServer
     PKGCONFIG_DEPENDENCIES
         Qt5Core
         Qt5Gui

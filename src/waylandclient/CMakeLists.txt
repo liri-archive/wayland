@@ -1,3 +1,4 @@
+find_package(WaylandClient REQUIRED)
 find_package(QtWaylandScanner REQUIRED)
 
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -103,7 +104,7 @@ liri_add_module(WaylandClient
         Qt5::Qml
         Qt5::WaylandClient
     LIBRARIES
-        Wayland::Client
+        PkgConfig::WaylandClient
         Qt5::GuiPrivate
     PKGCONFIG_DEPENDENCIES
         Qt5Core
