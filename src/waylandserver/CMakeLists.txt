@@ -123,10 +123,10 @@ liri_add_module(WaylandServer
         Qt5::Gui
         Qt5::Quick
         Qt5::WaylandCompositor
-    LIBRARIES
         PkgConfig::WaylandServer
     PKGCONFIG_DEPENDENCIES
         Qt5Core
         Qt5Gui
         Qt5WaylandCompositor
+        wayland-server
 )

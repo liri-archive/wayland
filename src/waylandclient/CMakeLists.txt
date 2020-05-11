@@ -103,12 +103,13 @@ liri_add_module(WaylandClient
         Qt5::Gui
         Qt5::Qml
         Qt5::WaylandClient
-    LIBRARIES
         PkgConfig::WaylandClient
+    LIBRARIES
         Qt5::GuiPrivate
     PKGCONFIG_DEPENDENCIES
         Qt5Core
         Qt5Gui
         Qt5Qml
         Qt5WaylandClient
+        wayland-client
 )
