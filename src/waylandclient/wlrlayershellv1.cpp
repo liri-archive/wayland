@@ -71,6 +71,11 @@ WlrLayerSurfaceV1Private::WlrLayerSurfaceV1Private(WlrLayerSurfaceV1 *self)
 {
 }
 
+WlrLayerSurfaceV1Private::~WlrLayerSurfaceV1Private()
+{
+    destroy();
+}
+
 void WlrLayerSurfaceV1Private::zwlr_layer_surface_v1_configure(uint32_t serial, uint32_t width, uint32_t height)
 {
     Q_Q(WlrLayerSurfaceV1);

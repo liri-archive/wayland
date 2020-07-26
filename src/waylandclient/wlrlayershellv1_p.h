@@ -58,6 +58,7 @@ class WlrLayerSurfaceV1Private : public QtWayland::zwlr_layer_surface_v1
     Q_DECLARE_PUBLIC(WlrLayerSurfaceV1)
 public:
     explicit WlrLayerSurfaceV1Private(WlrLayerSurfaceV1 *self);
+    ~WlrLayerSurfaceV1Private();
 
     bool initialized = false;
     WlrLayerShellV1 *shell = nullptr;
