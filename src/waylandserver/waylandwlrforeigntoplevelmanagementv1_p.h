@@ -80,6 +80,7 @@ public:
     bool enteredOutput = false;
     QWaylandSurface *rectSurface = nullptr;
     QRect rect;
+    WaylandWlrForeignToplevelHandleV1 *parentHandle = nullptr;
 
 protected:
     WaylandWlrForeignToplevelHandleV1 *q_ptr;

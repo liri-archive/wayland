@@ -100,6 +100,7 @@ Q_SIGNALS:
     void maximizedChanged(bool maximized);
     void fullscreenChanged(bool fullscreen);
     void activeChanged(bool activated);
+    void parentChanged(WlrForeignToplevelHandleV1 *parentHandle);
     void enteredOutput(QScreen *screen);
     void leftOutput(QScreen *screen);
     void closed();

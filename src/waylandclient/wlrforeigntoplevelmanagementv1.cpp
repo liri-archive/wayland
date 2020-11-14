@@ -36,7 +36,9 @@ void WlrForeignToplevelManagerV1Private::zwlr_foreign_toplevel_manager_v1_toplev
     Q_Q(WlrForeignToplevelManagerV1);
 
     auto *handle = new WlrForeignToplevelHandleV1(q);
+    handle->d_func()->manager = this;
     handle->d_func()->init(toplevel);
+    handles.append(handle);
     emit q->toplevel(handle);
 }
 
@@ -49,6 +51,12 @@ WlrForeignToplevelHandleV1Private::WlrForeignToplevelHandleV1Private(WlrForeignT
     : QtWayland::zwlr_foreign_toplevel_handle_v1()
     , q_ptr(self)
 {
+}
+
+WlrForeignToplevelHandleV1Private::~WlrForeignToplevelHandleV1Private()
+{
+    Q_Q(WlrForeignToplevelHandleV1);
+    manager->handles.removeOne(q);
 }
 
 void WlrForeignToplevelHandleV1Private::zwlr_foreign_toplevel_handle_v1_title(const QString &title)
@@ -147,9 +155,27 @@ void WlrForeignToplevelHandleV1Private::zwlr_foreign_toplevel_handle_v1_closed()
     emit q->closed();
 }
 
+void WlrForeignToplevelHandleV1Private::zwlr_foreign_toplevel_handle_v1_parent(struct ::zwlr_foreign_toplevel_handle_v1 *parent)
+{
+    Q_Q(WlrForeignToplevelHandleV1);
+
+    if (!parent) {
+        Q_EMIT q->parentChanged(nullptr);
+        return;
+    }
+
+    for (auto *handle : qAsConst(manager->handles)) {
+        auto *handlePriv = WlrForeignToplevelHandleV1Private::get(handle);
+        if (handlePriv->object() == parent) {
+            Q_EMIT q->parentChanged(handle);
+            break;
+        }
+    }
+}
+
 
 WlrForeignToplevelManagerV1::WlrForeignToplevelManagerV1()
-    : QWaylandClientExtensionTemplate<WlrForeignToplevelManagerV1>(2)
+    : QWaylandClientExtensionTemplate<WlrForeignToplevelManagerV1>(3)
     , d_ptr(new WlrForeignToplevelManagerV1Private(this))
 {
 }

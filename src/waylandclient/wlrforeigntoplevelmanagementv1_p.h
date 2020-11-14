@@ -44,6 +44,8 @@ class LIRIWAYLANDCLIENT_EXPORT WlrForeignToplevelManagerV1Private : public QtWay
 public:
     explicit WlrForeignToplevelManagerV1Private(WlrForeignToplevelManagerV1 *self);
 
+    QVector<WlrForeignToplevelHandleV1 *> handles;
+
 protected:
     WlrForeignToplevelManagerV1 *q_ptr;
 
@@ -65,7 +67,11 @@ public:
     };
 
     explicit WlrForeignToplevelHandleV1Private(WlrForeignToplevelHandleV1 *self);
+    ~WlrForeignToplevelHandleV1Private();
 
+    static WlrForeignToplevelHandleV1Private *get(WlrForeignToplevelHandleV1 *handle) { return handle->d_func(); }
+
+    WlrForeignToplevelManagerV1Private *manager = nullptr;
     HandleInfo pending;
     HandleInfo effective;
 
@@ -79,6 +85,7 @@ protected:
     void zwlr_foreign_toplevel_handle_v1_state(wl_array *rawData) override;
     void zwlr_foreign_toplevel_handle_v1_done() override;
     void zwlr_foreign_toplevel_handle_v1_closed() override;
+    void zwlr_foreign_toplevel_handle_v1_parent(struct ::zwlr_foreign_toplevel_handle_v1 *parent) override;
 };
 
 #endif // LIRI_WLRFOREIGNTOPLEVELMANAGEMENTV1_P_CLIENT_H

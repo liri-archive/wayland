@@ -79,6 +79,7 @@ class LIRIWAYLANDSERVER_EXPORT WaylandWlrForeignToplevelHandleV1 : public QObjec
     Q_PROPERTY(qint32 rectangleY READ rectangleY NOTIFY rectangleChanged)
     Q_PROPERTY(qint32 rectangleWidth READ rectangleWidth NOTIFY rectangleChanged)
     Q_PROPERTY(qint32 rectangleHeight READ rectangleHeight NOTIFY rectangleChanged)
+    Q_PROPERTY(WaylandWlrForeignToplevelHandleV1 *parent READ parent WRITE setParent NOTIFY parentChanged)
 public:
     explicit WaylandWlrForeignToplevelHandleV1(QObject *parent = nullptr);
     ~WaylandWlrForeignToplevelHandleV1();
@@ -114,6 +115,9 @@ public:
     qint32 rectangleWidth() const;
     qint32 rectangleHeight() const;
 
+    WaylandWlrForeignToplevelHandleV1 *parent() const;
+    void setParent(WaylandWlrForeignToplevelHandleV1 *parentHandle);
+
     Q_INVOKABLE void sendOutputEnter(QWaylandOutput *output);
     Q_INVOKABLE void sendOutputLeave(QWaylandOutput *output);
     Q_INVOKABLE void sendClosed();
@@ -139,6 +143,7 @@ Q_SIGNALS:
     void activateRequested(QWaylandSeat *seat);
     void closeRequested();
     void rectangleChanged();
+    void parentChanged();
 
 private:
     WaylandWlrForeignToplevelHandleV1Private *const d_ptr;

@@ -482,6 +482,30 @@ qint32 WaylandWlrForeignToplevelHandleV1::rectangleHeight() const
     return d->rect.height();
 }
 
+WaylandWlrForeignToplevelHandleV1 *WaylandWlrForeignToplevelHandleV1::parent() const
+{
+    Q_D(const WaylandWlrForeignToplevelHandleV1);
+    return d->parentHandle;
+}
+
+void WaylandWlrForeignToplevelHandleV1::setParent(WaylandWlrForeignToplevelHandleV1 *parentHandle)
+{
+    Q_D(WaylandWlrForeignToplevelHandleV1);
+
+    if (parentHandle == d->parentHandle)
+        return;
+
+    const auto values = d->resourceMap().values();
+    for (auto resource : values) {
+        auto *handlePriv = WaylandWlrForeignToplevelHandleV1Private::get(parentHandle);
+        const auto handleRes = handlePriv->resourceMap().value(resource->client());
+        d->send_parent(resource->handle, handleRes->handle);
+    }
+
+    d->parentHandle = parentHandle;
+    Q_EMIT parentChanged();
+}
+
 void WaylandWlrForeignToplevelHandleV1::sendOutputEnter(QWaylandOutput *output)
 {
     Q_D(WaylandWlrForeignToplevelHandleV1);
