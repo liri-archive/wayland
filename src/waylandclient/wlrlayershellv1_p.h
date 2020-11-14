@@ -43,7 +43,8 @@
 class WlrLayerShellV1Private : public QtWayland::zwlr_layer_shell_v1
 {
 public:
-    explicit WlrLayerShellV1Private() {}
+    WlrLayerShellV1Private() = default;
+    ~WlrLayerShellV1Private();
 
     struct ::zwlr_layer_surface_v1 *createLayerSurface(
             QWindow *window, QScreen *screen,

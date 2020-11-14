@@ -26,6 +26,16 @@
 #include "utils_p.h"
 #include "xdgshell_p.h"
 
+/*
+ * WlrLayerShellV1Private
+ */
+
+WlrLayerShellV1Private::~WlrLayerShellV1Private()
+{
+    if (interface()->version >= ZWLR_LAYER_SHELL_V1_DESTROY_SINCE_VERSION)
+        destroy();
+}
+
 struct ::zwlr_layer_surface_v1 *WlrLayerShellV1Private::createLayerSurface(QWindow *window,
                                                                            QScreen *screen,
                                                                            WlrLayerShellV1::Layer layer,
@@ -42,9 +52,12 @@ struct ::zwlr_layer_surface_v1 *WlrLayerShellV1Private::createLayerSurface(QWind
                              nameSpace);
 }
 
+/*
+ * WlrLayerShellV1
+ */
 
 WlrLayerShellV1::WlrLayerShellV1()
-    : QWaylandClientExtensionTemplate<WlrLayerShellV1>(2)
+    : QWaylandClientExtensionTemplate<WlrLayerShellV1>(3)
     , d_ptr(new WlrLayerShellV1Private)
 {
 }
@@ -65,6 +78,9 @@ const wl_interface *WlrLayerShellV1::interface()
     return WlrLayerShellV1Private::interface();
 }
 
+/*
+ * WlrLayerSurfaceV1Private
+ */
 
 WlrLayerSurfaceV1Private::WlrLayerSurfaceV1Private(WlrLayerSurfaceV1 *self)
     : q_ptr(self)
@@ -88,6 +104,9 @@ void WlrLayerSurfaceV1Private::zwlr_layer_surface_v1_closed()
     Q_EMIT q->closed();
 }
 
+/*
+ * WlrLayerSurfaceV1
+ */
 
 WlrLayerSurfaceV1::WlrLayerSurfaceV1(QObject *parent)
     : QObject(parent)
