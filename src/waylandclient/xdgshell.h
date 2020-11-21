@@ -93,6 +93,7 @@ class LIRIWAYLANDCLIENT_EXPORT XdgPopup : public QObject
     Q_PROPERTY(Anchor anchor READ anchor WRITE setAnchor NOTIFY anchorChanged)
     Q_PROPERTY(Gravity gravity READ gravity WRITE setGravity NOTIFY gravityChanged)
     Q_PROPERTY(ConstraintAdjustments constraintAdjustments READ constraintAdjustments WRITE setConstraintAdjustments NOTIFY constraintAdjustmentsChanged)
+    Q_PROPERTY(QPoint offset READ offset WRITE setOffset NOTIFY offsetChanged)
     Q_DECLARE_PRIVATE(XdgPopup)
 public:
     enum Anchor {
