@@ -33,7 +33,7 @@
 
 static inline struct ::wl_seat *getWlSeat()
 {
-    void *seat = QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("seat");
+    void *seat = QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("wl_seat");
     return static_cast<struct ::wl_seat *>(seat);
 }
 
