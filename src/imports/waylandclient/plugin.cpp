@@ -33,6 +33,13 @@
 
 #include "wlrlayersurfacev1qml.h"
 #include "xdgshellqml.h"
+#include "utils.h"
+
+LIRI_DECLARE_CONTAINER_CLASS(WlrLayerShellV1)
+LIRI_DECLARE_CONTAINER_CLASS(WlrLayerSurfaceV1Qml)
+LIRI_DECLARE_CONTAINER_CLASS(XdgWmBase)
+LIRI_DECLARE_CONTAINER_CLASS(XdgSurfaceQml)
+LIRI_DECLARE_CONTAINER_CLASS(XdgPopupQml)
 
 class WaylandClientPlugin : public QQmlExtensionPlugin
 {
@@ -55,8 +62,8 @@ public:
         qmlRegisterUncreatableType<WlrExportDmabufFrameV1>(uri, versionMajor, versionMinor, "WlrExportDmabufFrameV1",
                                                            QStringLiteral("Cannot create a WlrExportDmabufFrameV1 instance"));
 
-        qmlRegisterType<WlrLayerShellV1>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
-        qmlRegisterType<WlrLayerSurfaceV1Qml>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1");
+        qmlRegisterType<WlrLayerShellV1Container>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
+        qmlRegisterType<WlrLayerSurfaceV1QmlContainer>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1");
 
         qmlRegisterType<WlrOutputManagerV1>(uri, versionMajor, versionMinor, "WlrOutputManagerV1");
         qmlRegisterUncreatableType<WlrOutputHeadV1>(uri, versionMajor, versionMinor, "WlrOutputHeadV1",
@@ -72,11 +79,11 @@ public:
         qmlRegisterUncreatableType<WlrScreencopyFrameV1>(uri, versionMajor, versionMinor, "WlrScreencopyFrameV1",
                                                          QStringLiteral("Cannot create a WlrScreencopyFrameV1 instance"));
 
-        qmlRegisterType<XdgWmBase>(uri, versionMajor, versionMinor, "XdgWmBase");
+        qmlRegisterType<XdgWmBaseContainer>(uri, versionMajor, versionMinor, "XdgWmBase");
         qmlRegisterType<XdgSurface>();
-        qmlRegisterType<XdgSurfaceQml>(uri, versionMajor, versionMinor, "XdgSurface");
+        qmlRegisterType<XdgSurfaceQmlContainer>(uri, versionMajor, versionMinor, "XdgSurface");
         qmlRegisterType<XdgPopup>();
-        qmlRegisterType<XdgPopupQml>(uri, versionMajor, versionMinor, "XdgPopup");
+        qmlRegisterType<XdgPopupQmlContainer>(uri, versionMajor, versionMinor, "XdgPopup");
     }
 };
 
