@@ -87,6 +87,8 @@ class LIRIWAYLANDSERVER_EXPORT WaylandWlrLayerSurfaceV1 : public QObject
     Q_PROPERTY(qint32 rightMargin READ rightMargin NOTIFY rightMarginChanged)
     Q_PROPERTY(qint32 bottomMargin READ bottomMargin NOTIFY bottomMarginChanged)
     Q_PROPERTY(bool keyboardInteractivity READ keyboardInteractivity NOTIFY keyboardInteractivityChanged)
+    Q_PROPERTY(bool mapped READ isMapped NOTIFY mappedChanged)
+    Q_PROPERTY(bool configured READ isConfigured NOTIFY configuredChanged)
 public:
     enum Anchor {
         TopAnchor = 1,
@@ -116,6 +118,8 @@ public:
     qint32 rightMargin() const;
     qint32 bottomMargin() const;
     bool keyboardInteractivity() const;
+    bool isMapped() const;
+    bool isConfigured() const;
 
     Q_INVOKABLE quint32 sendConfigure(const QSize &size);
     Q_INVOKABLE quint32 sendConfigure(int width, int height);
@@ -134,8 +138,8 @@ Q_SIGNALS:
     void bottomMarginChanged();
     void keyboardInteractivityChanged();
     void changed();
-    void mapped();
-    void unmapped();
+    void mappedChanged();
+    void configuredChanged();
 
 private:
     WaylandWlrLayerSurfaceV1Private *const d_ptr;

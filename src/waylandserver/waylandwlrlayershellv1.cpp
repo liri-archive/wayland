@@ -130,11 +130,15 @@ void WaylandWlrLayerSurfaceV1Private::unmap()
 {
     Q_Q(WaylandWlrLayerSurfaceV1);
 
-    Q_EMIT q->unmapped();
-
     pendingConfigures.clear();
-
-    configured = mapped = false;
+    if (mapped) {
+        mapped = false;
+        Q_EMIT q->mappedChanged();
+    }
+    if (configured) {
+        configured = false;
+        Q_EMIT q->configuredChanged();
+    }
 }
 
 void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_size(QtWaylandServer::zwlr_layer_surface_v1::Resource *resource, uint32_t width, uint32_t height)
@@ -207,7 +211,11 @@ void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_ack_configure(QtWayl
     }
 
     lastAckedConfigure = config;
-    configured = true;
+
+    if (!configured) {
+        configured = true;
+        Q_EMIT q->configuredChanged();
+    }
 }
 
 void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_layer(Resource *resource, uint32_t layer)
@@ -296,7 +304,7 @@ WaylandWlrLayerSurfaceV1::WaylandWlrLayerSurfaceV1(QWaylandSurface *surface,
 
         if (d->configured && d->surface->hasContent() && !d->mapped) {
             d->mapped = true;
-            Q_EMIT mapped();
+            Q_EMIT mappedChanged();
         }
 
         if (d->configured && !d->surface->hasContent() && d->mapped)
@@ -397,6 +405,18 @@ bool WaylandWlrLayerSurfaceV1::keyboardInteractivity() const
 {
     Q_D(const WaylandWlrLayerSurfaceV1);
     return d->current.keyboardInteractivity;
+}
+
+bool WaylandWlrLayerSurfaceV1::isMapped() const
+{
+    Q_D(const WaylandWlrLayerSurfaceV1);
+    return d->mapped;
+}
+
+bool WaylandWlrLayerSurfaceV1::isConfigured() const
+{
+    Q_D(const WaylandWlrLayerSurfaceV1);
+    return d->configured;
 }
 
 quint32 WaylandWlrLayerSurfaceV1::sendConfigure(const QSize &size)
