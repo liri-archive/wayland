@@ -5,6 +5,8 @@
 #ifndef LIRI_WAYLANDCLIENT_QML_UTILS_H
 #define LIRI_WAYLANDCLIENT_QML_UTILS_H
 
+#include <QQmlListProperty>
+
 #define LIRI_DECLARE_CONTAINER_CLASS(className) \
     class className##Container : public className \
     { \
