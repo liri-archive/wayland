@@ -16,7 +16,27 @@
     public: \
         QQmlListProperty<QObject> data() \
         { \
-            return QQmlListProperty<QObject>(this, &m_objects); \
+            return QQmlListProperty<QObject>(this, this, \
+                                             &className##Container::appendFunction, \
+                                             &className##Container::countFunction, \
+                                             &className##Container::atFunction, \
+                                             &className##Container::clearFunction); \
+        } \
+        static int countFunction(QQmlListProperty<QObject> *list) \
+        { \
+            return static_cast<className##Container *>(list->data)->m_objects.size(); \
+        } \
+        static QObject *atFunction(QQmlListProperty<QObject> *list, int index) \
+        { \
+            return static_cast<className##Container *>(list->data)->m_objects.at(index); \
+        } \
+        static void appendFunction(QQmlListProperty<QObject> *list, QObject *object) \
+        { \
+            static_cast<className##Container *>(list->data)->m_objects.append(object); \
+        } \
+        static void clearFunction(QQmlListProperty<QObject> *list) \
+        { \
+            static_cast<className##Container *>(list->data)->m_objects.clear(); \
         } \
     private: \
         QList<QObject *> m_objects; \
