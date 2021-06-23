@@ -38,14 +38,11 @@ public:
 
     static WaylandLiriShellPrivate *get(WaylandLiriShell *shell);
 
-    QWaylandSurface *grabSurface = nullptr;
-
 protected:
     WaylandLiriShell *q_ptr;
 
 private:
     void liri_shell_bind_resource(Resource *r) override;
-    void liri_shell_set_grab_surface(Resource *resource, struct ::wl_resource *wlSurface) override;
     void liri_shell_bind_shortcut(Resource *resource, uint32_t id, const QString &sequence) override;
     void liri_shell_ready(Resource *resource) override;
     void liri_shell_terminate(Resource *resource) override;

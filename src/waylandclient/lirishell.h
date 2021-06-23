@@ -42,28 +42,11 @@ class LIRIWAYLANDCLIENT_EXPORT LiriShell : public QWaylandClientExtensionTemplat
     Q_OBJECT
     Q_DECLARE_PRIVATE(LiriShell)
 public:
-    enum GrabCursor {
-        NoGrabCursor = 0,
-        ResizeTopGrabCursor,
-        ResizeBottomGrabCursor,
-        ArrowGrabCursor,
-        ResizeLeftGrabCursor,
-        ResizeTopLeftGrabCursor,
-        ResizeBottomLeftGrabCursor,
-        MoveGrabCursor,
-        ResizeRightGrabCursor,
-        ResizeTopRightGrabCursor,
-        ResizeBottomRightGrabCursor,
-        BusyGrabCursor
-    };
-    Q_ENUM(GrabCursor)
-
     LiriShell();
     ~LiriShell();
 
     void init(struct ::wl_registry *registry, int id, int version);
 
-    Q_INVOKABLE void registerGrabSurface(QWindow *window);
     Q_INVOKABLE void sendReady();
 
     Q_INVOKABLE void terminateCompositor();
@@ -71,7 +54,6 @@ public:
     static const struct ::wl_interface *interface();
 
 Q_SIGNALS:
-    void cursorChangeRequested(LiriShell::GrabCursor cursor);
     void shutdownRequested();
     void quitRequested();
 

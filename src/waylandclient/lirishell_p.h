@@ -44,17 +44,12 @@ class LiriShellPrivate : public QtWayland::liri_shell
 public:
     LiriShellPrivate(LiriShell *qq);
 
-    void setCursorShape(QWindow *window, LiriShell::GrabCursor cursor);
-
     static LiriShellPrivate *get(LiriShell *shell) { return shell ? shell->d_func() : nullptr; }
-
-    QWindow *grabWindow = nullptr;
 
 protected:
     LiriShell *q_ptr;
 
 private:
-    void liri_shell_grab_cursor(uint32_t cursor) override;
     void liri_shell_shutdown_requested() override;
     void liri_shell_quit() override;
 };

@@ -59,29 +59,12 @@ class LIRIWAYLANDSERVER_EXPORT WaylandLiriShell : public QWaylandCompositorExten
     Q_OBJECT
     Q_DECLARE_PRIVATE(WaylandLiriShell)
 public:
-    enum GrabCursor {
-        NoGrabCursor = 0,
-        ResizeTopGrabCursor,
-        ResizeBottomGrabCursor,
-        ArrowGrabCursor,
-        ResizeLeftGrabCursor,
-        ResizeTopLeftGrabCursor,
-        ResizeBottomLeftGrabCursor,
-        MoveGrabCursor,
-        ResizeRightGrabCursor,
-        ResizeTopRightGrabCursor,
-        ResizeBottomRightGrabCursor,
-        BusyGrabCursor
-    };
-    Q_ENUM(GrabCursor)
-
     WaylandLiriShell();
     explicit WaylandLiriShell(QWaylandCompositor *compositor);
     ~WaylandLiriShell();
 
     void initialize() override;
 
-    Q_INVOKABLE void grabCursor(WaylandLiriShell::GrabCursor cursor);
     Q_INVOKABLE void requestShutdown();
     Q_INVOKABLE void sendQuit();
 
@@ -90,7 +73,6 @@ public:
 
 Q_SIGNALS:
     void shortcutBound(WaylandLiriShortcut *shortcut);
-    void grabSurfaceAdded(QWaylandSurface *surface);
     void ready();
     void terminateRequested();
 

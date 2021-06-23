@@ -80,21 +80,6 @@ void WaylandLiriShellPrivate::liri_shell_bind_resource(Resource *r)
                                "client can bind only once");
 }
 
-void WaylandLiriShellPrivate::liri_shell_set_grab_surface(Resource *resource, struct ::wl_resource *wlSurface)
-{
-    Q_Q(WaylandLiriShell);
-
-    auto surface = QWaylandSurface::fromResource(wlSurface);
-    if (surface) {
-        grabSurface = surface;
-        Q_EMIT q->grabSurfaceAdded(surface);
-    } else {
-        qCWarning(lcWaylandServer) << "Couldn't find surface from resource";
-        wl_resource_post_error(resource->handle, WL_DISPLAY_ERROR_INVALID_OBJECT,
-                               "the specified surface is invalid");
-    }
-}
-
 void WaylandLiriShellPrivate::liri_shell_bind_shortcut(Resource *resource,
                                                        uint32_t id,
                                                        const QString &sequence)
@@ -159,23 +144,6 @@ void WaylandLiriShell::initialize()
         return;
     }
     d->init(compositor->display(), 1);
-}
-
-void WaylandLiriShell::grabCursor(GrabCursor cursor)
-{
-    Q_D(WaylandLiriShell);
-
-    if (d->grabSurface) {
-        auto resource = d->resourceMap().value(d->grabSurface->waylandClient());
-        if (resource)
-            d->send_grab_cursor(resource->handle, static_cast<uint32_t>(cursor));
-        if (d->grabSurface->views().size() > 0) {
-            auto seat = d->grabSurface->compositor()->defaultSeat();
-            auto view = d->grabSurface->views().at(0);
-            seat->setMouseFocus(view);
-            seat->sendMouseMoveEvent(view, QPointF(0, 0), QPointF(0, 0));
-        }
-    }
 }
 
 void WaylandLiriShell::requestShutdown()

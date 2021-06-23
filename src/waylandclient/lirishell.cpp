@@ -29,68 +29,12 @@
 #include "lirishell_p.h"
 #include "logging_p.h"
 
-static inline struct ::wl_surface *getWlSurface(QWindow *window)
-{
-    void *surface = QGuiApplication::platformNativeInterface()->nativeResourceForWindow("surface", window);
-    return static_cast<struct ::wl_surface *>(surface);
-}
-
 // LiriShellPrivate
 
 LiriShellPrivate::LiriShellPrivate(LiriShell *qq)
     : QtWayland::liri_shell()
     , q_ptr(qq)
 {
-}
-
-void LiriShellPrivate::setCursorShape(QWindow *window, LiriShell::GrabCursor cursor)
-{
-    QCursor newCursor;
-
-    switch (cursor) {
-    case LiriShell::ArrowGrabCursor:
-        newCursor.setShape(Qt::ArrowCursor);
-        break;
-    case LiriShell::ResizeTopGrabCursor:
-    case LiriShell::ResizeBottomGrabCursor:
-        newCursor.setShape(Qt::SizeVerCursor);
-        break;
-    case LiriShell::ResizeLeftGrabCursor:
-    case LiriShell::ResizeRightGrabCursor:
-        newCursor.setShape(Qt::SizeHorCursor);
-        break;
-    case LiriShell::ResizeTopLeftGrabCursor:
-    case LiriShell::ResizeBottomRightGrabCursor:
-        newCursor.setShape(Qt::SizeFDiagCursor);
-        break;
-    case LiriShell::ResizeTopRightGrabCursor:
-    case LiriShell::ResizeBottomLeftGrabCursor:
-        newCursor.setShape(Qt::SizeBDiagCursor);
-        break;
-    case LiriShell::MoveGrabCursor:
-        newCursor.setShape(Qt::DragMoveCursor);
-        break;
-    case LiriShell::BusyGrabCursor:
-        newCursor.setShape(Qt::BusyCursor);
-        break;
-    default:
-        newCursor.setShape(Qt::BlankCursor);
-        break;
-    }
-
-    window->setCursor(newCursor);
-}
-
-void LiriShellPrivate::liri_shell_grab_cursor(uint32_t cursor)
-{
-    Q_Q(LiriShell);
-
-    auto grabCursor = static_cast<LiriShell::GrabCursor>(cursor);
-
-    Q_EMIT q->cursorChangeRequested(grabCursor);
-
-    if (grabWindow)
-        setCursorShape(grabWindow, grabCursor);
 }
 
 void LiriShellPrivate::liri_shell_shutdown_requested()
@@ -122,19 +66,6 @@ void LiriShell::init(wl_registry *registry, int id, int version)
 {
     Q_D(LiriShell);
     d->init(registry, id, version);
-}
-
-void LiriShell::registerGrabSurface(QWindow *window)
-{
-    Q_D(LiriShell);
-
-    d->grabWindow = window;
-    d->grabWindow->setFlags(Qt::BypassWindowManagerHint);
-    d->grabWindow->create();
-    d->grabWindow->setCursor(QCursor(Qt::ArrowCursor));
-
-    if (isActive())
-        d->set_grab_surface(getWlSurface(d->grabWindow));
 }
 
 void LiriShell::sendReady()
