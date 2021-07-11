@@ -37,6 +37,32 @@ else()
     set(LIBEXECDIR "${CMAKE_INSTALL_PREFIX}/${INSTALL_LIBEXECDIR}")
 endif()
 
+set(_generated_c_protocol_files
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-gtk-shell-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-server-decoration-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-decoration-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-export-dmabuf-unstable-v1-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-foreign-toplevel-management-unstable-v1-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-screencopy-unstable-v1-server-protocol.h"
+)
+set(_generated_cpp_protocol_files
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-gtk-shell.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-server-decoration.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-color-picker.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-decoration.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-shell.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-export-dmabuf-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-foreign-toplevel-management-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-layer-shell-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-output-management-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-screencopy-unstable-v1.h"
+)
+set_source_files_properties(${_generated_c_protocol_files} PROPERTIES SKIP_AUTOMOC ON)
+
 liri_add_module(WaylandServer
     DESCRIPTION
         "Wayland server extensions"
@@ -93,26 +119,8 @@ liri_add_module(WaylandServer
         waylandwlrforeigntoplevelmanagementv1_p.h
         waylandwlrlayershellv1_p.h
         waylandwlrscreencopyv1_p.h
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-gtk-shell.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-gtk-shell-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-server-decoration.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-server-decoration-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-color-picker.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-decoration.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-decoration-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-shell.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-export-dmabuf-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-export-dmabuf-unstable-v1-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-foreign-toplevel-management-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-foreign-toplevel-management-unstable-v1-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-layer-shell-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-output-management-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-server-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-screencopy-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-screencopy-unstable-v1-server-protocol.h"
+        ${_generated_c_protocol_files}
+        ${_generated_cpp_protocol_files}
     DEFINES
         QT_NO_CAST_FROM_ASCII
         QT_NO_FOREACH

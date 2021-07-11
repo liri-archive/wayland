@@ -25,7 +25,7 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/wlr-screencopy-unstable-v1.xml"
     BASENAME "wlr-screencopy-unstable-v1")
 
-set(_generated_files
+set(_generated_c_protocol_files
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-export-dmabuf-unstable-v1-client-protocol.h"
@@ -34,7 +34,16 @@ set(_generated_files
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-screencopy-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-xdg-shell-client-protocol.h"
 )
-set_source_files_properties(${_generated_files} PROPERTIES SKIP_AUTOMOC ON)
+set(_generated_cpp_protocol_files
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-color-picker.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-shell.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-export-dmabuf-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-foreign-toplevel-management-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-layer-shell-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-screencopy-unstable-v1.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-xdg-shell.h"
+)
+set_source_files_properties(${_generated_c_protocol_files} PROPERTIES SKIP_AUTOMOC ON)
 
 liri_add_module(WaylandClient
     DESCRIPTION
@@ -86,14 +95,8 @@ liri_add_module(WaylandClient
         wlroutputmanagementv1_p.h
         wlrscreencopyv1_p.h
         xdgshell_p.h
-        "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-client-protocol.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-color-picker.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-shell.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-export-dmabuf-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-foreign-toplevel-management-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-layer-shell-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-screencopy-unstable-v1.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-xdg-shell.h"
+        ${_generated_c_protocol_files}
+        ${_generated_cpp_protocol_files}
     DEFINES
         QT_NO_CAST_FROM_ASCII
         QT_NO_FOREACH
