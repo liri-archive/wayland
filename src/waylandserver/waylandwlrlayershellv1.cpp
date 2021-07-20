@@ -41,6 +41,14 @@ void WaylandWlrLayerShellV1Private::zwlr_layer_shell_v1_get_layer_surface(
 {
     Q_Q(WaylandWlrLayerShellV1);
 
+    // Check the layer value
+    if (layer < layer_background || layer > layer_overlay) {
+        qCWarning(lcWaylandServer, "Invalid layer value %d", layer);
+        wl_resource_post_error(resource->handle, error_invalid_layer,
+                               "invalid layer %d", layer);
+        return;
+    }
+
     auto surface = QWaylandSurface::fromResource(surfaceRes);
     if (!surface) {
         qCWarning(lcWaylandServer, "Resource wl_surface@%d doesn't exist",
