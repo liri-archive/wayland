@@ -72,7 +72,7 @@ public:
         WaylandWlrLayerSurfaceV1::Anchors anchors = 0;
         int exclusiveZone = 0;
         QMargins margins;
-        bool keyboardInteractivity = true;
+        WaylandWlrLayerSurfaceV1::KeyboardInteractivity keyboardInteractivity = WaylandWlrLayerSurfaceV1::NoKeyboardInteractivity;
     };
 
     struct ConfigureEvent {

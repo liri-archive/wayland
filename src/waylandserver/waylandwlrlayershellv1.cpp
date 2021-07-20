@@ -176,7 +176,7 @@ void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_margin(QtWayland
 void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_keyboard_interactivity(QtWaylandServer::zwlr_layer_surface_v1::Resource *resource, uint32_t keyboard_interactivity)
 {
     Q_UNUSED(resource)
-    clientPending.keyboardInteractivity = !!keyboard_interactivity;
+    clientPending.keyboardInteractivity = static_cast<WaylandWlrLayerSurfaceV1::KeyboardInteractivity>(keyboard_interactivity);
 }
 
 void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_get_popup(QtWaylandServer::zwlr_layer_surface_v1::Resource *resource, wl_resource *popup)
@@ -401,7 +401,7 @@ qint32 WaylandWlrLayerSurfaceV1::bottomMargin() const
     return d->current.margins.bottom();
 }
 
-bool WaylandWlrLayerSurfaceV1::keyboardInteractivity() const
+WaylandWlrLayerSurfaceV1::KeyboardInteractivity WaylandWlrLayerSurfaceV1::keyboardInteractivity() const
 {
     Q_D(const WaylandWlrLayerSurfaceV1);
     return d->current.keyboardInteractivity;

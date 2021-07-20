@@ -290,14 +290,14 @@ void TestWaylandServer::wlrLayer()
 
     wlrSurface->set_anchor(MockWlrLayerSurfaceV1::anchor_left | MockWlrLayerSurfaceV1::anchor_right);
     wlrSurface->set_exclusive_zone(42);
-    wlrSurface->set_keyboard_interactivity(1);
+    wlrSurface->set_keyboard_interactivity(WaylandWlrLayerSurfaceV1::ExclusiveKeyboardInteractivity);
     wlrSurface->set_margin(5, 5, 5, 5);
     wlrSurface->set_size(50, 50);
     surface->commit();
     QTRY_COMPARE(compositor.layerSurface->layer(), WaylandWlrLayerShellV1::BottomLayer);
     QTRY_COMPARE(compositor.layerSurface->anchors(), WaylandWlrLayerSurfaceV1::LeftAnchor | WaylandWlrLayerSurfaceV1::RightAnchor);
     QTRY_COMPARE(compositor.layerSurface->exclusiveZone(), 42);
-    QTRY_COMPARE(compositor.layerSurface->keyboardInteractivity(), true);
+    QTRY_COMPARE(compositor.layerSurface->keyboardInteractivity(), WaylandWlrLayerSurfaceV1::ExclusiveKeyboardInteractivity);
     QTRY_COMPARE(compositor.layerSurface->margins(), QMargins(5, 5, 5, 5));
     QTRY_COMPARE(compositor.layerSurface->size(), QSize(50, 50));
 

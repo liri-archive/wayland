@@ -86,7 +86,7 @@ class LIRIWAYLANDSERVER_EXPORT WaylandWlrLayerSurfaceV1 : public QObject
     Q_PROPERTY(qint32 topMargin READ topMargin NOTIFY topMarginChanged)
     Q_PROPERTY(qint32 rightMargin READ rightMargin NOTIFY rightMarginChanged)
     Q_PROPERTY(qint32 bottomMargin READ bottomMargin NOTIFY bottomMarginChanged)
-    Q_PROPERTY(bool keyboardInteractivity READ keyboardInteractivity NOTIFY keyboardInteractivityChanged)
+    Q_PROPERTY(KeyboardInteractivity keyboardInteractivity READ keyboardInteractivity NOTIFY keyboardInteractivityChanged)
     Q_PROPERTY(bool mapped READ isMapped NOTIFY mappedChanged)
     Q_PROPERTY(bool configured READ isConfigured NOTIFY configuredChanged)
 public:
@@ -99,6 +99,13 @@ public:
     Q_ENUM(Anchor)
     Q_DECLARE_FLAGS(Anchors, Anchor)
     Q_FLAG(Anchors)
+
+    enum KeyboardInteractivity {
+        NoKeyboardInteractivity = 0,
+        ExclusiveKeyboardInteractivity = 1,
+        OnDemandKeyboardInteractivity = 2
+    };
+    Q_ENUM(KeyboardInteractivity)
 
     ~WaylandWlrLayerSurfaceV1();
 
@@ -117,7 +124,7 @@ public:
     qint32 topMargin() const;
     qint32 rightMargin() const;
     qint32 bottomMargin() const;
-    bool keyboardInteractivity() const;
+    KeyboardInteractivity keyboardInteractivity() const;
     bool isMapped() const;
     bool isConfigured() const;
 
