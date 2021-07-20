@@ -1,0 +1,4 @@
+module Liri.WaylandClient.LayerShell
+plugin layershellplugin
+classname LayerShellPlugin
+typeinfo plugins.qmltypes

@@ -42,8 +42,10 @@ find_package(Qt5 "${QT_MIN_VERSION}"
 )
 
 ## Add subdirectories:
+add_subdirectory(src/layershell)
 add_subdirectory(src/waylandclient)
 add_subdirectory(src/waylandserver)
+add_subdirectory(src/imports/layershell)
 add_subdirectory(src/imports/waylandclient)
 add_subdirectory(src/imports/waylandserver)
 if(BUILD_TESTING)

@@ -46,6 +46,7 @@ to learn how to enable them.
 Available categories:
 
   * **liri.waylandclient:** Wayland client extensions
+  * **liri.waylandclient.layershell:** Layer Shell interface for clients
   * **liri.waylandserver:** Wayland server extensions
 
 ## Licensing

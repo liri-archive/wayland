@@ -1,0 +1,19 @@
+liri_add_module(WaylandClientLayerShell
+    SOURCES
+        layersurface.cpp
+        layersurface.h
+        layersurface_p.h
+    FORWARDING_HEADERS
+        LayerSurface
+    PRIVATE_HEADERS
+        layersurface_p.h
+    DEFINES
+        QT_NO_CAST_FROM_ASCII
+        QT_NO_FOREACH
+    PUBLIC_LIBRARIES
+        Qt5::Core
+        Qt5::Gui
+    PKGCONFIG_DEPENDENCIES
+        Qt5Core
+        Qt5Gui
+)
