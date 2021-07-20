@@ -182,6 +182,7 @@ void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_set_keyboard_interac
 void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_get_popup(QtWaylandServer::zwlr_layer_surface_v1::Resource *resource, wl_resource *popup)
 {
     Q_UNUSED(resource)
+    Q_UNUSED(popup)
 }
 
 void WaylandWlrLayerSurfaceV1Private::zwlr_layer_surface_v1_ack_configure(QtWaylandServer::zwlr_layer_surface_v1::Resource *resource, uint32_t serial)

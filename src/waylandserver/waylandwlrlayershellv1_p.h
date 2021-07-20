@@ -69,7 +69,7 @@ public:
 
         WaylandWlrLayerShellV1::Layer layer = WaylandWlrLayerShellV1::BackgroundLayer;
         QSize desiredSize = QSize(0, 0);
-        WaylandWlrLayerSurfaceV1::Anchors anchors = 0;
+        WaylandWlrLayerSurfaceV1::Anchors anchors;
         int exclusiveZone = 0;
         QMargins margins;
         WaylandWlrLayerSurfaceV1::KeyboardInteractivity keyboardInteractivity = WaylandWlrLayerSurfaceV1::NoKeyboardInteractivity;
@@ -78,8 +78,8 @@ public:
     struct ConfigureEvent {
         ConfigureEvent() = default;
         ConfigureEvent(const QSize &incomingSize, quint32 incomingSerial)
-            : size(incomingSize)
-            , serial(incomingSerial)
+            : serial(incomingSerial)
+            , size(incomingSize)
         { }
 
         quint32 serial = 0;
