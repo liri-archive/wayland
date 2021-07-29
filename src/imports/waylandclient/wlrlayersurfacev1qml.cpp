@@ -2,14 +2,14 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#include "layersurfaceqml.h"
+#include "wlrlayersurfacev1qml.h"
 
-LayerSurfaceQml::LayerSurfaceQml(QObject *parent)
-    : LayerSurface(parent)
+WlrLayerSurfaceV1Qml::WlrLayerSurfaceV1Qml(QObject *parent)
+    : WlrLayerSurfaceV1(parent)
 {
 }
 
-void LayerSurfaceQml::componentComplete()
+void WlrLayerSurfaceV1Qml::componentComplete()
 {
     if (isInitialized())
         return;

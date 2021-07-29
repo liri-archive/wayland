@@ -54,6 +54,9 @@ liri_add_module(WaylandClient
         wlrforeigntoplevelmanagementv1.cpp
         wlrforeigntoplevelmanagementv1.h
         wlrforeigntoplevelmanagementv1_p.h
+        wlrlayersurfacev1.cpp
+        wlrlayersurfacev1.h
+        wlrlayersurfacev1_p.h
         wlroutputmanagementv1.cpp
         wlroutputmanagementv1.h
         wlroutputmanagementv1_p.h
@@ -66,6 +69,7 @@ liri_add_module(WaylandClient
         LiriShell
         WlrExportDmabufV1
         WlrForeignToplevelManagementV1
+        WlrLayerSurfaceV1
         WlrOutputManagementV1
         WlrScreencopyV1
     PRIVATE_HEADERS
@@ -73,6 +77,7 @@ liri_add_module(WaylandClient
         lirishell_p.h
         wlrexportdmabufv1_p.h
         wlrforeigntoplevelmanagementv1_p.h
+        wlrlayersurfacev1_p.h
         wlroutputmanagementv1_p.h
         wlrscreencopyv1_p.h
         ${_generated_c_protocol_files}

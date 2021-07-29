@@ -2,34 +2,34 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#ifndef LIRI_LAYERSURFACEINTERFACE_H
-#define LIRI_LAYERSURFACEINTERFACE_H
+#ifndef LIRI_WLRLAYERSURFACEV1_CLIENT_H
+#define LIRI_WLRLAYERSURFACEV1_CLIENT_H
 
 #include <QWindow>
 
-#include <LiriWaylandClientLayerShell/liriwaylandclientlayershellglobal.h>
+#include <LiriWaylandClient/liriwaylandclientglobal.h>
 
 namespace Liri {
 
 namespace WaylandClient {
 
-class LayerSurfacePrivate;
+class WlrLayerSurfaceV1Private;
 
-class LIRIWAYLANDCLIENTLAYERSHELL_EXPORT LayerSurface : public QObject
+class LIRIWAYLANDCLIENT_EXPORT WlrLayerSurfaceV1 : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(LayerSurface)
+    Q_DECLARE_PRIVATE(WlrLayerSurfaceV1)
     Q_PROPERTY(QWindow *window READ window WRITE setWindow NOTIFY windowChanged)
-    Q_PROPERTY(Liri::WaylandClient::LayerSurface::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
+    Q_PROPERTY(Liri::WaylandClient::WlrLayerSurfaceV1::Layer layer READ layer WRITE setLayer NOTIFY layerChanged)
     Q_PROPERTY(QString role READ role WRITE setRole NOTIFY roleChanged)
-    Q_PROPERTY(Liri::WaylandClient::LayerSurface::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
+    Q_PROPERTY(Liri::WaylandClient::WlrLayerSurfaceV1::Anchors anchors READ anchors WRITE setAnchors NOTIFY anchorsChanged)
     Q_PROPERTY(qint32 exclusiveZone READ exclusiveZone WRITE setExclusiveZone NOTIFY exclusiveZoneChanged)
     Q_PROPERTY(QMargins margins READ margins NOTIFY marginsChanged)
     Q_PROPERTY(qint32 leftMargin READ leftMargin WRITE setLeftMargin NOTIFY leftMarginChanged)
     Q_PROPERTY(qint32 rightMargin READ rightMargin WRITE setRightMargin NOTIFY rightMarginChanged)
     Q_PROPERTY(qint32 topMargin READ topMargin WRITE setTopMargin NOTIFY topMarginChanged)
     Q_PROPERTY(qint32 bottomMargin READ bottomMargin WRITE setBottomMargin NOTIFY bottomMarginChanged)
-    Q_PROPERTY(Liri::WaylandClient::LayerSurface::KeyboardInteractivity keyboardInteractivity READ keyboardInteractivity WRITE setKeyboardInteractivity NOTIFY keyboardInteractivityChanged)
+    Q_PROPERTY(Liri::WaylandClient::WlrLayerSurfaceV1::KeyboardInteractivity keyboardInteractivity READ keyboardInteractivity WRITE setKeyboardInteractivity NOTIFY keyboardInteractivityChanged)
 public:
     enum Layer {
         BackgroundLayer = 0,
@@ -56,22 +56,22 @@ public:
     };
     Q_ENUM(KeyboardInteractivity)
 
-    LayerSurface(QObject *parent = nullptr);
-    ~LayerSurface();
+    WlrLayerSurfaceV1(QObject *parent = nullptr);
+    ~WlrLayerSurfaceV1();
 
     bool isInitialized() const;
 
     QWindow *window() const;
     void setWindow(QWindow *window);
 
-    Liri::WaylandClient::LayerSurface::Layer layer() const;
-    void setLayer(Liri::WaylandClient::LayerSurface::Layer layer);
+    Liri::WaylandClient::WlrLayerSurfaceV1::Layer layer() const;
+    void setLayer(Liri::WaylandClient::WlrLayerSurfaceV1::Layer layer);
 
     QString role() const;
     void setRole(const QString &role);
 
-    Liri::WaylandClient::LayerSurface::Anchors anchors() const;
-    void setAnchors(Liri::WaylandClient::LayerSurface::Anchors anchors);
+    Liri::WaylandClient::WlrLayerSurfaceV1::Anchors anchors() const;
+    void setAnchors(Liri::WaylandClient::WlrLayerSurfaceV1::Anchors anchors);
 
     qint32 exclusiveZone() const;
     void setExclusiveZone(qint32 zone);
@@ -90,36 +90,36 @@ public:
     qint32 bottomMargin() const;
     void setBottomMargin(qint32 margin);
 
-    Liri::WaylandClient::LayerSurface::KeyboardInteractivity keyboardInteractivity() const;
-    void setKeyboardInteractivity(Liri::WaylandClient::LayerSurface::KeyboardInteractivity keyboardInteractivity);
+    Liri::WaylandClient::WlrLayerSurfaceV1::KeyboardInteractivity keyboardInteractivity() const;
+    void setKeyboardInteractivity(Liri::WaylandClient::WlrLayerSurfaceV1::KeyboardInteractivity keyboardInteractivity);
 
     void initialize();
 
     void setLayerEnabled(bool enabled);
 
-    static LayerSurface *get(QWindow *window);
+    static WlrLayerSurfaceV1 *get(QWindow *window);
 
 Q_SIGNALS:
     void windowChanged(QWindow *window);
-    void layerChanged(LayerSurface::Layer layer);
+    void layerChanged(WlrLayerSurfaceV1::Layer layer);
     void roleChanged(const QString &role);
-    void anchorsChanged(LayerSurface::Anchors anchors);
+    void anchorsChanged(WlrLayerSurfaceV1::Anchors anchors);
     void exclusiveZoneChanged(qint32 exclusiveZone);
     void marginsChanged(const QMargins &margins);
     void leftMarginChanged(qint32 margin);
     void rightMarginChanged(qint32 margin);
     void topMarginChanged(qint32 margin);
     void bottomMarginChanged(qint32 margin);
-    void keyboardInteractivityChanged(Liri::WaylandClient::LayerSurface::KeyboardInteractivity keyboardInteractivity);
+    void keyboardInteractivityChanged(Liri::WaylandClient::WlrLayerSurfaceV1::KeyboardInteractivity keyboardInteractivity);
 
 private:
-    LayerSurfacePrivate *const d_ptr = nullptr;
+    WlrLayerSurfaceV1Private *const d_ptr = nullptr;
 };
 
 } // WaylandClient
 
 } // Liri
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Liri::WaylandClient::LayerSurface::Anchors)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Liri::WaylandClient::WlrLayerSurfaceV1::Anchors)
 
-#endif // LIRI_LAYERSURFACEINTERFACE_H
+#endif // LIRI_WLRLAYERSURFACEV1_CLIENT_H

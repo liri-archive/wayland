@@ -2,25 +2,25 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#ifndef LAYERSURFACEQML_H
-#define LAYERSURFACEQML_H
+#ifndef WLRLAYERSURFACEV1QML_H
+#define WLRLAYERSURFACEV1QML_H
 
 #include <QQmlParserStatus>
 
-#include <LiriWaylandClientLayerShell/LayerSurface>
+#include <LiriWaylandClient/WlrLayerSurfaceV1>
 
 using namespace Liri::WaylandClient;
 
-class LayerSurfaceQml : public LayerSurface, public QQmlParserStatus
+class WlrLayerSurfaceV1Qml : public WlrLayerSurfaceV1, public QQmlParserStatus
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
 public:
-    LayerSurfaceQml(QObject *parent = nullptr);
+    WlrLayerSurfaceV1Qml(QObject *parent = nullptr);
 
 protected:
     void classBegin() override {}
     void componentComplete() override;
 };
 
-#endif // LAYERSURFACEQML_H
+#endif // WLRLAYERSURFACEV1QML_H

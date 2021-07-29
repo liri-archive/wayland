@@ -9,6 +9,8 @@ liri_add_qml_plugin(waylandclient
         plugin.cpp
         lirishortcutqml.cpp
         lirishortcutqml.h
+        wlrlayersurfacev1qml.cpp
+        wlrlayersurfacev1qml.h
     QML_FILES
         qmldir
     DEFINES

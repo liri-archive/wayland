@@ -2,12 +2,12 @@
 //
 // SPDX-License-Identifier: LGPL-3.0-or-later
 
-#ifndef LIRI_LAYERSURFACEINTERFACE_P_H
-#define LIRI_LAYERSURFACEINTERFACE_P_H
+#ifndef LIRI_WLRLAYERSURFACEV1_P_CLIENT_H
+#define LIRI_WLRLAYERSURFACEV1_P_CLIENT_H
 
 #include <QLoggingCategory>
 
-#include <LiriWaylandClientLayerShell/LayerSurface>
+#include <LiriWaylandClient/WlrLayerSurfaceV1>
 
 //
 //  W A R N I N G
@@ -20,30 +20,28 @@
 // We mean it.
 //
 
-Q_DECLARE_LOGGING_CATEGORY(lcLayerShell)
-
 namespace Liri {
 
 namespace WaylandClient {
 
-class LayerSurfacePrivate
+class WlrLayerSurfaceV1Private
 {
 public:
-    LayerSurfacePrivate() = default;
+    WlrLayerSurfaceV1Private() = default;
 
     bool initialized = false;
     bool setLayerEnabled = false;
     QWindow *window = nullptr;
-    LayerSurface::Layer layer = LayerSurface::TopLayer;
+    WlrLayerSurfaceV1::Layer layer = WlrLayerSurfaceV1::TopLayer;
     QString role = QStringLiteral("unknown");
-    LayerSurface::Anchors anchors;
+    WlrLayerSurfaceV1::Anchors anchors;
     qint32 exclusiveZone = 0;
     QMargins margins;
-    LayerSurface::KeyboardInteractivity keyboardInteractivity = LayerSurface::ExclusiveKeyboardInteractivity;
+    WlrLayerSurfaceV1::KeyboardInteractivity keyboardInteractivity = WlrLayerSurfaceV1::ExclusiveKeyboardInteractivity;
 };
 
 } // namespace WaylandClient
 
 } // namespace Liri
 
-#endif // LIRI_LAYERSURFACEINTERFACE_P_H
+#endif // LIRI_WLRLAYERSURFACEV1_P_CLIENT_H

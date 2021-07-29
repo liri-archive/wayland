@@ -31,6 +31,7 @@
 #include <LiriWaylandClient/WlrScreencopyV1>
 
 #include "lirishortcutqml.h"
+#include "wlrlayersurfacev1qml.h"
 #include "utils.h"
 
 class WaylandClientPlugin : public QQmlExtensionPlugin
@@ -54,6 +55,8 @@ public:
         qmlRegisterType<WlrExportDmabufManagerV1>(uri, versionMajor, versionMinor, "WlrExportDmabufManagerV1");
         qmlRegisterUncreatableType<WlrExportDmabufFrameV1>(uri, versionMajor, versionMinor, "WlrExportDmabufFrameV1",
                                                            QStringLiteral("Cannot create a WlrExportDmabufFrameV1 instance"));
+
+        qmlRegisterType<WlrLayerSurfaceV1Qml>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1");
 
         qmlRegisterType<WlrOutputManagerV1>(uri, versionMajor, versionMinor, "WlrOutputManagerV1");
         qmlRegisterUncreatableType<WlrOutputHeadV1>(uri, versionMajor, versionMinor, "WlrOutputHeadV1",
