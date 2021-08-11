@@ -11,5 +11,18 @@ LiriShortcutQml::LiriShortcutQml()
 
 void LiriShortcutQml::componentComplete()
 {
+    // Find the shell from the parent, if not specified
+    if (!shell()) {
+        for (auto *p = parent(); p != nullptr; p = p->parent()) {
+            if (auto *s = qobject_cast<LiriShell *>(p)) {
+                setShell(s);
+                break;
+            } else if (auto *s = p->findChild<LiriShell *>()) {
+                setShell(s);
+                break;
+            }
+        }
+    }
+
     QMetaObject::invokeMethod(this, "bindShortcut", Qt::QueuedConnection);
 }
