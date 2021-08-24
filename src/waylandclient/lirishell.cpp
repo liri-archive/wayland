@@ -37,6 +37,12 @@ LiriShellPrivate::LiriShellPrivate(LiriShell *qq)
 {
 }
 
+void LiriShellPrivate::liri_shell_logout_requested()
+{
+    Q_Q(LiriShell);
+    Q_EMIT q->logoutRequested();
+}
+
 void LiriShellPrivate::liri_shell_shutdown_requested()
 {
     Q_Q(LiriShell);

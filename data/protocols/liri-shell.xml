@@ -58,6 +58,13 @@
       </description>
     </request>
 
+    <event name="logout_requested">
+      <description summary="logout dialog is requested">
+        The compositor will emit this event when it wants to show
+        the logout dialog.
+      </description>
+    </event>
+
     <event name="shutdown_requested">
       <description summary="shutdown is requested">
         When the power off or suspend button is pressed, the compositor

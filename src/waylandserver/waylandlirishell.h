@@ -65,6 +65,7 @@ public:
 
     void initialize() override;
 
+    Q_INVOKABLE void requestLogout();
     Q_INVOKABLE void requestShutdown();
     Q_INVOKABLE void sendQuit();
 

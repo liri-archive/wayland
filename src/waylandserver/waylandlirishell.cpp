@@ -146,6 +146,15 @@ void WaylandLiriShell::initialize()
     d->init(compositor->display(), 1);
 }
 
+void WaylandLiriShell::requestLogout()
+{
+    Q_D(WaylandLiriShell);
+
+    const auto values = d->resourceMap().values();
+    for (auto *resource : values)
+        d->send_logout_requested(resource->handle);
+}
+
 void WaylandLiriShell::requestShutdown()
 {
     Q_D(WaylandLiriShell);

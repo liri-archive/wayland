@@ -50,6 +50,7 @@ protected:
     LiriShell *q_ptr;
 
 private:
+    void liri_shell_logout_requested() override;
     void liri_shell_shutdown_requested() override;
     void liri_shell_quit() override;
 };

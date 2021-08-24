@@ -54,6 +54,7 @@ public:
     static const struct ::wl_interface *interface();
 
 Q_SIGNALS:
+    void logoutRequested();
     void shutdownRequested();
     void quitRequested();
 
