@@ -29,6 +29,7 @@
 #include "qwayland-wayland.h"
 
 #include "mockliricolorpicker.h"
+#include "mocklirilockscreenv1.h"
 #include "mockwlrexportdmabufv1.h"
 #include "mockwlrforeigntoplevelmanagementv1.h"
 #include "mockwlrlayershellv1.h"
@@ -46,6 +47,7 @@ public:
     QMap<uint32_t, QtWayland::wl_output *> outputs;
     QtWayland::wl_shm *shm = nullptr;
     MockLiriColorPickerManager *liriColorPickerManager = nullptr;
+    MockLiriLockScreenV1 *liriLockScreen = nullptr;
     MockWlrExportDmabufManagerV1 *wlrExportDmabuf = nullptr;
     MockWlrForeignToplevelManagerV1 *wlrForeignToplevel = nullptr;
     MockWlrLayerShellV1 *wlrLayerShell = nullptr;

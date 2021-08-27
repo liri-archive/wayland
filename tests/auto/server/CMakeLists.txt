@@ -4,6 +4,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/liri-color-picker.xml"
     BASENAME "liri-color-picker")
 ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/liri-lockscreen-unstable-v1.xml"
+    BASENAME "liri-lockscreen-unstable-v1")
+ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../../data/protocols/wayland.xml"
     BASENAME "wayland")
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -29,6 +32,7 @@ liri_add_test(tst_waylandserver
         mockclient.h
         mockliricolorpicker.cpp
         mockliricolorpicker.h
+        mocklirilockscreenv1.cpp mocklirilockscreenv1.h
         mockregistry.cpp
         mockregistry.h
         mockwlrexportdmabufv1.cpp

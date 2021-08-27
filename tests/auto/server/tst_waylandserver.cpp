@@ -26,6 +26,7 @@
 #include <QQuickWindow>
 
 #include <LiriWaylandServer/WaylandLiriColorPicker>
+#include <LiriWaylandServer/WaylandLiriLockScreenV1>
 #include <LiriWaylandServer/WaylandWlrExportDmabufV1>
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
@@ -43,6 +44,7 @@ public:
 
 private slots:
     void liriColorPicker();
+    void liriLockScreen();
     void wlrExportDmabuf();
     void wlrForeignToplevel();
     void wlrLayer();
@@ -93,6 +95,39 @@ void TestWaylandServer::liriColorPicker()
     picker = client.registry->liriColorPickerManager->pickAtLocation(output, QPoint(50, 50));
     QVERIFY(picker);
     QTRY_COMPARE(picker->lastPickedValue(), redValue);
+}
+
+class LiriLockScreenCompositor : public TestCompositor
+{
+    Q_OBJECT
+public:
+    LiriLockScreenCompositor() : lockScreen(this) {}
+
+    WaylandLiriLockScreenV1 lockScreen;
+};
+
+void TestWaylandServer::liriLockScreen()
+{
+    LiriLockScreenCompositor compositor;
+    compositor.prepare();
+    compositor.create();
+
+    MockClient client;
+    QTRY_VERIFY(client.registry->liriLockScreen);
+
+    QSignalSpy createSpy(&compositor.lockScreen, SIGNAL(clientAvailableChanged(bool)));
+    QSignalSpy unlockSpy(&compositor.lockScreen, SIGNAL(unlocked()));
+
+    auto *handle = client.registry->liriLockScreen->createHandle();
+    QVERIFY(handle);
+    QSignalSpy lockedSpy(handle, SIGNAL(lockRequested()));
+    QTRY_COMPARE(createSpy.count(), 1);
+
+    compositor.lockScreen.requestLock();
+    compositor.flushClients();
+    QTRY_COMPARE(lockedSpy.count(), 1);
+    handle->unlock();
+    QTRY_COMPARE(unlockSpy.count(), 1);
 }
 
 class WlrExportDmabufCompositor : public TestCompositor

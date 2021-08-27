@@ -44,6 +44,8 @@ void MockRegistry::registry_global(uint32_t name, const QString &interface, uint
         shm = new QtWayland::wl_shm(object(), name, qMin<uint32_t>(version, 1));
     } else if (interface == QLatin1String("liri_color_picker_manager")) {
         liriColorPickerManager = new MockLiriColorPickerManager(object(), name, qMin<uint32_t>(version, 1));
+    } else if (interface == MockLiriLockScreenV1::interfaceName()) {
+        liriLockScreen = new MockLiriLockScreenV1(object(), name, qMin<uint32_t>(version, 1));
     } else if (interface == QLatin1String("zwlr_export_dmabuf_manager_v1")) {
         wlrExportDmabuf = new MockWlrExportDmabufManagerV1(object(), name, qMin<uint32_t>(version, 1));
     } else if (interface == QLatin1String("zwlr_foreign_toplevel_manager_v1")) {

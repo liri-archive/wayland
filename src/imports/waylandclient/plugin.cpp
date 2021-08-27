@@ -24,6 +24,7 @@
 #include <QtQml>
 
 #include <LiriWaylandClient/LiriColorPicker>
+#include <LiriWaylandClient/LiriLockScreenV1>
 #include <LiriWaylandClient/LiriModal>
 #include <LiriWaylandClient/LiriShell>
 #include <LiriWaylandClient/WlrExportDmabufV1>
@@ -49,6 +50,7 @@ public:
         const int versionMinor = 0;
 
         qmlRegisterType<LiriColorPickerManager>(uri, versionMajor, versionMinor, "LiriColorPickerManager");
+        qmlRegisterType<LiriLockScreenV1>(uri, versionMajor, versionMinor, "LiriLockScreenV1");
         qmlRegisterType<LiriModal>(uri, versionMajor, versionMinor, "LiriModal");
         qmlRegisterType<LiriShell>(uri, versionMajor, versionMinor, "LiriShell");
         qmlRegisterType<LiriShortcutQml>(uri, versionMajor, versionMinor, "LiriShortcut");

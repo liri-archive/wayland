@@ -4,6 +4,9 @@ ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-decoration.xml"
     BASENAME "liri-decoration")
 ecm_add_qtwayland_server_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-lockscreen-unstable-v1.xml"
+    BASENAME "liri-lockscreen-unstable-v1")
+ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/gtk-shell.xml"
     BASENAME "gtk-shell")
 ecm_add_qtwayland_server_protocol(SOURCES
@@ -43,6 +46,7 @@ set(_generated_c_protocol_files
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-server-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-decoration-server-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-server-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-lockscreen-unstable-v1-server-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-export-dmabuf-unstable-v1-server-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-foreign-toplevel-management-unstable-v1-server-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-layer-shell-unstable-v1-server-protocol.h"
@@ -55,6 +59,7 @@ set(_generated_cpp_protocol_files
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-color-picker.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-decoration.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-shell.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-liri-lockscreen-unstable-v1.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-export-dmabuf-unstable-v1.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-foreign-toplevel-management-unstable-v1.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-layer-shell-unstable-v1.h"
@@ -79,6 +84,7 @@ liri_add_module(WaylandServer
         waylandliricolorpicker.cpp
         waylandliricolorpicker.h
         waylandliricolorpicker_p.h
+        waylandlirilockscreenv1.cpp waylandlirilockscreenv1_p.h waylandlirilockscreenv1.h
         waylandlirimodal.cpp
         waylandlirimodal.h
         waylandlirimodal_p.h
@@ -108,6 +114,7 @@ liri_add_module(WaylandServer
         KdeServerDecoration
         WaylandLiriColorPicker
         LiriDecoration
+        WaylandLiriLockScreenV1
         WaylandLiriModal
         WaylandLiriShell
         WaylandWlrExportDmabufV1
@@ -118,6 +125,7 @@ liri_add_module(WaylandServer
     PRIVATE_HEADERS
         gtkshell_p.h
         waylandliricolorpicker_p.h
+        waylandlirilockscreenv1_p.h
         waylandlirimodal_p.h
         waylandlirishell_p.h
         waylandwlrexportdmabufv1_p.h

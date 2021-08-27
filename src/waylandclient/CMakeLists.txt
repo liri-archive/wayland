@@ -4,6 +4,9 @@ ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-color-picker.xml"
     BASENAME "liri-color-picker")
 ecm_add_qtwayland_client_protocol(SOURCES
+    PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-lockscreen-unstable-v1.xml"
+    BASENAME "liri-lockscreen-unstable-v1")
+ecm_add_qtwayland_client_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-shell.xml"
     BASENAME "liri-shell")
 ecm_add_qtwayland_client_protocol(SOURCES
@@ -21,6 +24,7 @@ ecm_add_qtwayland_client_protocol(SOURCES
 
 set(_generated_c_protocol_files
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-color-picker-client-protocol.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-lockscreen-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-liri-shell-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-export-dmabuf-unstable-v1-client-protocol.h"
     "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-client-protocol.h"
@@ -28,6 +32,7 @@ set(_generated_c_protocol_files
 )
 set(_generated_cpp_protocol_files
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-color-picker.h"
+    "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-lockscreen-unstable-v1.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-liri-shell.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-export-dmabuf-unstable-v1.h"
     "${CMAKE_CURRENT_BINARY_DIR}/qwayland-wlr-foreign-toplevel-management-unstable-v1.h"
@@ -42,6 +47,7 @@ liri_add_module(WaylandClient
         liricolorpicker.cpp
         liricolorpicker.h
         liricolorpicker_p.h
+        lirilockscreenv1.cpp lirilockscreenv1_p.h lirilockscreenv1.h
         lirimodal.cpp
         lirimodal.h
         lirimodal_p.h
@@ -69,6 +75,7 @@ liri_add_module(WaylandClient
         ${SOURCES}
     FORWARDING_HEADERS
         LiriColorPicker
+        LiriLockScreenV1
         LiriModal
         LiriShell
         WlrExportDmabufV1
@@ -78,6 +85,7 @@ liri_add_module(WaylandClient
         WlrScreencopyV1
     PRIVATE_HEADERS
         liricolorpicker_p.h
+        lirilockscreenv1_p.h
         lirimodal_p.h
         lirishell_p.h
         wlrexportdmabufv1_p.h
