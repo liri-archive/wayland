@@ -25,6 +25,7 @@
 #define LIRI_WAYLANDWLRLAYERSHELLV1_H
 
 #include <QMargins>
+#include <QLoggingCategory>
 #include <QQmlEngine>
 #include <QWaylandCompositorExtension>
 
@@ -34,6 +35,8 @@ QT_FORWARD_DECLARE_CLASS(QWaylandCompositor)
 QT_FORWARD_DECLARE_CLASS(QWaylandOutput)
 QT_FORWARD_DECLARE_CLASS(QWaylandSurface)
 QT_FORWARD_DECLARE_CLASS(QWaylandSurfaceRole)
+
+Q_DECLARE_LOGGING_CATEGORY(lcLayerShell)
 
 class WaylandWlrLayerShellV1Private;
 class WaylandWlrLayerSurfaceV1;

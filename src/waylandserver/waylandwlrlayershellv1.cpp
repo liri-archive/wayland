@@ -28,6 +28,8 @@
 #include "waylandwlrlayershellv1_p.h"
 #include "logging_p.h"
 
+Q_LOGGING_CATEGORY(lcLayerShell, "liri.waylandserver.layershell", QtInfoMsg)
+
 WaylandWlrLayerShellV1Private::WaylandWlrLayerShellV1Private(WaylandWlrLayerShellV1 *self)
     : QtWaylandServer::zwlr_layer_shell_v1()
     , q_ptr(self)

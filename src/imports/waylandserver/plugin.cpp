@@ -31,9 +31,11 @@
 #include <LiriWaylandServer/WaylandLiriLockScreenV1>
 #include <LiriWaylandServer/WaylandLiriModal>
 #include <LiriWaylandServer/WaylandLiriShell>
+#include <LiriWaylandServer/WaylandSurfaceLayout>
 #include <LiriWaylandServer/WaylandWlrExportDmabufV1>
 #include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
+#include <LiriWaylandServer/WaylandWlrLayerSurfaceV1Item>
 #include <LiriWaylandServer/WaylandWlrScreencopyV1>
 
 #include "waylandwlrforeigntoplevelmanagementv1qml.h"
@@ -88,6 +90,8 @@ public:
                                                         QStringLiteral("Cannot create instance of LiriShortcut"));
         qmlRegisterType<WaylandLiriOsdQuickExtension>(uri, versionMajor, versionMinor, "LiriOsd");
 
+        qmlRegisterType<WaylandSurfaceLayout>(uri, versionMajor, versionMinor, "WaylandSurfaceLayout");
+
         qmlRegisterType<WaylandWlrExportDmabufManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrExportDmabufManagerV1");
         qmlRegisterUncreatableType<WaylandWlrExportDmabufFrameV1>(uri, versionMajor, versionMinor, "WlrExportDmabufFrameV1",
                                                                   QStringLiteral("Cannot create instance of WlrExportDmabufFrameV1"));
@@ -98,6 +102,7 @@ public:
         qmlRegisterType<WaylandWlrLayerShellV1QuickExtension>(uri, versionMajor, versionMinor, "WlrLayerShellV1");
         qmlRegisterUncreatableType<WaylandWlrLayerSurfaceV1>(uri, versionMajor, versionMinor, "WlrLayerSurfaceV1",
                                                              QStringLiteral("Cannot create instance of WlrLayerSurfaceV1"));
+        qmlRegisterType<WaylandWlrLayerSurfaceV1Item>(uri, versionMajor, versionMinor, "WaylandWlrLayerSurfaceV1Item");
 
         qmlRegisterType<WaylandWlrOutputManagerV1QuickExtension>(uri, versionMajor, versionMinor, "WlrOutputManagerV1");
         qmlRegisterType<WaylandWlrOutputHeadV1Qml>(uri, versionMajor, versionMinor, "WlrOutputHeadV1");

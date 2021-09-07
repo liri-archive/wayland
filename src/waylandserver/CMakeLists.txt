@@ -91,6 +91,7 @@ liri_add_module(WaylandServer
         waylandlirishell.cpp
         waylandlirishell.h
         waylandlirishell_p.h
+        waylandsurfacelayout.cpp waylandsurfacelayout.h waylandsurfacelayout_p.h
         waylandwlrexportdmabufv1.cpp
         waylandwlrexportdmabufv1.h
         waylandwlrexportdmabufv1_p.h
@@ -100,6 +101,7 @@ liri_add_module(WaylandServer
         waylandwlrlayershellv1.cpp
         waylandwlrlayershellv1.h
         waylandwlrlayershellv1_p.h
+        waylandwlrlayersurfacev1item.cpp waylandwlrlayersurfacev1item.h waylandwlrlayersurfacev1item_p.h
         waylandwlroutputmanagerv1.cpp
         waylandwlroutputmanagerv1.h
         waylandwlroutputmanagerv1_p.h
@@ -117,9 +119,11 @@ liri_add_module(WaylandServer
         WaylandLiriLockScreenV1
         WaylandLiriModal
         WaylandLiriShell
+        WaylandSurfaceLayout
         WaylandWlrExportDmabufV1
         WaylandWlrForeignToplevelManagementV1
         WaylandWlrLayerShellV1
+        WaylandWlrLayerSurfaceV1Item
         WaylandWlrOutputManagerV1
         WaylandWlrScreencopyV1
     PRIVATE_HEADERS
@@ -128,9 +132,11 @@ liri_add_module(WaylandServer
         waylandlirilockscreenv1_p.h
         waylandlirimodal_p.h
         waylandlirishell_p.h
+        waylandsurfacelayout_p.h
         waylandwlrexportdmabufv1_p.h
         waylandwlrforeigntoplevelmanagementv1_p.h
         waylandwlrlayershellv1_p.h
+        waylandwlrlayersurfacev1item_p.h
         waylandwlrscreencopyv1_p.h
         ${_generated_c_protocol_files}
         ${_generated_cpp_protocol_files}
