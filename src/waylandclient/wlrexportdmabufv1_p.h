@@ -5,7 +5,7 @@
 #ifndef LIRI_WLREXPORTDMABUFV1_P_CLIENT_H
 #define LIRI_WLREXPORTDMABUFV1_P_CLIENT_H
 
-#include <LiriWaylandClient/WlrExportDmabufV1>
+#include <LiriWaylandClient/WlrExportDmabufManagerV1>
 #include <LiriWaylandClient/private/qwayland-wlr-export-dmabuf-unstable-v1.h>
 
 //

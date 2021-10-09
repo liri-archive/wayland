@@ -25,13 +25,13 @@
 #include <QMargins>
 #include <QQuickWindow>
 
-#include <LiriWaylandServer/WaylandLiriColorPicker>
+#include <LiriWaylandServer/WaylandLiriColorPickerManager>
 #include <LiriWaylandServer/WaylandLiriLockScreenV1>
-#include <LiriWaylandServer/WaylandWlrExportDmabufV1>
-#include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
+#include <LiriWaylandServer/WaylandWlrExportDmabufManagerV1>
+#include <LiriWaylandServer/WaylandWlrForeignToplevelManagerV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrOutputManagerV1>
-#include <LiriWaylandServer/WaylandWlrScreencopyV1>
+#include <LiriWaylandServer/WaylandWlrScreencopyManagerV1>
 
 #include "mockclient.h"
 #include "testcompositor.h"

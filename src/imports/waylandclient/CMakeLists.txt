@@ -21,3 +21,5 @@ liri_add_qml_plugin(waylandclient
         Qt5::Quick
         Liri::WaylandClient
 )
+
+liri_finalize_qml_plugin(waylandclient)

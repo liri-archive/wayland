@@ -30,7 +30,7 @@
 #include <QWaylandSeat>
 #include <QWaylandSurface>
 
-#include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
+#include <LiriWaylandServer/WaylandWlrForeignToplevelManagerV1>
 #include <LiriWaylandServer/private/qwayland-server-wlr-foreign-toplevel-management-unstable-v1.h>
 
 //

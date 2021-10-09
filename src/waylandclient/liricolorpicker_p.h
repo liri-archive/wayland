@@ -7,7 +7,7 @@
 
 #include <QVector>
 
-#include <LiriWaylandClient/LiriColorPicker>
+#include <LiriWaylandClient/LiriColorPickerManager>
 #include <LiriWaylandClient/private/qwayland-liri-color-picker.h>
 
 //

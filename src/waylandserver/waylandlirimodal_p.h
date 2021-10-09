@@ -16,7 +16,7 @@
 // We mean it.
 //
 
-#include <LiriWaylandServer/WaylandLiriModal>
+#include <LiriWaylandServer/WaylandLiriModalManager>
 #include <LiriWaylandServer/private/qwayland-server-liri-shell.h>
 
 class LIRIWAYLANDSERVER_EXPORT WaylandLiriModal

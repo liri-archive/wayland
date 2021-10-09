@@ -24,7 +24,7 @@
 #ifndef LIRI_WLRFOREIGNTOPLEVELMANAGEMENTV1_P_CLIENT_H
 #define LIRI_WLRFOREIGNTOPLEVELMANAGEMENTV1_P_CLIENT_H
 
-#include <LiriWaylandClient/WlrForeignToplevelManagementV1>
+#include <LiriWaylandClient/WlrForeignToplevelManagerV1>
 #include <LiriWaylandClient/private/qwayland-wlr-foreign-toplevel-management-unstable-v1.h>
 
 //

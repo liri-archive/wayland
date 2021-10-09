@@ -23,14 +23,14 @@
 
 #include <QtQml>
 
-#include <LiriWaylandClient/LiriColorPicker>
+#include <LiriWaylandClient/LiriColorPickerManager>
 #include <LiriWaylandClient/LiriLockScreenV1>
 #include <LiriWaylandClient/LiriModal>
 #include <LiriWaylandClient/LiriShell>
-#include <LiriWaylandClient/WlrExportDmabufV1>
-#include <LiriWaylandClient/WlrForeignToplevelManagementV1>
-#include <LiriWaylandClient/WlrOutputManagementV1>
-#include <LiriWaylandClient/WlrScreencopyV1>
+#include <LiriWaylandClient/WlrExportDmabufManagerV1>
+#include <LiriWaylandClient/WlrForeignToplevelManagerV1>
+#include <LiriWaylandClient/WlrOutputManagerV1>
+#include <LiriWaylandClient/WlrScreencopyManagerV1>
 
 #include "lirishortcutqml.h"
 #include "wlrlayersurfacev1qml.h"

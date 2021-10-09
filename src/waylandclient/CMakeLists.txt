@@ -73,16 +73,6 @@ liri_add_module(WaylandClient
         wlrscreencopyv1.h
         wlrscreencopyv1_p.h
         ${SOURCES}
-    FORWARDING_HEADERS
-        LiriColorPicker
-        LiriLockScreenV1
-        LiriModal
-        LiriShell
-        WlrExportDmabufV1
-        WlrForeignToplevelManagementV1
-        WlrLayerSurfaceV1
-        WlrOutputManagementV1
-        WlrScreencopyV1
     PRIVATE_HEADERS
         liricolorpicker_p.h
         lirilockscreenv1_p.h
@@ -113,3 +103,5 @@ liri_add_module(WaylandClient
         Qt5WaylandClient
         wayland-client
 )
+
+liri_finalize_module(WaylandClient)

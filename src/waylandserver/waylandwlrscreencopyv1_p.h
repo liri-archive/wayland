@@ -24,7 +24,7 @@
 #ifndef LIRI_WAYLANDWLRSCREENCOPYV1_P_H
 #define LIRI_WAYLANDWLRSCREENCOPYV1_P_H
 
-#include <LiriWaylandServer/WaylandWlrScreencopyV1>
+#include <LiriWaylandServer/WaylandWlrScreencopyManagerV1>
 #include <LiriWaylandServer/private/qwayland-server-wlr-screencopy-unstable-v1.h>
 
 //

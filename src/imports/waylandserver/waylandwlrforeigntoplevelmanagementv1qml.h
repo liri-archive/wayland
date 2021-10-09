@@ -26,7 +26,7 @@
 
 #include <QQmlParserStatus>
 
-#include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
+#include <LiriWaylandServer/WaylandWlrForeignToplevelManagerV1>
 
 class WaylandWlrForeignToplevelHandleV1Qml : public WaylandWlrForeignToplevelHandleV1, public QQmlParserStatus
 {

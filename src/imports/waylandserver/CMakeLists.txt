@@ -23,3 +23,5 @@ liri_add_qml_plugin(waylandserver
     LIBRARIES
         Liri::WaylandServerPrivate
 )
+
+liri_finalize_qml_plugin(waylandserver)

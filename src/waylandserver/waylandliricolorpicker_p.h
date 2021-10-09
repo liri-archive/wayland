@@ -9,7 +9,7 @@
 #include <QWaylandOutput>
 #include <QWaylandSeat>
 
-#include <LiriWaylandServer/WaylandLiriColorPicker>
+#include <LiriWaylandServer/WaylandLiriColorPickerManager>
 #include <LiriWaylandServer/private/qwayland-server-liri-color-picker.h>
 
 //

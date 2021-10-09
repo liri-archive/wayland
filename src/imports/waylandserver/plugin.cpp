@@ -26,17 +26,17 @@
 
 #include <LiriWaylandServer/GtkShell>
 #include <LiriWaylandServer/KdeServerDecoration>
-#include <LiriWaylandServer/WaylandLiriColorPicker>
+#include <LiriWaylandServer/WaylandLiriColorPickerManager>
 #include <LiriWaylandServer/LiriDecoration>
 #include <LiriWaylandServer/WaylandLiriLockScreenV1>
-#include <LiriWaylandServer/WaylandLiriModal>
+#include <LiriWaylandServer/WaylandLiriModalManager>
 #include <LiriWaylandServer/WaylandLiriShell>
 #include <LiriWaylandServer/WaylandSurfaceLayout>
-#include <LiriWaylandServer/WaylandWlrExportDmabufV1>
-#include <LiriWaylandServer/WaylandWlrForeignToplevelManagementV1>
+#include <LiriWaylandServer/WaylandWlrExportDmabufManagerV1>
+#include <LiriWaylandServer/WaylandWlrForeignToplevelManagerV1>
 #include <LiriWaylandServer/WaylandWlrLayerShellV1>
 #include <LiriWaylandServer/WaylandWlrLayerSurfaceV1Item>
-#include <LiriWaylandServer/WaylandWlrScreencopyV1>
+#include <LiriWaylandServer/WaylandWlrScreencopyManagerV1>
 
 #include "waylandwlrforeigntoplevelmanagementv1qml.h"
 #include "waylandwlroutputmanagementv1qml.h"

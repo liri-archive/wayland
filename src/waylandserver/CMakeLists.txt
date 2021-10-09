@@ -111,21 +111,6 @@ liri_add_module(WaylandServer
         logging.cpp
         logging_p.h
         ${SOURCES}
-    FORWARDING_HEADERS
-        GtkShell
-        KdeServerDecoration
-        WaylandLiriColorPicker
-        LiriDecoration
-        WaylandLiriLockScreenV1
-        WaylandLiriModal
-        WaylandLiriShell
-        WaylandSurfaceLayout
-        WaylandWlrExportDmabufV1
-        WaylandWlrForeignToplevelManagementV1
-        WaylandWlrLayerShellV1
-        WaylandWlrLayerSurfaceV1Item
-        WaylandWlrOutputManagerV1
-        WaylandWlrScreencopyV1
     PRIVATE_HEADERS
         gtkshell_p.h
         waylandliricolorpicker_p.h
@@ -156,3 +141,5 @@ liri_add_module(WaylandServer
         Qt5WaylandCompositor
         wayland-server
 )
+
+liri_finalize_module(WaylandServer)
