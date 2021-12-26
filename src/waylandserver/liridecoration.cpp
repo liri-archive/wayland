@@ -42,7 +42,8 @@ void LiriDecorationManagerPrivate::liri_decoration_manager_create(QtWaylandServe
         return;
     }
 
-    if (decorations.contains(surfaceResource)) {
+    auto search = [surface](LiriDecoration *decoration) { return decoration->surface() == surface; };
+    if (std::find_if(decorations.begin(), decorations.end(), search) != decorations.end()) {
         qCWarning(lcWaylandServer) << "Decoration object already exist for surface";
         wl_resource_post_error(resource->handle, error_already_exists,
                                "liri_decoration already exist for surface");
@@ -50,7 +51,7 @@ void LiriDecorationManagerPrivate::liri_decoration_manager_create(QtWaylandServe
     }
 
     auto decoration = new LiriDecoration(q, surface, resource->client(), id, resource->version());
-    decorations[surfaceResource] = decoration;
+    decorations.append(decoration);
     Q_EMIT q->decorationCreated(decoration);
 }
 
@@ -100,7 +101,7 @@ void LiriDecorationManager::initialize()
 void LiriDecorationManager::unregisterDecoration(LiriDecoration *decoration)
 {
     Q_D(LiriDecorationManager);
-    d->decorations.remove(decoration->surfaceResource());
+    d->decorations.removeOne(decoration);
 }
 
 const wl_interface *LiriDecorationManager::interface()

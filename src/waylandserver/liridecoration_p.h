@@ -46,7 +46,7 @@ public:
     LiriDecorationManagerPrivate(LiriDecorationManager *self);
 
     bool initialized = false;
-    QMap<wl_resource *, LiriDecoration *> decorations;
+    QVector<LiriDecoration *> decorations;
 
 protected:
     LiriDecorationManager *q_ptr;
