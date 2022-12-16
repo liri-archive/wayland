@@ -1,4 +1,0 @@
-module Liri.WaylandServer
-plugin waylandserverplugin
-classname WaylandServerPlugin
-typeinfo plugins.qmltypes

@@ -1,4 +1,0 @@
-module Liri.WaylandClient
-plugin waylandclientplugin
-classname WaylandClientPlugin
-typeinfo plugins.qmltypes
